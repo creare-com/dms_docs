@@ -1,9 +1,0 @@
-.. _icd:
-
-==========================
-Interface Control Document
-==========================
-
-Introduction
-============
-

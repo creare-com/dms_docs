@@ -378,22 +378,26 @@ The details of this process for each of the nine features can be found in `Featu
 Computing ``amp_corr`` feature
 ------------------------------
 
-The ``amp_corr`` feature is calculated from the ``signal_amp`` signal. It is a measure of the similarity between the signal in one channel to the median signal (``amp_med``) across all of the channels. It can range from ``-1.0`` to ``+1.0``. The value for each frame of ``amp_med`` is equal to the median of the values for each of the eight channels in the same frame. Therefore, ``amp_med`` is the same for all of the channels for a given well dispense event. Equation 1 describes the actual calculation of ``amp_corr``.
+The ``amp_corr`` feature is calculated from the ``signal_amp`` signal. It is a measure of the similarity between the signal in one channel to the median signal (``amp_med``) across all of the channels. It can range from ``-1.0`` to ``+1.0``. As with the other features, there is a single ``amp_corr`` value for each well on a plate. What follows is a description of the calculation of a single ``amp_corr`` value for a well in channel ``ch``. The frames corresponding to the ``during_dispense`` time interval of the dispense event of this well will collectively be referred to as ``during_dispense_frames``. Therefore, ``signal_amp(ch, during_dispense_frames)`` would be a 1-dimensional time signal whose length is the number of frames in the particular ``during_dispense`` interval.
 
+Calculation of ``amp_med`` which is a 1-dimensional signal with the same length as ``signal_amp(ch, during_dispense_frames)``:
 
-.. 
-	
-	Let, 
+.. code-block:: matlab
 
-	* ``S = signal_amp - mean(signal_amp)``
-	* ``M = amp_med - mean(amp_med)``
-	* ``S*S'`` be the dot product between ``S`` and itself
-	* ``M*M'`` be the dot product between ``M`` and itself
-	* ``S*M'`` be the dot product between ``S`` and ``M``
+    for t = during_dispense_frames % step through frames that are part of this well dispense event's during_dispense interval
+        amp_med(t) = median(signal_amp(:,t)) % for frame t compute median value of signal_amp across all channels
+    end
 
-	Then,
+Note, ``amp_med`` need only be computed once for every well dispense event. It can be resued for calculation of each of the channel's particular ``amp_corr`` feature.
 
-	* ``amp_corr = 1 - ( ( S*M' ) / ( sqrt(S*S') * sqrt(M*M') ) )``
+Calculation of ``amp_corr`` for channel ``ch``:
+
+.. code-block:: matlab
+
+    S = signal_amp(ch, during_dispense_frames) - mean(signal_amp(ch, during_dispense_frames))
+    M = amp_med - mean(amp_med)
+    amp_corr = 1 - ( ( S*M' ) / ( sqrt(S*S') * sqrt(M*M') ) ) % S and M are assumed to be row vectors so S * M' is the dot product
+
 
 Computing ``plate_features``
 ----------------------------

@@ -81,7 +81,7 @@ The following states are currently defined.
 	2,	READY
 	3-9,	RESERVED
 	10,	CALIBRATION
-	11-2:sup:`32` ,	RESERVED
+	11-2 :sup:`32` ,	RESERVED
 	
 The following flag bits are defined.
 

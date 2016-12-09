@@ -27,26 +27,13 @@
     <link rel="next" title="2. Interface Control Document" href="interface_control_doc.html" />
     <link rel="prev" title="DMS Software Specification" href="index_BioTek.html" />
    
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
   <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="interface_control_doc.html" title="2. Interface Control Document"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="index_BioTek.html" title="DMS Software Specification"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index_BioTek.html">7819 DMS 1.0.1 documentation</a> &raquo;</li> 
-      </ul>
-    </div>  
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -265,7 +252,7 @@
 <li><p class="first">Turn on the laser. Collect <code class="docutils literal"><span class="pre">n_cal_frames</span></code> successive images from the sensor at <code class="docutils literal"><span class="pre">frame_rate</span></code> (using the <code class="docutils literal"><span class="pre">collect_image()</span></code> transform), take the mean in the time dimension, and assign the result to <code class="docutils literal"><span class="pre">cal_image</span></code>. Turn off laser.</p>
 </li>
 <li><p class="first">Lowpass filter <code class="docutils literal"><span class="pre">cal_image</span></code> with a <code class="docutils literal"><span class="pre">filter_pix</span></code> wide, square, centered moving average (zero padded). For example:</p>
-<div class="highlight-matlab"><div class="highlight"><pre><span class="n">filtered_image</span> <span class="p">=</span> <span class="n">conv</span><span class="p">(</span> <span class="n">cal_image</span><span class="p">,</span> <span class="c">...</span>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">filtered_image</span> <span class="p">=</span> <span class="n">conv</span><span class="p">(</span> <span class="n">cal_image</span><span class="p">,</span> <span class="c">...</span>
         <span class="nb">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">filter_pix</span><span class="p">)</span><span class="o">/</span><span class="n">filter_pix</span><span class="p">,</span> <span class="s">&#39;same&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -274,7 +261,7 @@
 <li><p class="first">Define <code class="docutils literal"><span class="pre">cal_bin_edges</span></code> to form 8 contiguous bins with edges centered between the peaks found above. The first and last edge are defined by requiring that the first and last peaks are centered in their bins. If these outer edges fall outside of <code class="docutils literal"><span class="pre">cal_pix_range</span></code>, throw warning <code class="docutils literal"><span class="pre">‘Calibration</span> <span class="pre">not</span> <span class="pre">centered</span> <span class="pre">on</span> <span class="pre">sensor.’</span></code> and exit the function.</p>
 </li>
 <li><p class="first">Within each of the 8 bins of the unfiltered <code class="docutils literal"><span class="pre">cal_image</span></code>, calculate the following quantities (Matlab syntax here and throughout the document):</p>
-<div class="highlight-matlab"><div class="highlight"><pre><span class="k">for</span> <span class="nb">i</span> <span class="p">=</span> <span class="mi">1</span><span class="p">:</span><span class="mi">8</span> <span class="c">% step through bins/streams</span>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="nb">i</span> <span class="p">=</span> <span class="mi">1</span><span class="p">:</span><span class="mi">8</span> <span class="c">% step through bins/streams</span>
 
         <span class="n">pix</span> <span class="p">=</span> <span class="n">bin_edges</span><span class="p">(</span><span class="nb">i</span><span class="p">):</span><span class="n">bin_edges</span><span class="p">(</span><span class="nb">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">Y2</span> <span class="p">=</span> <span class="n">cal_image</span><span class="p">(</span><span class="n">pix</span><span class="p">)</span><span class="o">.^</span><span class="mi">2</span>
@@ -326,7 +313,7 @@
 </tbody>
 </table>
 <p>While recording data during a dispense, the three signals are calculated as follows:</p>
-<div class="highlight-matlab"><div class="highlight"><pre><span class="k">for</span> <span class="n">t</span> <span class="p">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">n_frames</span> <span class="c">% step through time</span>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">t</span> <span class="p">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">n_frames</span> <span class="c">% step through time</span>
         <span class="n">image</span> <span class="p">=</span> <span class="n">collect_image</span><span class="p">()</span> <span class="c">% transform raw sensor frame</span>
 
         <span class="k">for</span> <span class="nb">i</span> <span class="p">=</span> <span class="mi">1</span><span class="p">:</span><span class="mi">8</span> <span class="c">% step through bins/streams</span>
@@ -357,7 +344,7 @@
 </pre></div>
 </div>
 <p>After recording an entire dispense we must decide the nominal positions of the streams so we can calculate their absolute lateral offset from nominal.  We assume that the tips are spaced the same as the calibration cassette, but possibly offset.</p>
-<div class="highlight-matlab"><div class="highlight"><pre><span class="n">mean_center</span> <span class="p">=</span> <span class="n">nanmean</span><span class="p">(</span><span class="n">center</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="c">% 8 bins/streams</span>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">mean_center</span> <span class="p">=</span> <span class="n">nanmean</span><span class="p">(</span><span class="n">center</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="c">% 8 bins/streams</span>
 <span class="n">offset</span> <span class="p">=</span> <span class="n">median</span><span class="p">(</span> <span class="n">mean_center</span> – <span class="n">cal_center</span> <span class="p">)</span>
 <span class="n">disp_pix</span> <span class="p">=</span> <span class="nb">bsxfun</span><span class="p">(@</span><span class="n">minus</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">cal_center</span><span class="p">)</span> – <span class="n">offset</span>
 <span class="n">signal_disp</span> <span class="p">=</span> <span class="nb">bsxfun</span><span class="p">(@</span><span class="n">times</span><span class="p">,</span> <span class="n">disp_pix</span><span class="p">,</span> <span class="n">cal_lateral_scale</span><span class="p">)</span>
@@ -404,7 +391,7 @@
 </li>
 <li><p class="first"><strong>Wait for Trigger</strong>  The DMS has two trigger inputs illustrated in <a class="reference internal" href="#biotek-triggers"><span>Fig. 1.1</span></a>. The pump trigger is active whenever the dispense pump is running (i.e. fluid is flowing). The plate trigger is active whenever a plate is being dispensed.  This allows us to distinguish when the pump is running for reasons other than dispensing a plate, such as a purge or pre-dispense. Both triggers are normally high, active low.  The DMS should wait until it receives a plate trigger, then proceed immediately to the next step.</p>
 <div class="figure align-center" id="id12">
-<a class="reference internal image-reference" href="_images/BioTek_Triggers.png" id="biotek-triggers"><img alt="BioTek Trigger Diagram" id="biotek-triggers" src="_images/BioTek_Triggers.png" style="width: 591.6px; height: 202.8px;" /></a>
+<a class="reference internal image-reference" href="_images/BioTek_Triggers.png" id="biotek-triggers"><img alt="BioTek Trigger Diagram" id="biotek-triggers" src="_images/BioTek_Triggers.png" style="width: 591.6px; height: 202.79999999999998px;" /></a>
 <p class="caption"><span class="caption-number">Fig. 1.1 </span><span class="caption-text">BioTek Trigger Diagram.</span><a class="headerlink" href="#biotek-triggers" title="Permalink to this image">¶</a></p>
 </div>
 </li>
@@ -606,14 +593,14 @@
 <span id="comp-amp-corr"></span><h3>1.10.3. Computing <code class="docutils literal"><span class="pre">amp_corr</span></code> feature<a class="headerlink" href="#computing-amp-corr-feature" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal"><span class="pre">amp_corr</span></code> feature is calculated from the <code class="docutils literal"><span class="pre">signal_amp</span></code> signal. It is a measure of the similarity between the signal in one channel to the median signal (<code class="docutils literal"><span class="pre">amp_med</span></code>) across all of the channels. It can range from <code class="docutils literal"><span class="pre">-1.0</span></code> to <code class="docutils literal"><span class="pre">+1.0</span></code>. As with the other features, there is a single <code class="docutils literal"><span class="pre">amp_corr</span></code> value for each well on a plate. What follows is a description of the calculation of a single <code class="docutils literal"><span class="pre">amp_corr</span></code> value for a well in channel <code class="docutils literal"><span class="pre">ch</span></code>. The frames corresponding to the <code class="docutils literal"><span class="pre">during_dispense</span></code> time interval of the dispense event of this well will collectively be referred to as <code class="docutils literal"><span class="pre">during_dispense_frames</span></code>. Therefore, <code class="docutils literal"><span class="pre">signal_amp(ch,</span> <span class="pre">during_dispense_frames)</span></code> would be a 1-dimensional time signal whose length is the number of frames in the particular <code class="docutils literal"><span class="pre">during_dispense</span></code> interval.</p>
 <p>Calculation of <code class="docutils literal"><span class="pre">amp_med</span></code> which is a 1-dimensional signal with the same length as <code class="docutils literal"><span class="pre">signal_amp(ch,</span> <span class="pre">during_dispense_frames)</span></code>:</p>
-<div class="highlight-matlab"><div class="highlight"><pre><span class="k">for</span> <span class="n">t</span> <span class="p">=</span> <span class="n">during_dispense_frames</span> <span class="c">% step through frames that are part of this well dispense event&#39;s during_dispense interval</span>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">t</span> <span class="p">=</span> <span class="n">during_dispense_frames</span> <span class="c">% step through frames that are part of this well dispense event&#39;s during_dispense interval</span>
     <span class="n">amp_med</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="p">=</span> <span class="n">median</span><span class="p">(</span><span class="n">signal_amp</span><span class="p">(:,</span><span class="n">t</span><span class="p">))</span> <span class="c">% for frame t compute median value of signal_amp across all channels</span>
 <span class="k">end</span>
 </pre></div>
 </div>
 <p>Note, <code class="docutils literal"><span class="pre">amp_med</span></code> need only be computed once for every well dispense event. It can be resued for calculation of each of the channel&#8217;s particular <code class="docutils literal"><span class="pre">amp_corr</span></code> feature.</p>
 <p>Calculation of <code class="docutils literal"><span class="pre">amp_corr</span></code> for channel <code class="docutils literal"><span class="pre">ch</span></code>:</p>
-<div class="highlight-matlab"><div class="highlight"><pre><span class="n">S</span> <span class="p">=</span> <span class="n">signal_amp</span><span class="p">(</span><span class="n">ch</span><span class="p">,</span> <span class="n">during_dispense_frames</span><span class="p">)</span> <span class="o">-</span> <span class="n">mean</span><span class="p">(</span><span class="n">signal_amp</span><span class="p">(</span><span class="n">ch</span><span class="p">,</span> <span class="n">during_dispense_frames</span><span class="p">))</span>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">S</span> <span class="p">=</span> <span class="n">signal_amp</span><span class="p">(</span><span class="n">ch</span><span class="p">,</span> <span class="n">during_dispense_frames</span><span class="p">)</span> <span class="o">-</span> <span class="n">mean</span><span class="p">(</span><span class="n">signal_amp</span><span class="p">(</span><span class="n">ch</span><span class="p">,</span> <span class="n">during_dispense_frames</span><span class="p">))</span>
 <span class="n">M</span> <span class="p">=</span> <span class="n">amp_med</span> <span class="o">-</span> <span class="n">mean</span><span class="p">(</span><span class="n">amp_med</span><span class="p">)</span>
 <span class="n">amp_corr</span> <span class="p">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span> <span class="p">(</span> <span class="n">S</span><span class="o">*</span><span class="n">M</span><span class="o">&#39;</span> <span class="p">)</span> <span class="o">/</span> <span class="p">(</span> <span class="nb">sqrt</span><span class="p">(</span><span class="n">S</span><span class="o">*</span><span class="n">S</span><span class="o">&#39;</span><span class="p">)</span> <span class="o">*</span> <span class="nb">sqrt</span><span class="p">(</span><span class="n">M</span><span class="o">*</span><span class="n">M</span><span class="o">&#39;</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span> <span class="c">% S and M are assumed to be row vectors so S * M&#39; is the dot product</span>
 </pre></div>
@@ -1000,13 +987,15 @@ Send the <code class="docutils literal"><span class="pre">ch_faults</span></code
 </ul>
 </li>
 </ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="index_BioTek.html"
-                        title="previous chapter">DMS Software Specification</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="interface_control_doc.html"
-                        title="next chapter">2. Interface Control Document</a></p>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index_BioTek.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index_BioTek.html" title="previous chapter">DMS Software Specification</a></li>
+      <li>Next: <a href="interface_control_doc.html" title="next chapter">2. Interface Control Document</a></li>
+  </ul></li>
+</ul>
+</div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -1036,11 +1025,11 @@ Send the <code class="docutils literal"><span class="pre">ch_faults</span></code
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
       |
       <a href="_sources/firmware_spec.txt"
-          rel="nofollow">Page source</a></li>
+          rel="nofollow">Page source</a>
     </div>
 
     

@@ -1,0 +1,237 @@
+.. _icd:
+
+==========================
+Interface Control Document
+==========================
+
+Introduction
+============
+
+This document describes the communication protocols used between the DMS controller (hereafter simply referred to as the DMS), 
+and the host computer.  It partially replicates information found in the header file, dmsCodes.h, found in the ‘Shared’ area 
+of the source code tree.  Every effort has been made to make these two documents agree, but in the case of disagreement
+dmsCodes.h, and thus the source code, prevail.
+ 
+USB Interface
+=============
+Communication between the DMS and the host PC occurs over a USB 2.0, Full speed (12 Mbps) connection.  Creare recommends, 
+and our example code utilizes, Microsoft’s WinUSB driver system, but the interface is generic USB and so any low level USB 
+access library, such as lib-usb, could be used.
+
+The vendor ID is currently 0xABCD.  This is a bogus vendor ID, because at this time Creare is not registered with the USB 
+Implementers Forum.  However, it is adequate for non-public device deployment.  The product ID is 0x7819.
+
+Two endpoints are defined.  Endpoint 0 is the standard control endpoint required for all USB devices.  The DMS makes use 
+of this endpoint to receive commands and return results.
+
+Endpoint 1 is a standard bulk endpoint.  This endpoint is used to stream raw data samples from the DMS to the host, 
+for example in alignment mode.  The DMS has no support for bulk streaming to the device.
+
+Note that in all cases, all data elements are transmitted and received in LSB (little endian) format.
+
+Endpoint 0 Commands
+===================
+
+The DMS supports the commands shown in Table 1.  Note that these are ‘Vendor’ Device Requests; refer to Chapter 9 of the
+USB 2.0 specification.  A ‘Read’ is defined here as the DMS sending control data back to the host (Device-to-host); 
+a ‘Write’ is defined as the host sending additional data along with the command (Host-to-device).  If the length is 
+0 the direction is immaterial.
+
+.. csv-table:: Supported Commands Summary
+	:header: "Command", "Description", "R/W", "bRequest", "wValue", "wIndex", "wLength"
+	:widths: 5, 5, 2, 2, 2, 2, 2
+	:name: Supported Commands Summary
+
+	STATUS, Controller condition, R, 1,	0,	0,	12
+	ID, Build date and unique ID, R, 2, 0,	0,	TODO
+	CONFIG_GET,	Read configuration data, R,	3, 0, 0	
+	CONFIG_SET,	Write configuration data, W, 4,	0,	0	
+	CALIBRATE,	Run a calibration process,	R,	5,	"1, 2, or 3", 0, 0
+	GET_CALIBRATION, Get calibration results,	R,	6,	0,	0,	1688
+	STORE_CALIBRATION,	Write current calibration to non-volatile memory,	R,	7,	0,	0,	0
+	MONITOR_DISPENSE,	Begin monitoring,	R,	8,	0,	0,	0
+	GET_DISPENSE_DATA,	Return results from monitoring,	R,	9,	0,	0,	TBD
+	STREAM,	Start / stop streaming of raw data from sensor,	R,	10,	0 or 1,	0,	0
+The commands are described in more detail below. 
+
+Status
+======
+
+In response to this command, the DMS returns its current state of operation.  This command should be used 
+to poll the DMS (~10 Hz) to determine the result of other commands.
+
+.. csv-table:: Manual Control Data
+	:header: "Data Item", "Field Lengths (bytes)"
+	:widths: 8, 5
+	:name: Manual Control Data
+	
+	State (u32),    4
+	Flags (u32),    4
+	Last Reported Error (u32),    4
+	
+The following states are currently defined.
+
+.. csv-table:: Controller States
+	:header: "Code", "State"
+	:widths: 5, 10
+	:name: Controller States
+
+	0,	OFF
+	1,	INITIALIZATION
+	2,	READY
+	3-9,	RESERVED
+	10,	CALIBRATION
+	11-2 :sup:`32` ,	RESERVED
+	
+The following flag bits are defined.
+
+.. csv-table:: Controller Status Bit Field
+	:header: "Bits", "Status"
+	:widths: 5, 10
+	:name: Controller Status Bit Field
+
+	0-3,	RESERVED
+	4,	Configuration Fail (Hardware Error)
+	5-19,	RESERVED
+	20,	Configuration Using Defaults
+	21-31,	RESERVED
+
+The following error codes are currently defined.
+
+.. csv-table:: Error Codes
+	:header: "Code", "Mnemonic", "Suggested Display Setting"
+	:widths: 5, 10, 10
+	:name: Error Codes
+
+	0,	DMS_ERR_NONE,	No error.
+	1,	DMS_ERR_SENSOR_NOT_DARK,	Sensor is not dark.
+	2,	DMS_ERR_INSUFFICIENT_BG_ILLUM,	Insufficient background illumination.
+	3,	DMS_ERR_INSUFFICIENT_PEAKS,	8 peaks not found in calibration image.
+	4,	DMS_ERR_CAL_NOT_CENTERED,	Calibration not centered on sensor.
+	5,	DMS_ERR_ILLEGAL_STATE,	The DMS cannot accept that command at this time.
+	6,	DMS_ERR_UNSUPPORTED_OPERATION,	The DMS does not support that operation.
+	7-255,	RESERVED	
+	
+ID
+==
+This command causes the DMS to return the build date and time of its firmware, and the unique
+ID associated with the processor.
+
+.. csv-table:: Identification Data
+	:header: "Data Item", "Field Length (bytes)"
+	:widths: 10, 5
+	:name: Identification Data
+
+	Build Date / Time String(Mmm dd yyyy hh:mm:ss),	24
+	Unique ID (u32 x 4),	4
+
+Config Get
+==========
+
+In response to the CONFIG_GET command, the DMS will return the current value of all configuration parameters.  See Table 7.7.
+
+.. csv-table:: Configuration Data
+	:header: "Data Item", "Field Length (bytes)"
+	:widths: 10, 5
+	:name: Configuration Data
+
+	"Stream Diameter mils, (u32)",	4
+	Number of Dispenses (u32),	4
+	"Dispense Time, msec (u32)",	4
+	"Dispense Period, msec (u32)",	4
+	N Ref History (u32),	4
+	User / Ref Mode (u32),	4
+	
+Please refer to the firmware specification for the exact usage of these parameters.
+
+Config Set
+==========
+
+The host may overwrite the configuration parameters with this command.  The data provided
+should exactly match Table 7.7.
+
+Calibrate
+=========
+
+This command requests the DMS to perform a calibration operation.  The DMS must be in the READY state.
+There are currently three operations defined, which the host may select via the wValue control parameter; see Table 7.8.
+
+.. csv-table:: Calibration Operations
+	:header: "Operation", "wValue"
+	:widths: 10, 5
+	:name: Calibration Operations
+
+	RESERVED,	0
+	Get Dark Level,	1
+	Set Background,	2
+	Calibrate,	3
+	RESERVED,	4-65535
+	
+See the firmware specification for the full details of these calibration operations.
+
+After the operation is commanded, STATUS should be polled to observed the return of the DMS to the READY state.  
+If the error code is zero, then the calibration operation was successful; otherwise there was a problem that requires
+operator attention.
+
+Get Calibration
+===============
+
+The DMS returns the current calibration in response to this command. This is primarily for debugging purposes.
+The calibration has the format shown in Table 7.9.  
+
+.. csv-table:: Calibration Data
+	:header: "Data Item", "Field Length (bytes)"
+	:widths: 10, 5
+	:name: Calibration Data
+
+	Dark Level (u16),	2
+	Background (384 * u16),	768
+	Pixel Range (2 * u16),	4
+	Bin Edges (2 * u16),	18
+	Cal Image (2 * u16),	768
+	Cal Center (8 * f32),	32
+	Cal Sigma (8 * f32),	32
+	Cal Amp Scale (8 * f32),	32
+	Cal Lateral Scale (8 * f32),	32
+	
+Please refer to the firmware specification for the meaning of these calibration elements.
+
+Store Calibration
+=================
+
+After the calibration is computed, it is held in RAM only.  After this command is executed the
+calibration is written to non-volatile memory.
+
+Monitor Dispense
+================
+
+This command instructs the DMS to begin monitoring the sensor for a dispense operation.
+
+Get Dispense Data
+=================
+
+After monitoring is complete, this command causes the DMS to emit the last results of the operation.  TBD.
+
+Stream
+======
+
+This command controls raw data streaming.  The wValue parameter controls the streaming: 0 halts streaming,
+1 begins streaming, and all other values are reserved.  After receiving this command with a wValue of 1,
+the DMS will begin streaming the raw data from the sensor to the host at the full, 1kHz rate, on Bulk Transfer
+endpoint 1.  The DMS will stream packets of the form described in Table 10 until commanded to stop.  Note the 
+DMS must be in the READY state to use this command.
+
+.. csv-table:: Stream Packet Format
+	:header: "Data Item", "Field Length (bytes)"
+	:widths: 5, 10
+	:name: Stream Packet Format
+
+	Header (u32),	4
+	Packed Samples (u32),	150
+
+The header consists of two parts.  The upper 16 bits holds the value 0x7819, which may be used to scan for the start
+of a packet if synchronization is lost.  The lower 16 bits contain trigger status.  Bit 0 is the pump trigger, while
+bit 1 is the plate trigger.  Bits 2 through 15 are reserved. 
+
+
+

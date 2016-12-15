@@ -4,6 +4,11 @@
 Interface Control Document
 ==========================
 
+Copyright
+=========
+
+Copyright Creare LLC 2016.  This software specification is proprietary and should be considered confidential.  Reproduction or distribution prohibited without written permission from Creare.
+
 Introduction
 ============
 
@@ -52,6 +57,7 @@ a ‘Write’ is defined as the host sending additional data along with the comm
 	MONITOR_DISPENSE,	Begin monitoring,	R,	8,	0,	0,	0
 	GET_DISPENSE_DATA,	Return results from monitoring,	R,	9,	0,	0,	TBD
 	STREAM,	Start / stop streaming of raw data from sensor,	R,	10,	0 or 1,	0,	0
+	
 The commands are described in more detail below. 
 
 Status

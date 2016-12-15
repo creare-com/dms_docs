@@ -42,15 +42,19 @@
             
   <div class="section" id="interface-control-document">
 <span id="icd"></span><h1>2. Interface Control Document<a class="headerlink" href="#interface-control-document" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="copyright">
+<h2>2.1. Copyright<a class="headerlink" href="#copyright" title="Permalink to this headline">¶</a></h2>
+<p>Copyright Creare LLC 2016.  This software specification is proprietary and should be considered confidential.  Reproduction or distribution prohibited without written permission from Creare.</p>
+</div>
 <div class="section" id="introduction">
-<h2>2.1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<h2>2.2. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>This document describes the communication protocols used between the DMS controller (hereafter simply referred to as the DMS),
 and the host computer.  It partially replicates information found in the header file, dmsCodes.h, found in the ‘Shared’ area
 of the source code tree.  Every effort has been made to make these two documents agree, but in the case of disagreement
 dmsCodes.h, and thus the source code, prevail.</p>
 </div>
 <div class="section" id="usb-interface">
-<h2>2.2. USB Interface<a class="headerlink" href="#usb-interface" title="Permalink to this headline">¶</a></h2>
+<h2>2.3. USB Interface<a class="headerlink" href="#usb-interface" title="Permalink to this headline">¶</a></h2>
 <p>Communication between the DMS and the host PC occurs over a USB 2.0, Full speed (12 Mbps) connection.  Creare recommends,
 and our example code utilizes, Microsoft’s WinUSB driver system, but the interface is generic USB and so any low level USB
 access library, such as lib-usb, could be used.</p>
@@ -63,7 +67,7 @@ for example in alignment mode.  The DMS has no support for bulk streaming to the
 <p>Note that in all cases, all data elements are transmitted and received in LSB (little endian) format.</p>
 </div>
 <div class="section" id="endpoint-0-commands">
-<h2>2.3. Endpoint 0 Commands<a class="headerlink" href="#endpoint-0-commands" title="Permalink to this headline">¶</a></h2>
+<h2>2.4. Endpoint 0 Commands<a class="headerlink" href="#endpoint-0-commands" title="Permalink to this headline">¶</a></h2>
 <p>The DMS supports the commands shown in Table 1.  Note that these are ‘Vendor’ Device Requests; refer to Chapter 9 of the
 USB 2.0 specification.  A ‘Read’ is defined here as the DMS sending control data back to the host (Device-to-host);
 a ‘Write’ is defined as the host sending additional data along with the command (Host-to-device).  If the length is
@@ -175,7 +179,7 @@ a ‘Write’ is defined as the host sending additional data along with the comm
 <p>The commands are described in more detail below.</p>
 </div>
 <div class="section" id="status">
-<h2>2.4. Status<a class="headerlink" href="#status" title="Permalink to this headline">¶</a></h2>
+<h2>2.5. Status<a class="headerlink" href="#status" title="Permalink to this headline">¶</a></h2>
 <p>In response to this command, the DMS returns its current state of operation.  This command should be used
 to poll the DMS (~10 Hz) to determine the result of other commands.</p>
 <table border="1" class="docutils" id="manual-control-data">
@@ -315,7 +319,7 @@ to poll the DMS (~10 Hz) to determine the result of other commands.</p>
 </table>
 </div>
 <div class="section" id="id">
-<h2>2.5. ID<a class="headerlink" href="#id" title="Permalink to this headline">¶</a></h2>
+<h2>2.6. ID<a class="headerlink" href="#id" title="Permalink to this headline">¶</a></h2>
 <p>This command causes the DMS to return the build date and time of its firmware, and the unique
 ID associated with the processor.</p>
 <table border="1" class="docutils" id="identification-data">
@@ -340,7 +344,7 @@ ID associated with the processor.</p>
 </table>
 </div>
 <div class="section" id="config-get">
-<h2>2.6. Config Get<a class="headerlink" href="#config-get" title="Permalink to this headline">¶</a></h2>
+<h2>2.7. Config Get<a class="headerlink" href="#config-get" title="Permalink to this headline">¶</a></h2>
 <p>In response to the CONFIG_GET command, the DMS will return the current value of all configuration parameters.  See Table 7.7.</p>
 <table border="1" class="docutils" id="configuration-data">
 <caption><span class="caption-number">Table 2.7 </span><span class="caption-text">Configuration Data</span><a class="headerlink" href="#configuration-data" title="Permalink to this table">¶</a></caption>
@@ -377,12 +381,12 @@ ID associated with the processor.</p>
 <p>Please refer to the firmware specification for the exact usage of these parameters.</p>
 </div>
 <div class="section" id="config-set">
-<h2>2.7. Config Set<a class="headerlink" href="#config-set" title="Permalink to this headline">¶</a></h2>
+<h2>2.8. Config Set<a class="headerlink" href="#config-set" title="Permalink to this headline">¶</a></h2>
 <p>The host may overwrite the configuration parameters with this command.  The data provided
 should exactly match Table 7.7.</p>
 </div>
 <div class="section" id="calibrate">
-<h2>2.8. Calibrate<a class="headerlink" href="#calibrate" title="Permalink to this headline">¶</a></h2>
+<h2>2.9. Calibrate<a class="headerlink" href="#calibrate" title="Permalink to this headline">¶</a></h2>
 <p>This command requests the DMS to perform a calibration operation.  The DMS must be in the READY state.
 There are currently three operations defined, which the host may select via the wValue control parameter; see Table 7.8.</p>
 <table border="1" class="docutils" id="calibration-operations">
@@ -420,7 +424,7 @@ If the error code is zero, then the calibration operation was successful; otherw
 operator attention.</p>
 </div>
 <div class="section" id="get-calibration">
-<h2>2.9. Get Calibration<a class="headerlink" href="#get-calibration" title="Permalink to this headline">¶</a></h2>
+<h2>2.10. Get Calibration<a class="headerlink" href="#get-calibration" title="Permalink to this headline">¶</a></h2>
 <p>The DMS returns the current calibration in response to this command. This is primarily for debugging purposes.
 The calibration has the format shown in Table 7.9.</p>
 <table border="1" class="docutils" id="calibration-data">
@@ -467,20 +471,20 @@ The calibration has the format shown in Table 7.9.</p>
 <p>Please refer to the firmware specification for the meaning of these calibration elements.</p>
 </div>
 <div class="section" id="store-calibration">
-<h2>2.10. Store Calibration<a class="headerlink" href="#store-calibration" title="Permalink to this headline">¶</a></h2>
+<h2>2.11. Store Calibration<a class="headerlink" href="#store-calibration" title="Permalink to this headline">¶</a></h2>
 <p>After the calibration is computed, it is held in RAM only.  After this command is executed the
 calibration is written to non-volatile memory.</p>
 </div>
 <div class="section" id="monitor-dispense">
-<h2>2.11. Monitor Dispense<a class="headerlink" href="#monitor-dispense" title="Permalink to this headline">¶</a></h2>
+<h2>2.12. Monitor Dispense<a class="headerlink" href="#monitor-dispense" title="Permalink to this headline">¶</a></h2>
 <p>This command instructs the DMS to begin monitoring the sensor for a dispense operation.</p>
 </div>
 <div class="section" id="get-dispense-data">
-<h2>2.12. Get Dispense Data<a class="headerlink" href="#get-dispense-data" title="Permalink to this headline">¶</a></h2>
+<h2>2.13. Get Dispense Data<a class="headerlink" href="#get-dispense-data" title="Permalink to this headline">¶</a></h2>
 <p>After monitoring is complete, this command causes the DMS to emit the last results of the operation.  TBD.</p>
 </div>
 <div class="section" id="stream">
-<h2>2.13. Stream<a class="headerlink" href="#stream" title="Permalink to this headline">¶</a></h2>
+<h2>2.14. Stream<a class="headerlink" href="#stream" title="Permalink to this headline">¶</a></h2>
 <p>This command controls raw data streaming.  The wValue parameter controls the streaming: 0 halts streaming,
 1 begins streaming, and all other values are reserved.  After receiving this command with a wValue of 1,
 the DMS will begin streaming the raw data from the sensor to the host at the full, 1kHz rate, on Bulk Transfer
@@ -524,19 +528,20 @@ bit 1 is the plate trigger.  Bits 2 through 15 are reserved.</p>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">2. Interface Control Document</a><ul>
-<li><a class="reference internal" href="#introduction">2.1. Introduction</a></li>
-<li><a class="reference internal" href="#usb-interface">2.2. USB Interface</a></li>
-<li><a class="reference internal" href="#endpoint-0-commands">2.3. Endpoint 0 Commands</a></li>
-<li><a class="reference internal" href="#status">2.4. Status</a></li>
-<li><a class="reference internal" href="#id">2.5. ID</a></li>
-<li><a class="reference internal" href="#config-get">2.6. Config Get</a></li>
-<li><a class="reference internal" href="#config-set">2.7. Config Set</a></li>
-<li><a class="reference internal" href="#calibrate">2.8. Calibrate</a></li>
-<li><a class="reference internal" href="#get-calibration">2.9. Get Calibration</a></li>
-<li><a class="reference internal" href="#store-calibration">2.10. Store Calibration</a></li>
-<li><a class="reference internal" href="#monitor-dispense">2.11. Monitor Dispense</a></li>
-<li><a class="reference internal" href="#get-dispense-data">2.12. Get Dispense Data</a></li>
-<li><a class="reference internal" href="#stream">2.13. Stream</a></li>
+<li><a class="reference internal" href="#copyright">2.1. Copyright</a></li>
+<li><a class="reference internal" href="#introduction">2.2. Introduction</a></li>
+<li><a class="reference internal" href="#usb-interface">2.3. USB Interface</a></li>
+<li><a class="reference internal" href="#endpoint-0-commands">2.4. Endpoint 0 Commands</a></li>
+<li><a class="reference internal" href="#status">2.5. Status</a></li>
+<li><a class="reference internal" href="#id">2.6. ID</a></li>
+<li><a class="reference internal" href="#config-get">2.7. Config Get</a></li>
+<li><a class="reference internal" href="#config-set">2.8. Config Set</a></li>
+<li><a class="reference internal" href="#calibrate">2.9. Calibrate</a></li>
+<li><a class="reference internal" href="#get-calibration">2.10. Get Calibration</a></li>
+<li><a class="reference internal" href="#store-calibration">2.11. Store Calibration</a></li>
+<li><a class="reference internal" href="#monitor-dispense">2.12. Monitor Dispense</a></li>
+<li><a class="reference internal" href="#get-dispense-data">2.13. Get Dispense Data</a></li>
+<li><a class="reference internal" href="#stream">2.14. Stream</a></li>
 </ul>
 </li>
 </ul>

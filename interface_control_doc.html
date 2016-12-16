@@ -272,61 +272,13 @@ to poll the DMS (~10 Hz) to determine the result of other commands.</p>
 </tbody>
 </table>
 <p>The following error codes are currently defined.</p>
-<table border="1" class="colwidths-given docutils" id="error-codes">
-<caption><span class="caption-number">Table 2.5 </span><span class="caption-text">Error Codes</span><a class="headerlink" href="#error-codes" title="Permalink to this table">¶</a></caption>
-<colgroup>
-<col width="20%" />
-<col width="40%" />
-<col width="40%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Code</th>
-<th class="head">Mnemonic</th>
-<th class="head">Suggested Display Setting</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td>0</td>
-<td>DMS_ERR_NONE</td>
-<td>No error.</td>
-</tr>
-<tr class="row-odd"><td>1</td>
-<td>DMS_ERR_SENSOR_NOT_DARK</td>
-<td>Sensor is not dark.</td>
-</tr>
-<tr class="row-even"><td>2</td>
-<td>DMS_ERR_INSUFFICIENT_BG_ILLUM</td>
-<td>Insufficient background illumination.</td>
-</tr>
-<tr class="row-odd"><td>3</td>
-<td>DMS_ERR_INSUFFICIENT_PEAKS</td>
-<td>8 peaks not found in calibration image.</td>
-</tr>
-<tr class="row-even"><td>4</td>
-<td>DMS_ERR_CAL_NOT_CENTERED</td>
-<td>Calibration not centered on sensor.</td>
-</tr>
-<tr class="row-odd"><td>5</td>
-<td>DMS_ERR_ILLEGAL_STATE</td>
-<td>The DMS cannot accept that command at this time.</td>
-</tr>
-<tr class="row-even"><td>6</td>
-<td>DMS_ERR_UNSUPPORTED_OPERATION</td>
-<td>The DMS does not support that operation.</td>
-</tr>
-<tr class="row-odd"><td>7-255</td>
-<td>RESERVED</td>
-<td>&nbsp;</td>
-</tr>
-</tbody>
-</table>
 </div>
 <div class="section" id="id">
 <h2>2.6. ID<a class="headerlink" href="#id" title="Permalink to this headline">¶</a></h2>
 <p>This command causes the DMS to return the build date and time of its firmware, and the unique
 ID associated with the processor.</p>
 <table border="1" class="colwidths-given docutils" id="identification-data">
-<caption><span class="caption-number">Table 2.6 </span><span class="caption-text">Identification Data</span><a class="headerlink" href="#identification-data" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 2.5 </span><span class="caption-text">Identification Data</span><a class="headerlink" href="#identification-data" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="67%" />
 <col width="33%" />
@@ -350,7 +302,7 @@ ID associated with the processor.</p>
 <h2>2.7. Config Get<a class="headerlink" href="#config-get" title="Permalink to this headline">¶</a></h2>
 <p>In response to the CONFIG_GET command, the DMS will return the current value of all configuration parameters.  See Table 7.7.</p>
 <table border="1" class="colwidths-given docutils" id="configuration-data">
-<caption><span class="caption-number">Table 2.7 </span><span class="caption-text">Configuration Data</span><a class="headerlink" href="#configuration-data" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 2.6 </span><span class="caption-text">Configuration Data</span><a class="headerlink" href="#configuration-data" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="67%" />
 <col width="33%" />
@@ -393,7 +345,7 @@ should exactly match Table 7.7.</p>
 <p>This command requests the DMS to perform a calibration operation.  The DMS must be in the READY state.
 There are currently three operations defined, which the host may select via the wValue control parameter; see Table 7.8.</p>
 <table border="1" class="colwidths-given docutils" id="calibration-operations">
-<caption><span class="caption-number">Table 2.8 </span><span class="caption-text">Calibration Operations</span><a class="headerlink" href="#calibration-operations" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 2.7 </span><span class="caption-text">Calibration Operations</span><a class="headerlink" href="#calibration-operations" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="67%" />
 <col width="33%" />
@@ -431,7 +383,7 @@ operator attention.</p>
 <p>The DMS returns the current calibration in response to this command. This is primarily for debugging purposes.
 The calibration has the format shown in Table 7.9.</p>
 <table border="1" class="colwidths-given docutils" id="calibration-data">
-<caption><span class="caption-number">Table 2.9 </span><span class="caption-text">Calibration Data</span><a class="headerlink" href="#calibration-data" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 2.8 </span><span class="caption-text">Calibration Data</span><a class="headerlink" href="#calibration-data" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="67%" />
 <col width="33%" />
@@ -494,7 +446,7 @@ the DMS will begin streaming the raw data from the sensor to the host at the ful
 endpoint 1.  The DMS will stream packets of the form described in Table 10 until commanded to stop.  Note the
 DMS must be in the READY state to use this command.</p>
 <table border="1" class="colwidths-given docutils" id="stream-packet-format">
-<caption><span class="caption-number">Table 2.10 </span><span class="caption-text">Stream Packet Format</span><a class="headerlink" href="#stream-packet-format" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 2.9 </span><span class="caption-text">Stream Packet Format</span><a class="headerlink" href="#stream-packet-format" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="33%" />
 <col width="67%" />

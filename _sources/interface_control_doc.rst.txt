@@ -120,8 +120,7 @@ The following error codes are currently defined.
 	 8,  DMS_ERR_NO_VALID_REFERENCE,     User reference mode was indicated, but no user reference has been set.
 	 9,  DMS_ERR_STREAM_DIAMETER_UNSUPPORTED, No thresholds are defined for this stream diameter.
 	10,  DMS_ERR_NO_RECENT_HISTORY,      No dispense exists in the history to use for the user reference.
-	
-	11-255,  RESERVED    
+	11-255,  RESERVED,                   .    
 	
 ID
 ==

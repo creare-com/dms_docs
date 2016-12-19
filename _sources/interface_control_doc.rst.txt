@@ -109,18 +109,18 @@ The following error codes are currently defined.
 	:widths: 5, 10, 10
 	:name: Error Codes
 
-	 0,  DMS_ERR_NONE,                   No error.
-	 1,  DMS_ERR_SENSOR_NOT_DARK,        Sensor is not dark.
-	 2,  DMS_ERR_INSUFFICIENT_BG_ILLUM,  Insufficient background illumination.
-	 3,  DMS_ERR_INSUFFICIENT_PEAKS,     8 peaks not found in calibration image.
-	 4,  DMS_ERR_CAL_NOT_CENTERED,       Calibration not centered on sensor.
-	 5,  DMS_ERR_ILLEGAL_STATE,          The DMS cannot accept that command at this time.
-	 6,  DMS_ERR_UNSUPPORTED_OPERATION,  The DMS does not support that operation.
-	 7,  DMS_ERR_MEMORY,                 The DMS has insufficient memory to store the desired number of signals.
-	 8,  DMS_ERR_NO_VALID_REFERENCE,     User reference mode was indicated, but no user reference has been set.
-	 9,  DMS_ERR_STREAM_DIAMETER_UNSUPPORTED, No thresholds are defined for this stream diameter.
-	10,  DMS_ERR_NO_RECENT_HISTORY,      No dispense exists in the history to use for the user reference.
-	11-255,  RESERVED,                   .    
+	0,  DMS_ERR_NONE,                   "No error."
+	1,  DMS_ERR_SENSOR_NOT_DARK,        "Sensor is not dark."
+	2,  DMS_ERR_INSUFFICIENT_BG_ILLUM,  "Insufficient background illumination."
+	3,  DMS_ERR_INSUFFICIENT_PEAKS,     "8 peaks not found in calibration image."
+	4,  DMS_ERR_CAL_NOT_CENTERED,       "Calibration not centered on sensor."
+	5,  DMS_ERR_ILLEGAL_STATE,          "The DMS cannot accept that command at this time."
+	6,  DMS_ERR_UNSUPPORTED_OPERATION,  "The DMS does not support that operation."
+	7,  DMS_ERR_MEMORY,                 "The DMS has insufficient memory to store the desired number of signals."
+	8,  DMS_ERR_NO_VALID_REFERENCE,     "User reference mode was indicated, but no user reference has been set."
+	9,  DMS_ERR_STREAM_DIAMETER_UNSUPPORTED, "No thresholds are defined for this stream diameter."
+	10,  DMS_ERR_NO_RECENT_HISTORY,      "No dispense exists in the history to use for the user reference."
+	11-255,  RESERVED,                  ""    
 	
 ID
 ==

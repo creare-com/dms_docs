@@ -13,7 +13,7 @@ Introduction
 ============
 
 This document describes the communication protocols used between the DMS controller (hereafter simply referred to as the DMS), 
-and the host computer.  It partially replicates information found in the header file, dmsCodes.h, found in the ‘Shared’ area 
+and the host computer.  It partially replicates information found in the header file, :ref:`dmsCodes.h`, found in the ‘Shared’ area 
 of the source code tree.  Every effort has been made to make these two documents agree, but in the case of disagreement
 dmsCodes.h, and thus the source code, prevail.
  
@@ -241,7 +241,21 @@ DMS must be in the READY state to use this command.
 
 The header consists of two parts.  The upper 16 bits holds the value 0x7819, which may be used to scan for the start
 of a packet if synchronization is lost.  The lower 16 bits contain trigger status.  Bit 0 is the pump trigger, while
-bit 1 is the plate trigger.  Bits 2 through 15 are reserved. 
+bit 1 is the plate trigger.  Bits 2 through 15 are reserved.
 
+.. _dmsCodes.h:
+
+dmsCodes.h
+==========
+
+The current version of dmsCodes.h is included here for reference. Note the horizontal scroll bar at the bottom, if you need to see the end of the lines. Sorry, this is a pain! 
+
+.. literalinclude::  ../Shared/include/dmsCodes.h
+	:language: c
+	
+.. *** NOTE: the following reduntant directive is used for subset builds.
+	
+.. literalinclude::  ../../Shared/include/dmsCodes.h
+	:language: c
 
 

@@ -52,7 +52,7 @@
 <div class="section" id="introduction">
 <h2>2.2. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>This document describes the communication protocols used between the DMS controller (hereafter simply referred to as the DMS),
-and the host computer.  It partially replicates information found in the header file, dmsCodes.h, found in the ‘Shared’ area
+and the host computer.  It partially replicates information found in the header file, <a class="reference internal" href="#dmscodes-h"><span class="std std-ref">dmsCodes.h</span></a>, found in the ‘Shared’ area
 of the source code tree.  Every effort has been made to make these two documents agree, but in the case of disagreement
 dmsCodes.h, and thus the source code, prevail.</p>
 </div>
@@ -533,6 +533,10 @@ DMS must be in the READY state to use this command.</p>
 of a packet if synchronization is lost.  The lower 16 bits contain trigger status.  Bit 0 is the pump trigger, while
 bit 1 is the plate trigger.  Bits 2 through 15 are reserved.</p>
 </div>
+<div class="section" id="dmscodes-h">
+<span id="id1"></span><h2>2.15. dmsCodes.h<a class="headerlink" href="#dmscodes-h" title="Permalink to this headline">¶</a></h2>
+<p>The current version of dmsCodes.h is included here for reference. Note the horizontal scroll bar at the bottom, if you need to see the end of the lines. Sorry, this is a pain!</p>
+</div>
 </div>
 
 
@@ -561,6 +565,7 @@ bit 1 is the plate trigger.  Bits 2 through 15 are reserved.</p>
 <li><a class="reference internal" href="#monitor-dispense">2.12. Monitor Dispense</a></li>
 <li><a class="reference internal" href="#get-dispense-data">2.13. Get Dispense Data</a></li>
 <li><a class="reference internal" href="#stream">2.14. Stream</a></li>
+<li><a class="reference internal" href="#dmscodes-h">2.15. dmsCodes.h</a></li>
 </ul>
 </li>
 </ul>

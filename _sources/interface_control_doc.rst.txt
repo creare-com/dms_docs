@@ -37,7 +37,7 @@ Note that in all cases, all data elements are transmitted and received in LSB (l
 Endpoint 0 Commands
 ===================
 
-The DMS supports the commands shown in Table 1.  Note that these are ‘Vendor’ Device Requests; refer to Chapter 9 of the
+The DMS supports the commands shown in :numref:`Supported Commands Summary`.  Note that these are ‘Vendor’ Device Requests; refer to Chapter 9 of the
 USB 2.0 specification.  A ‘Read’ is defined here as the DMS sending control data back to the host (Device-to-host); 
 a ‘Write’ is defined as the host sending additional data along with the command (Host-to-device).  If the length is 
 0 the direction is immaterial.
@@ -138,7 +138,7 @@ ID associated with the processor.
 Config Get
 ==========
 
-In response to the CONFIG_GET command, the DMS will return the current value of all configuration parameters.  See Table 7.7.
+In response to the CONFIG_GET command, the DMS will return the current value of all configuration parameters.  See :numref:`Configuration Data`.
 
 .. csv-table:: Configuration Data
 	:header: "Data Item", "Field Length (bytes)"
@@ -158,13 +158,13 @@ Config Set
 ==========
 
 The host may overwrite the configuration parameters with this command.  The data provided
-should exactly match Table 7.7.
+should exactly match :numref:`Configuration Data`.
 
 Calibrate
 =========
 
 This command requests the DMS to perform a calibration operation.  The DMS must be in the READY state.
-There are currently three operations defined, which the host may select via the wValue control parameter; see Table 7.8.
+There are currently three operations defined, which the host may select via the wValue control parameter; see :numref: `Calibration Operations`.
 
 .. csv-table:: Calibration Operations
 	:header: "Operation", "wValue"
@@ -187,7 +187,7 @@ Get Calibration
 ===============
 
 The DMS returns the current calibration in response to this command. This is primarily for debugging purposes.
-The calibration has the format shown in Table 7.9.  
+The calibration has the format shown in :numref:`Calibration Data`.  
 
 .. csv-table:: Calibration Data
 	:header: "Data Item", "Field Length (bytes)"

@@ -127,7 +127,9 @@ Before monitoring dispenses, the DMS must collect or compute the `Calibration Pa
 	
 	"``dark_level``",				"A single 12-bit integer representing the mean sensor signal in the absence of light.  Defaults to 0.
 	"
-	"``cal_background``",		"A vector of 384 integers (12-bit) representing the nominal illumination in the absence of streams or any other obstruction.
+	"``cal_ref_background``",		"A vector of 384 integers (12-bit) representing the nominal illumination in the absence of streams or any other obstruction, at the time of system calibration.
+	"
+	"``cal_background``",		"A vector of 384 integers (12-bit) representing the nominal illumination in the absence of streams or any other obstruction, at the time of the most recent data collection.
 	"
 	"``cal_image``",				"A vector of 384 values (12-bit integer mapped to [-1,1]) representing the image with the calibration fixture in place.
 	"
@@ -152,19 +154,19 @@ The first step for initial sensor calibration is to determine the dark level, th
 The next step in calibration (and the first step in any subsequent data collection routine) is to collect a fresh background image. This should be done with the sensor illuminated by the laser, with no obstructions. This data is used to account for variations in laser power, dirty optical windows, etc.
 
 ``set_background()``
-	#.	Turn on Laser.  Collect ``n_cal_frames`` successive raw 12-bit images from the sensor at ``frame_rate``, take the mean in the time dimension, subtract ``dark_level`` (saturate at 0), and assign this 384 pixel vector to ``candidate_bg``. Turn off the laser.
-	#.	If the median value of ``candidate_bg`` is less than ``abs_min_illum``, throw an warning ``‘Insufficient background illumination.’`` and exit the function. Otherwise, assign ``candidate_bg`` to the ``cal_background`` parameter.
-	#.	Find the median value in ``cal_background`` and multiply this by ``rel_min_illum``.  Find the first and last of the 384 pixels that are illuminated at greater than this value. Assign these two indices to ``cal_pix_range``.
+	#.	Turn on Laser. Wait 2 seconds for the laser to stabilize.  Collect ``n_cal_frames`` successive raw 12-bit images from the sensor at ``frame_rate``, take the mean in the time dimension, subtract ``dark_level`` (saturate at 0), and assign this 384 pixel vector to ``candidate_bg``. Turn off the laser.
+	#.	If the median value of ``candidate_bg`` is less than ``abs_min_illum``, throw an warning ``‘Insufficient background illumination.’`` and exit the function. Otherwise, assign ``candidate_bg`` to both the ``cal_ref_background`` and ``cal_background`` parameters.
+	#.	Find the median value in ``cal_ref_background`` and multiply this by ``rel_min_illum``.  Find the first and last of the 384 pixels that are illuminated at greater than this value. Assign these two indices to ``cal_pix_range``.
 	
-After the background has been collected, all subsequent data collection uses the following transform to correct each image for the known background:
+After this initial background has been collected, all subsequent data collection uses the following transform to correct each image for the known background:
 
 ``image = collect_image()``
-	Collect one 384 pixel frame from the sensor, subtract ``dark_level``, and call the result ``data``. Then, ``image = 1 – (data ./ background)``. Set all ``image`` pixels outside of ``cal_pix_range`` to zero.  The result is a 384 pixel vector with values that, under normal circumstances, lie in the range of [ 0.05, 1.0]. However, an invalid background collection can make it take on negative values, and we want to make sure not to mask this problem by saturation. I think it would suit our purposes to make ``image`` a 12-bit value mapped to [-1, 1].
+	Collect one 384 pixel frame from the sensor, subtract ``dark_level`` with saturation at 0, and call the result ``data``. Then, ``image = 1 – (data ./ cal_background)``. Set all ``image`` pixels outside of ``cal_pix_range`` to zero.  The result is a 384 pixel vector with values that, under normal circumstances, lie in the range of [ 0.05, 1.0]. However, an invalid background collection can make it take on negative values, and we want to make sure not to mask this problem by saturation. I think it would suit our purposes to make ``image`` a 12-bit value mapped to [-1, 1].
 	
 The next step is to perform the actual calibration. This is done with the calibration fixture in place. It has metal pins of known diameter in the nominal stream locations.
 
 ``calibrate()``
-	#.	Turn on the laser. Collect ``n_cal_frames`` successive images from the sensor at ``frame_rate`` (using the ``collect_image()`` transform), take the mean in the time dimension, and assign the result to ``cal_image``. Turn off laser.
+	#.	Turn on the laser. Wait 2 seconds for the laser to stabilize. Collect ``n_cal_frames`` successive images from the sensor at ``frame_rate`` (using the ``collect_image()`` transform), take the mean in the time dimension, and assign the result to ``cal_image``. Turn off laser.
 	#.	Lowpass filter ``cal_image`` with a ``filter_pix`` wide, square, centered moving average (zero padded). For example:
 
 		.. code-block:: matlab
@@ -181,7 +183,7 @@ The next step is to perform the actual calibration. This is done with the calibr
 			for i = 1:8 % step through bins/streams
 			
 				pix = bin_edges(i):bin_edges(i+1)
-				Y2 = cal_image(pix).^2
+				Y2 = cal_image(pix) .* abs(cal_image(pix))
 				sY2 = sum(Y2)
 
 				cal_center(i) = sum( Y2 .* pix ) ./ sY2
@@ -228,7 +230,7 @@ While recording data during a dispense, the three signals are calculated as foll
 		for i = 1:8 % step through bins/streams
 		
 			pix = bin_edges(i):bin_edges(i+1)
-			y2 = image(pix).^2
+			y2 = image(pix) .* abs(image(pix))
 			sy2 = sum(y2)
 
 			signal_amp(i,t) = sqrt(sy2) * cal_amp_scale(i)
@@ -298,8 +300,8 @@ The procedure is defined as follows:
 		
 			BioTek Trigger Diagram.
 		
-	#.	**Collect Background**  After receiving the plate trigger, take the mean of the rolling buffer along the time dimension, subtract ``dark_level``, and store this array in ``tmp_background``.
-	#.	**Validate Background**  Compare ``tmp_background`` to ``cal_background`` be sure that it is acceptable.  This task is low priority and can happen after the dispense is complete.  For each of the two background images, compute the mean value within each of the 8 bins defined by ``cal_bin_edges``. If these values differ by more than ``illum_dev_warn`` (relative) for any bin, throw a warning stating the bin number.  If any of the 8 values for ``tmp_background`` are less than ``abs_min_illum``, throw a warning stating the bin number.  These warnings should be stored in ``info``.
+	#.	**Collect Background**  After receiving the plate trigger, take the mean of the rolling buffer along the time dimension, subtract ``dark_level``, and store this array in both ``cal_background`` and in ``info.background``.
+	#.	**Validate Background**  Compare ``cal_background`` to ``cal_ref_background`` be sure that it is acceptable.  This task is low priority and can happen after the dispense is complete.  For each of the two background images, compute the mean value within each of the 8 bins defined by ``cal_bin_edges``. If these values differ by more than ``illum_dev_warn`` (relative) for any bin, throw a warning stating the bin number.  If any of the 8 values for ``tmp_background`` are less than ``abs_min_illum``, throw a warning stating the bin number.  These warnings should be stored in ``info``.
 	#.	**Record Signals** When the first pump trigger is received (with the plate trigger already active) begin recording signals as described in :ref:`extracting-signals`.  Continue until the plate trigger becomes inactive.  Also record timestamps for the rising and falling edges of the pump trigger.  These will be used to determine the ``during_dispense`` (pump trigger low) and ``between_dispense`` (pump trigger high) signal segments used in :ref:`computing-features`.
 	#.	**Compute Features**  Compute features as described in :ref:`computing-features`.
 	#.	**Detect Faults**  Compute and store faults as described in :ref:`fault-detection`.

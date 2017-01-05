@@ -100,7 +100,7 @@ Global Parameters
 	"
 	"``min_stream_amp``",	0.1,		"Smallest amplitude to consider stream present. (mm)
 	"
-	"``max_stream_sigma``",	0.3,		"Max stream width considered to be real. (mm)
+	"``max_stream_sigma``",	 1,		"Max stream width considered to be real. (mm)
 	"
 	"``rel_min_illum``",		0.25,		"The minimum fraction (of median) considered illuminated in a background image.
 	"
@@ -127,9 +127,7 @@ Before monitoring dispenses, the DMS must collect or compute the `Calibration Pa
 	
 	"``dark_level``",				"A single 12-bit integer representing the mean sensor signal in the absence of light.  Defaults to 0.
 	"
-	"``cal_ref_background``",		"A vector of 384 integers (12-bit) representing the nominal illumination in the absence of streams or any other obstruction, at the time of system calibration.
-	"
-	"``cal_background``",		"A vector of 384 integers (12-bit) representing the nominal illumination in the absence of streams or any other obstruction, at the time of the most recent data collection.
+	"``cal_background``",		"A vector of 384 integers (12-bit) representing the nominal illumination in the absence of streams or any other obstruction, at the time of system calibration.
 	"
 	"``cal_image``",				"A vector of 384 values (12-bit integer mapped to [-1,1]) representing the image with the calibration fixture in place.
 	"
@@ -155,18 +153,18 @@ The next step in calibration (and the first step in any subsequent data collecti
 
 ``set_background()``
 	#.	Turn on Laser. Wait 2 seconds for the laser to stabilize.  Collect ``n_cal_frames`` successive raw 12-bit images from the sensor at ``frame_rate``, take the mean in the time dimension, subtract ``dark_level`` (saturate at 0), and assign this 384 pixel vector to ``candidate_bg``. Turn off the laser.
-	#.	If the median value of ``candidate_bg`` is less than ``abs_min_illum``, throw an warning ``‘Insufficient background illumination.’`` and exit the function. Otherwise, assign ``candidate_bg`` to both the ``cal_ref_background`` and ``cal_background`` parameters.
-	#.	Find the median value in ``cal_ref_background`` and multiply this by ``rel_min_illum``.  Find the first and last of the 384 pixels that are illuminated at greater than this value. Assign these two indices to ``cal_pix_range``.
+	#.	If the median value of ``candidate_bg`` is less than ``abs_min_illum``, throw an warning ``‘Insufficient background illumination.’`` and exit the function. Otherwise, assign ``candidate_bg`` to ``cal_background``.
+	#.	Find the median value in ``cal_background`` and multiply this by ``rel_min_illum``.  Find the first and last of the 384 pixels that are illuminated at greater than this value. Assign these two indices to ``cal_pix_range``.
 	
 After this initial background has been collected, all subsequent data collection uses the following transform to correct each image for the known background:
 
-``image = collect_image()``
-	Collect one 384 pixel frame from the sensor, subtract ``dark_level`` with saturation at 0, and call the result ``data``. Then, ``image = 1 – (data ./ cal_background)``. Set all ``image`` pixels outside of ``cal_pix_range`` to zero.  The result is a 384 pixel vector with values that, under normal circumstances, lie in the range of [ 0.05, 1.0]. However, an invalid background collection can make it take on negative values, and we want to make sure not to mask this problem by saturation. I think it would suit our purposes to make ``image`` a 12-bit value mapped to [-1, 1].
+``image = collect_image(background)``
+	Collect one 384 pixel frame from the sensor, subtract ``dark_level`` with saturation at 0, and call the result ``data``. Then, ``image = 1 – (data ./ background)``. Set all ``image`` pixels outside of ``cal_pix_range`` to zero.  The result is a 384 pixel vector with values that, under normal circumstances, lie in the range of [ 0.05, 1.0]. However, an invalid background collection can make it take on negative values, and we want to make sure not to mask this problem by saturation. I think it would suit our purposes to make ``image`` a 12-bit value mapped to [-1, 1].
 	
 The next step is to perform the actual calibration. This is done with the calibration fixture in place. It has metal pins of known diameter in the nominal stream locations.
 
 ``calibrate()``
-	#.	Turn on the laser. Wait 2 seconds for the laser to stabilize. Collect ``n_cal_frames`` successive images from the sensor at ``frame_rate`` (using the ``collect_image()`` transform), take the mean in the time dimension, and assign the result to ``cal_image``. Turn off laser.
+	#.	Turn on the laser. Wait 2 seconds for the laser to stabilize. Collect ``n_cal_frames`` successive images from the sensor at ``frame_rate`` (using the ``collect_image(cal_background)`` transform), take the mean in the time dimension, and assign the result to ``cal_image``. Turn off laser.
 	#.	Lowpass filter ``cal_image`` with a ``filter_pix`` wide, square, centered moving average (zero padded). For example:
 
 		.. code-block:: matlab
@@ -225,7 +223,7 @@ While recording data during a dispense, the three signals are calculated as foll
 .. code-block:: matlab
 
 	for t = 1:n_frames % step through time
-		image = collect_image() % transform raw sensor frame
+		image = collect_image(tmp_background) % transform raw sensor frame
 
 		for i = 1:8 % step through bins/streams
 		
@@ -233,22 +231,24 @@ While recording data during a dispense, the three signals are calculated as foll
 			y2 = image(pix) .* abs(image(pix))
 			sy2 = sum(y2)
 
-			signal_amp(i,t) = sqrt(sy2) * cal_amp_scale(i)
-
-			center(i,t) = sum( y2 .* pix ) ./ sy2
-			d2 = ( pix – center(i,t) ).^2
-
-			sigma = sqrt( sum( y2.*d2) ./ sy2 )
-			signal_sigma(i,t) = sigma * cal_lateral_scale(i)
-
-			% when no stream present,
-			% flag center and sigma values as invalid
-			low_amp = signal_amp(i,t) < min_stream_amp
-			too_wide = signal_sigma(i,t) > max_stream_sigma
-
-			if low_amp || too_wide
+			ssq = sign(sy2) * sqrt(abs(sy2))
+			signal_amp(i,t) =  ssq * cal_amp_scale(i)
+			
+			if signal_amp(i,t) < min_stream_amp
 				center(i,t) = nan
 				signal_sigma(i,t) = nan
+				
+			else
+				center(i,t) = sum( y2 .* pix ) ./ sy2
+				d2 = ( pix – center(i,t) ).^2
+
+				sigma = sqrt( sum( y2.*d2) ./ sy2 )
+				signal_sigma(i,t) = sigma * cal_lateral_scale(i)
+
+				if signal_sigma(i,t) > max_stream_sigma
+					center(i,t) = nan
+					signal_sigma(i,t) = nan
+				end
 			end
 		end
 	end
@@ -300,9 +300,9 @@ The procedure is defined as follows:
 		
 			BioTek Trigger Diagram.
 		
-	#.	**Collect Background**  After receiving the plate trigger, take the mean of the rolling buffer along the time dimension, subtract ``dark_level``, and store this array in both ``cal_background`` and in ``info.background``.
-	#.	**Validate Background**  Compare ``cal_background`` to ``cal_ref_background`` be sure that it is acceptable.  This task is low priority and can happen after the dispense is complete.  For each of the two background images, compute the mean value within each of the 8 bins defined by ``cal_bin_edges``. If these values differ by more than ``illum_dev_warn`` (relative) for any bin, throw a warning stating the bin number.  If any of the 8 values for ``tmp_background`` are less than ``abs_min_illum``, throw a warning stating the bin number.  These warnings should be stored in ``info``.
-	#.	**Record Signals** When the first pump trigger is received (with the plate trigger already active) begin recording signals as described in :ref:`extracting-signals`.  Continue until the plate trigger becomes inactive.  Also record timestamps for the rising and falling edges of the pump trigger.  These will be used to determine the ``during_dispense`` (pump trigger low) and ``between_dispense`` (pump trigger high) signal segments used in :ref:`computing-features`.
+	#.	**Collect Background**  After receiving the plate trigger, take the mean of the rolling buffer along the time dimension, subtract ``dark_level``, and store this array in both ``tmp_background`` and info.background.
+	#.	**Validate Background**  Compare ``tmp_background`` to ``cal_background`` to be sure that it is acceptable.  This task is low priority and can happen after the dispense is complete.  For each of the two background images, compute the mean value within each of the 8 bins defined by ``cal_bin_edges``. If these values differ by more than ``illum_dev_warn`` (relative) for any bin, throw a warning stating the bin number.  If any of the 8 values for ``tmp_background`` are less than ``abs_min_illum``, throw a warning stating the bin number.  These warnings should be stored in ``info``.
+	#.	**Record Signals** When the first pump trigger is received (with the plate trigger already active) begin recording signals as described in :ref:`extracting-signals`, normalizing with ``tmp_background``.  Continue until the plate trigger becomes inactive.  Also record timestamps for the rising and falling edges of the pump trigger.  These will be used to determine the ``during_dispense`` (pump trigger low) and ``between_dispense`` (pump trigger high) signal segments used in :ref:`computing-features`.
 	#.	**Compute Features**  Compute features as described in :ref:`computing-features`.
 	#.	**Detect Faults**  Compute and store faults as described in :ref:`fault-detection`.
 	#. **Store History**  Store the ``plate_features`` (see :ref:`computing-features`) from the current dispense in ``history`` (see :ref:`fault-detection`).

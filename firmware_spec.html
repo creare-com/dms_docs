@@ -162,7 +162,7 @@
 <td>Smallest amplitude to consider stream present. (mm)</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">max_stream_sigma</span></code></td>
-<td>0.3</td>
+<td>1</td>
 <td>Max stream width considered to be real. (mm)</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">rel_min_illum</span></code></td>
@@ -202,31 +202,28 @@
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">dark_level</span></code></td>
 <td>A single 12-bit integer representing the mean sensor signal in the absence of light.  Defaults to 0.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">cal_ref_background</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">cal_background</span></code></td>
 <td>A vector of 384 integers (12-bit) representing the nominal illumination in the absence of streams or any other obstruction, at the time of system calibration.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">cal_background</span></code></td>
-<td>A vector of 384 integers (12-bit) representing the nominal illumination in the absence of streams or any other obstruction, at the time of the most recent data collection.</td>
-</tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">cal_image</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">cal_image</span></code></td>
 <td>A vector of 384 values (12-bit integer mapped to [-1,1]) representing the image with the calibration fixture in place.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">cal_pix_range</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">cal_pix_range</span></code></td>
 <td>A pair of integers representing the range of pixels (first, last) that are illuminated by the laser.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">cal_bin_edges</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">cal_bin_edges</span></code></td>
 <td>A vector of 9 integers (units: pixels) that partition the 384 pixel sensor into 8 bins centered on the 8 dispense streams. The 8 bins are contiguous, but do not necessarily span the entire sensor.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">cal_center</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">cal_center</span></code></td>
 <td>A vector of 8 values that define the nominal center points of the 8 channels using the calibration fixture. Units: pixels. Minimum precision: 0.01 pixels.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">cal_sigma</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">cal_sigma</span></code></td>
 <td>A vector of 8 values that define the nominal width of the 8 channel shadows using the calibration fixture. Units: pixels. Minimum precision: 0.01 pixels. Maximum value: 48.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">cal_amp_scale</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">cal_amp_scale</span></code></td>
 <td>A vector of 8 values that define the shadow <em>amplitude scale</em> for each channel (mm/pixel). Minimum precision 0.001. Typical value: 0.25.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">cal_lateral_scale</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">cal_lateral_scale</span></code></td>
 <td>A vector of 8 values that define the shadow <em>lateral scale</em> for each channel (mm/pixel). These scale factors account for the physical pixel pitch as well as the varying optical magnification across the sensor.</td>
 </tr>
 </tbody>
@@ -241,21 +238,21 @@
 <dt><code class="docutils literal"><span class="pre">set_background()</span></code></dt>
 <dd><ol class="first last arabic simple">
 <li>Turn on Laser. Wait 2 seconds for the laser to stabilize.  Collect <code class="docutils literal"><span class="pre">n_cal_frames</span></code> successive raw 12-bit images from the sensor at <code class="docutils literal"><span class="pre">frame_rate</span></code>, take the mean in the time dimension, subtract <code class="docutils literal"><span class="pre">dark_level</span></code> (saturate at 0), and assign this 384 pixel vector to <code class="docutils literal"><span class="pre">candidate_bg</span></code>. Turn off the laser.</li>
-<li>If the median value of <code class="docutils literal"><span class="pre">candidate_bg</span></code> is less than <code class="docutils literal"><span class="pre">abs_min_illum</span></code>, throw an warning <code class="docutils literal"><span class="pre">‘Insufficient</span> <span class="pre">background</span> <span class="pre">illumination.’</span></code> and exit the function. Otherwise, assign <code class="docutils literal"><span class="pre">candidate_bg</span></code> to both the <code class="docutils literal"><span class="pre">cal_ref_background</span></code> and <code class="docutils literal"><span class="pre">cal_background</span></code> parameters.</li>
-<li>Find the median value in <code class="docutils literal"><span class="pre">cal_ref_background</span></code> and multiply this by <code class="docutils literal"><span class="pre">rel_min_illum</span></code>.  Find the first and last of the 384 pixels that are illuminated at greater than this value. Assign these two indices to <code class="docutils literal"><span class="pre">cal_pix_range</span></code>.</li>
+<li>If the median value of <code class="docutils literal"><span class="pre">candidate_bg</span></code> is less than <code class="docutils literal"><span class="pre">abs_min_illum</span></code>, throw an warning <code class="docutils literal"><span class="pre">‘Insufficient</span> <span class="pre">background</span> <span class="pre">illumination.’</span></code> and exit the function. Otherwise, assign <code class="docutils literal"><span class="pre">candidate_bg</span></code> to <code class="docutils literal"><span class="pre">cal_background</span></code>.</li>
+<li>Find the median value in <code class="docutils literal"><span class="pre">cal_background</span></code> and multiply this by <code class="docutils literal"><span class="pre">rel_min_illum</span></code>.  Find the first and last of the 384 pixels that are illuminated at greater than this value. Assign these two indices to <code class="docutils literal"><span class="pre">cal_pix_range</span></code>.</li>
 </ol>
 </dd>
 </dl>
 <p>After this initial background has been collected, all subsequent data collection uses the following transform to correct each image for the known background:</p>
 <dl class="docutils">
-<dt><code class="docutils literal"><span class="pre">image</span> <span class="pre">=</span> <span class="pre">collect_image()</span></code></dt>
-<dd>Collect one 384 pixel frame from the sensor, subtract <code class="docutils literal"><span class="pre">dark_level</span></code> with saturation at 0, and call the result <code class="docutils literal"><span class="pre">data</span></code>. Then, <code class="docutils literal"><span class="pre">image</span> <span class="pre">=</span> <span class="pre">1</span> <span class="pre">–</span> <span class="pre">(data</span> <span class="pre">./</span> <span class="pre">cal_background)</span></code>. Set all <code class="docutils literal"><span class="pre">image</span></code> pixels outside of <code class="docutils literal"><span class="pre">cal_pix_range</span></code> to zero.  The result is a 384 pixel vector with values that, under normal circumstances, lie in the range of [ 0.05, 1.0]. However, an invalid background collection can make it take on negative values, and we want to make sure not to mask this problem by saturation. I think it would suit our purposes to make <code class="docutils literal"><span class="pre">image</span></code> a 12-bit value mapped to [-1, 1].</dd>
+<dt><code class="docutils literal"><span class="pre">image</span> <span class="pre">=</span> <span class="pre">collect_image(background)</span></code></dt>
+<dd>Collect one 384 pixel frame from the sensor, subtract <code class="docutils literal"><span class="pre">dark_level</span></code> with saturation at 0, and call the result <code class="docutils literal"><span class="pre">data</span></code>. Then, <code class="docutils literal"><span class="pre">image</span> <span class="pre">=</span> <span class="pre">1</span> <span class="pre">–</span> <span class="pre">(data</span> <span class="pre">./</span> <span class="pre">background)</span></code>. Set all <code class="docutils literal"><span class="pre">image</span></code> pixels outside of <code class="docutils literal"><span class="pre">cal_pix_range</span></code> to zero.  The result is a 384 pixel vector with values that, under normal circumstances, lie in the range of [ 0.05, 1.0]. However, an invalid background collection can make it take on negative values, and we want to make sure not to mask this problem by saturation. I think it would suit our purposes to make <code class="docutils literal"><span class="pre">image</span></code> a 12-bit value mapped to [-1, 1].</dd>
 </dl>
 <p>The next step is to perform the actual calibration. This is done with the calibration fixture in place. It has metal pins of known diameter in the nominal stream locations.</p>
 <dl class="docutils">
 <dt><code class="docutils literal"><span class="pre">calibrate()</span></code></dt>
 <dd><ol class="first last arabic">
-<li><p class="first">Turn on the laser. Wait 2 seconds for the laser to stabilize. Collect <code class="docutils literal"><span class="pre">n_cal_frames</span></code> successive images from the sensor at <code class="docutils literal"><span class="pre">frame_rate</span></code> (using the <code class="docutils literal"><span class="pre">collect_image()</span></code> transform), take the mean in the time dimension, and assign the result to <code class="docutils literal"><span class="pre">cal_image</span></code>. Turn off laser.</p>
+<li><p class="first">Turn on the laser. Wait 2 seconds for the laser to stabilize. Collect <code class="docutils literal"><span class="pre">n_cal_frames</span></code> successive images from the sensor at <code class="docutils literal"><span class="pre">frame_rate</span></code> (using the <code class="docutils literal"><span class="pre">collect_image(cal_background)</span></code> transform), take the mean in the time dimension, and assign the result to <code class="docutils literal"><span class="pre">cal_image</span></code>. Turn off laser.</p>
 </li>
 <li><p class="first">Lowpass filter <code class="docutils literal"><span class="pre">cal_image</span></code> with a <code class="docutils literal"><span class="pre">filter_pix</span></code> wide, square, centered moving average (zero padded). For example:</p>
 <div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">filtered_image</span> <span class="p">=</span> <span class="n">conv</span><span class="p">(</span> <span class="n">cal_image</span><span class="p">,</span> <span class="c">...</span>
@@ -320,7 +317,7 @@
 </table>
 <p>While recording data during a dispense, the three signals are calculated as follows:</p>
 <div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">t</span> <span class="p">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">n_frames</span> <span class="c">% step through time</span>
-        <span class="n">image</span> <span class="p">=</span> <span class="n">collect_image</span><span class="p">()</span> <span class="c">% transform raw sensor frame</span>
+        <span class="n">image</span> <span class="p">=</span> <span class="n">collect_image</span><span class="p">(</span><span class="n">tmp_background</span><span class="p">)</span> <span class="c">% transform raw sensor frame</span>
 
         <span class="k">for</span> <span class="nb">i</span> <span class="p">=</span> <span class="mi">1</span><span class="p">:</span><span class="mi">8</span> <span class="c">% step through bins/streams</span>
 
@@ -328,22 +325,24 @@
                 <span class="n">y2</span> <span class="p">=</span> <span class="n">image</span><span class="p">(</span><span class="n">pix</span><span class="p">)</span> <span class="o">.*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">image</span><span class="p">(</span><span class="n">pix</span><span class="p">))</span>
                 <span class="n">sy2</span> <span class="p">=</span> <span class="n">sum</span><span class="p">(</span><span class="n">y2</span><span class="p">)</span>
 
-                <span class="n">signal_amp</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="p">=</span> <span class="nb">sqrt</span><span class="p">(</span><span class="n">sy2</span><span class="p">)</span> <span class="o">*</span> <span class="n">cal_amp_scale</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span>
+                <span class="n">ssq</span> <span class="p">=</span> <span class="nb">sign</span><span class="p">(</span><span class="n">sy2</span><span class="p">)</span> <span class="o">*</span> <span class="nb">sqrt</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">sy2</span><span class="p">))</span>
+                <span class="n">signal_amp</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="p">=</span>  <span class="n">ssq</span> <span class="o">*</span> <span class="n">cal_amp_scale</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span>
 
-                <span class="n">center</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="p">=</span> <span class="n">sum</span><span class="p">(</span> <span class="n">y2</span> <span class="o">.*</span> <span class="n">pix</span> <span class="p">)</span> <span class="o">./</span> <span class="n">sy2</span>
-                <span class="n">d2</span> <span class="p">=</span> <span class="p">(</span> <span class="n">pix</span> – <span class="n">center</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="p">)</span><span class="o">.^</span><span class="mi">2</span>
-
-                <span class="n">sigma</span> <span class="p">=</span> <span class="nb">sqrt</span><span class="p">(</span> <span class="n">sum</span><span class="p">(</span> <span class="n">y2</span><span class="o">.*</span><span class="n">d2</span><span class="p">)</span> <span class="o">./</span> <span class="n">sy2</span> <span class="p">)</span>
-                <span class="n">signal_sigma</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="p">=</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">cal_lateral_scale</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span>
-
-                <span class="c">% when no stream present,</span>
-                <span class="c">% flag center and sigma values as invalid</span>
-                <span class="n">low_amp</span> <span class="p">=</span> <span class="n">signal_amp</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">min_stream_amp</span>
-                <span class="n">too_wide</span> <span class="p">=</span> <span class="n">signal_sigma</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_stream_sigma</span>
-
-                <span class="k">if</span> <span class="n">low_amp</span> <span class="o">||</span> <span class="n">too_wide</span>
+                <span class="k">if</span> <span class="n">signal_amp</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">min_stream_amp</span>
                         <span class="n">center</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="p">=</span> <span class="nb">nan</span>
                         <span class="n">signal_sigma</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="p">=</span> <span class="nb">nan</span>
+
+                <span class="k">else</span>
+                        <span class="n">center</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="p">=</span> <span class="n">sum</span><span class="p">(</span> <span class="n">y2</span> <span class="o">.*</span> <span class="n">pix</span> <span class="p">)</span> <span class="o">./</span> <span class="n">sy2</span>
+                        <span class="n">d2</span> <span class="p">=</span> <span class="p">(</span> <span class="n">pix</span> – <span class="n">center</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="p">)</span><span class="o">.^</span><span class="mi">2</span>
+
+                        <span class="n">sigma</span> <span class="p">=</span> <span class="nb">sqrt</span><span class="p">(</span> <span class="n">sum</span><span class="p">(</span> <span class="n">y2</span><span class="o">.*</span><span class="n">d2</span><span class="p">)</span> <span class="o">./</span> <span class="n">sy2</span> <span class="p">)</span>
+                        <span class="n">signal_sigma</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="p">=</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">cal_lateral_scale</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span>
+
+                        <span class="k">if</span> <span class="n">signal_sigma</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_stream_sigma</span>
+                                <span class="n">center</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="p">=</span> <span class="nb">nan</span>
+                                <span class="n">signal_sigma</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="p">=</span> <span class="nb">nan</span>
+                        <span class="k">end</span>
                 <span class="k">end</span>
         <span class="k">end</span>
 <span class="k">end</span>
@@ -401,11 +400,11 @@
 <p class="caption"><span class="caption-number">Fig. 1.1 </span><span class="caption-text">BioTek Trigger Diagram.</span></p>
 </div>
 </li>
-<li><p class="first"><strong>Collect Background</strong>  After receiving the plate trigger, take the mean of the rolling buffer along the time dimension, subtract <code class="docutils literal"><span class="pre">dark_level</span></code>, and store this array in both <code class="docutils literal"><span class="pre">cal_background</span></code> and in <code class="docutils literal"><span class="pre">info.background</span></code>.</p>
+<li><p class="first"><strong>Collect Background</strong>  After receiving the plate trigger, take the mean of the rolling buffer along the time dimension, subtract <code class="docutils literal"><span class="pre">dark_level</span></code>, and store this array in both <code class="docutils literal"><span class="pre">tmp_background</span></code> and info.background.</p>
 </li>
-<li><p class="first"><strong>Validate Background</strong>  Compare <code class="docutils literal"><span class="pre">cal_background</span></code> to <code class="docutils literal"><span class="pre">cal_ref_background</span></code> be sure that it is acceptable.  This task is low priority and can happen after the dispense is complete.  For each of the two background images, compute the mean value within each of the 8 bins defined by <code class="docutils literal"><span class="pre">cal_bin_edges</span></code>. If these values differ by more than <code class="docutils literal"><span class="pre">illum_dev_warn</span></code> (relative) for any bin, throw a warning stating the bin number.  If any of the 8 values for <code class="docutils literal"><span class="pre">tmp_background</span></code> are less than <code class="docutils literal"><span class="pre">abs_min_illum</span></code>, throw a warning stating the bin number.  These warnings should be stored in <code class="docutils literal"><span class="pre">info</span></code>.</p>
+<li><p class="first"><strong>Validate Background</strong>  Compare <code class="docutils literal"><span class="pre">tmp_background</span></code> to <code class="docutils literal"><span class="pre">cal_background</span></code> to be sure that it is acceptable.  This task is low priority and can happen after the dispense is complete.  For each of the two background images, compute the mean value within each of the 8 bins defined by <code class="docutils literal"><span class="pre">cal_bin_edges</span></code>. If these values differ by more than <code class="docutils literal"><span class="pre">illum_dev_warn</span></code> (relative) for any bin, throw a warning stating the bin number.  If any of the 8 values for <code class="docutils literal"><span class="pre">tmp_background</span></code> are less than <code class="docutils literal"><span class="pre">abs_min_illum</span></code>, throw a warning stating the bin number.  These warnings should be stored in <code class="docutils literal"><span class="pre">info</span></code>.</p>
 </li>
-<li><p class="first"><strong>Record Signals</strong> When the first pump trigger is received (with the plate trigger already active) begin recording signals as described in <a class="reference internal" href="#extracting-signals"><span class="std std-ref">Extracting Signals</span></a>.  Continue until the plate trigger becomes inactive.  Also record timestamps for the rising and falling edges of the pump trigger.  These will be used to determine the <code class="docutils literal"><span class="pre">during_dispense</span></code> (pump trigger low) and <code class="docutils literal"><span class="pre">between_dispense</span></code> (pump trigger high) signal segments used in <a class="reference internal" href="#computing-features"><span class="std std-ref">Computing Features</span></a>.</p>
+<li><p class="first"><strong>Record Signals</strong> When the first pump trigger is received (with the plate trigger already active) begin recording signals as described in <a class="reference internal" href="#extracting-signals"><span class="std std-ref">Extracting Signals</span></a>, normalizing with <code class="docutils literal"><span class="pre">tmp_background</span></code>.  Continue until the plate trigger becomes inactive.  Also record timestamps for the rising and falling edges of the pump trigger.  These will be used to determine the <code class="docutils literal"><span class="pre">during_dispense</span></code> (pump trigger low) and <code class="docutils literal"><span class="pre">between_dispense</span></code> (pump trigger high) signal segments used in <a class="reference internal" href="#computing-features"><span class="std std-ref">Computing Features</span></a>.</p>
 </li>
 <li><p class="first"><strong>Compute Features</strong>  Compute features as described in <a class="reference internal" href="#computing-features"><span class="std std-ref">Computing Features</span></a>.</p>
 </li>

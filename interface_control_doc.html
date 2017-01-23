@@ -574,7 +574,7 @@ bit 1 is the plate trigger.  Bits 2 through 15 are reserved.</p>
 
 <span class="c1">// The maximum number of signals to process.  This is limited by the </span>
 <span class="c1">//   physical size of the memory.</span>
-<span class="cp">#define DMS_MAX_SIGNALS                                              348866</span>
+<span class="cp">#define DMS_MAX_SIGNALS                                              348863</span>
 
 <span class="c1">// The maximum number of history dispenses that can be stored.</span>
 <span class="cp">#define DMS_MAX_HISTORY                                                  10</span>
@@ -749,6 +749,7 @@ bit 1 is the plate trigger.  Bits 2 through 15 are reserved.</p>
 	<span class="n">DMS_INFO</span> <span class="n">info</span><span class="p">;</span>
 	<span class="n">DMS_ALL_FEATURES</span> <span class="n">features</span><span class="p">;</span>
 	<span class="n">DMS_FAULTS</span> <span class="n">faults</span><span class="p">;</span>
+	<span class="n">DMS_BIN_FEATURES</span> <span class="n">reference</span><span class="p">;</span>
 <span class="p">}</span> <span class="n">DMS_DISPENSE_DATA</span><span class="p">;</span>
 
 <span class="k">typedef</span> <span class="k">struct</span> <span class="n">tag_dms_stream_out</span> <span class="p">{</span>

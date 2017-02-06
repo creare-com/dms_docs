@@ -935,7 +935,7 @@ This allows us to catch individual well dispenses or channels that look differen
 <span id="id10"></span><h2>1.12. Set Reference Dispense<a class="headerlink" href="#set-reference-dispense" title="Permalink to this headline">¶</a></h2>
 <dl class="docutils">
 <dt><code class="docutils literal"><span class="pre">set_reference_dispense()</span></code></dt>
-<dd>Assign the <code class="docutils literal"><span class="pre">plate_features</span></code> data structure from the most recent dispense in <code class="docutils literal"><span class="pre">history</span></code> to <code class="docutils literal"><span class="pre">ref_features</span></code>.  If <code class="docutils literal"><span class="pre">ref_mode</span></code> is <code class="docutils literal"><span class="pre">'user'</span></code>, this will be used as the reference for subsequent <a class="reference internal" href="#id9">Fault Detection</a> as described above.</dd>
+<dd>Assign the <code class="docutils literal"><span class="pre">plate_features</span></code> data structure from the most recent dispense in <code class="docutils literal"><span class="pre">history</span></code> to <code class="docutils literal"><span class="pre">ref_features</span></code>. (If <code class="docutils literal"><span class="pre">history</span></code> is empty, throw and appropriate error code and exit.)  If <code class="docutils literal"><span class="pre">ref_mode</span></code> is <code class="docutils literal"><span class="pre">'user'</span></code>, this will be used as the reference for subsequent <a class="reference internal" href="#id9">Fault Detection</a> as described above.</dd>
 </dl>
 </div>
 <div class="section" id="return-fault-data">
@@ -943,10 +943,9 @@ This allows us to catch individual well dispenses or channels that look differen
 <p>The DMS needs a few functions for returning data to the host:</p>
 <dl class="docutils">
 <dt><code class="docutils literal"><span class="pre">return_well_faults()</span></code></dt>
-<dd><p class="first">Send the <code class="docutils literal"><span class="pre">well_faults</span></code> array from the most recent dispence to the host.</p>
-<p class="last"><code class="docutils literal"><span class="pre">return_ch_faults()</span></code>
-Send the <code class="docutils literal"><span class="pre">ch_faults</span></code> array from the most recent dispence to the host.</p>
-</dd>
+<dd>Send the <code class="docutils literal"><span class="pre">well_faults</span></code> array from the most recent dispence to the host.</dd>
+<dt><code class="docutils literal"><span class="pre">return_ch_faults()</span></code></dt>
+<dd>Send the <code class="docutils literal"><span class="pre">ch_faults</span></code> array from the most recent dispence to the host.</dd>
 <dt><code class="docutils literal"><span class="pre">return_dispense_data()</span></code></dt>
 <dd>Send all <a class="reference internal" href="#dispense-data"><span class="std std-ref">Dispense Data</span></a> from the most recent dispense to the host.</dd>
 </dl>

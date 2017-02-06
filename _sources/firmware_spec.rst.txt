@@ -560,7 +560,7 @@ Set Reference Dispense
 ======================
 
 ``set_reference_dispense()``
-	Assign the ``plate_features`` data structure from the most recent dispense in ``history`` to ``ref_features``.  If ``ref_mode`` is ``'user'``, this will be used as the reference for subsequent `Fault Detection`_ as described above.
+	Assign the ``plate_features`` data structure from the most recent dispense in ``history`` to ``ref_features``. (If ``history`` is empty, throw and appropriate error code and exit.)  If ``ref_mode`` is ``'user'``, this will be used as the reference for subsequent `Fault Detection`_ as described above.
 
 
 
@@ -574,7 +574,7 @@ The DMS needs a few functions for returning data to the host:
 ``return_well_faults()``
 	Send the ``well_faults`` array from the most recent dispence to the host.
 	
-	``return_ch_faults()``
+``return_ch_faults()``
 	Send the ``ch_faults`` array from the most recent dispence to the host.
 	
 ``return_dispense_data()``

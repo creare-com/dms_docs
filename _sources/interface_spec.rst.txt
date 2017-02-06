@@ -27,7 +27,7 @@ For product roll-out, the DMS will be controlled by a PC (Windows 7 or later) ov
 Configuration GUI
 =================
 
-A GUI is required to invoke firmware commands and display the results. This GUI will be activated from within the BioTek host’s user interface.  It will be used only by technicians trained to align, calibrate, and debug the device. It will not be available to end-users.
+A GUI is required to invoke the firmware commands enumerated in the :ref:`icd` and display the results. This GUI will be activated from within the BioTek host’s user interface.  It will be used only by technicians trained to align, calibrate, and debug the device. It will not be available to end-users.
 
 Parameters stored in the GUI are tabulated in :numref:`GUI Parameters`:
 
@@ -45,43 +45,43 @@ Parameters stored in the GUI are tabulated in :numref:`GUI Parameters`:
 
 The GUI should have buttons to:
 
-	#.	**Connect to DMS.** List all DMS systems physically connected to the host and allow the user to select one to connect to. Assign the result to ``dms_id``. Display the ID of the connected DMS at all times. (See :ref:`id`.)
+	1.	**Connect to DMS.** List all DMS systems physically connected to the host and allow the user to select one to activate. Assign the result to ``dms_id``. Display the ID of the active DMS at all times, and send commands only to this unit. (See ``ID`` in :ref:`Supported Commands Summary`.)
 	
-	#.	**Edit dispense parameters.** Display an editable list of the :numref:`Configuration Parameters`  :ref:`Configuration Parameters` in a pop-up window. Provide confirmation and cancel buttons.
+	2.	**Edit dispense parameters.** Display an editable list of the :numref:`Configuration Data`  :ref:`Configuration Data` in a pop-up window. Provide confirmation and cancel buttons. (See ``CONFIG-GET`` and ``CONFIG-SET`` in :ref:`Supported Commands Summary`.)
 	
-	#. **Edit file strings.** Allow user to edit ``file_string`` and ``save_path``. It would be nice if there was a ‘browse’ button for the ``file_path``.
+	3. **Edit file strings.** Allow user to edit ``file_string`` and ``save_path``. It would be nice if there was a ‘browse’ button for the ``file_path``. (See :numref:`GUI Parameters` above.)
 	
-	#.	**View static parameters.** Display the :numref:`Static Parameters` :ref:`Static Parameters` in a text format in a pop-up window. Also display the firmware version in this output.
+	4.	**View background.**  Invoke ``GET-CALIBRATION`` (:ref:`Supported Commands Summary`) and display ``Background`` as a bar plot. For display, the data should be normalized at the ADC full scale and the y-limit fixed at 1. If ``cal_bin_edges`` is defined, indicate these values on the bar plot by overlaying bold vertical lines at the appropriate pixel locations. (See :ref:`get-calibration`.)
 	
-	#.	**View background.**  Display ``cal_background`` as a bar plot. For display, the data should be normalized at the ADC full scale and the y-limit fixed at 1. If ``cal_bin_edges`` is defined, indicate these values on the bar plot by overlaying bold vertical lines at the appropriate pixel locations. (See :ref:`calibration`.)
+	5.	**View calibration parameters.** Invoke ``GET-CALIBRATION`` (:ref:`Supported Commands Summary`) and display the :numref:`Calibration Data` :ref:`Calibration Data` (except ``cal_background`` and ``cal_image``) in a text format in a pop-up window. Also display ``cal_image`` as a bar plot. For display, the data should be normalized at the ADC full scale and the y-limit fixed at 1. If ``cal_bin_edges`` is defined, indicate these values on the bar plot by overlaying bold vertical lines at the appropriate pixel locations. (See :ref:`get-calibration`.)
 	
-	#.	**View calibration parameters.** Display the :numref:`Calibration Parameters` :ref:`Calibration Parameters` (except ``cal_background`` and ``cal_image``) in a text format in a pop-up window. Also display ``cal_image`` as a bar plot. For display, the data should be normalized at the ADC full scale and the y-limit fixed at 1. If ``cal_bin_edges`` is defined, indicate these values on the bar plot by overlaying bold vertical lines at the appropriate pixel locations.
+	6.	**Initiate alignment mode.** Show a live bar-graph of the raw detector signal using the ``STREAM`` function (:ref:`Supported Commands Summary`). Overlay a line plot of ``cal_background`` on top of this dynamic bar plot (see :ref:`get-calibration`.) For display, the data should be normalized at the ADC full scale and the y-limit fixed at 1. Provide a button or keystroke to exit this mode.
 	
-	#.	**Initiate alignment mode.** Show a live bar-graph of the raw detector signal using the ``align()`` function. Overlay a line plot of ``cal_background`` on top of this dynamic bar plot. For display, the data should be normalized at the ADC full scale and the y-limit fixed at 1. Provide a button or keystroke to exit this mode. (See :ref:`calibration`.)
+	7.	**Update dark level.** Prompt the user to cover the sensor. After the user confirms, invoke ``Get_Dark_Level`` (:ref:`Calibration Operations`). Report both the original and the resulting ``Dark_Level`` (:ref:`Calibration Data`) in an informational pop-up window.
 	
-	#.	**Update dark level.** Prompt the user to cover the sensor. After the user confirms, run ``get_dark_level()``. Report both the original and the resulting ``dark_level`` in an informational pop-up window. (See :ref:`Calibration`.)
+	8.	**Collect new background.** Prompt the user to confirm that they want to overwrite the current background. Prompt the user to confirm that the laser is aligned, no dispense cartridge is in place, and the optical path is clear.  Then run the ``Set_Background`` function (:ref:`Calibration Operations`). Display the resulting background using the function defined in item 4 above.
 	
-	#.	**Collect new background.** Prompt the user to confirm that they want to overwrite the current background. Prompt the user to confirm that the laser is aligned, no dispense cartridge is in place, and the optical path is clear.  Then run the ``set_background()`` function. Display the resulting background using the function defined in item 6 above. (See :ref:`Calibration`.)
+	9.	**Calibrate.** Prompt the user to install the calibration cassette. Then run the ``Calibrate`` function (:ref:`Calibration Operations`.)  Display the resulting calibration using the function defined in item 5 above.
 	
-	#.	**Calibrate.** Prompt the user to install the calibration cassette. Then run the ``calibrate()`` function.  Display the resulting calibration using the function defined above. (See :ref:`Calibration`.)
+	10. **Record raw data.** Prompt user for a record ``duration`` in seconds (default 10). When user clicks go, run ``STREAM`` (:ref:`Supported Commands Summary`) for ``duration`` seconds. Write the returned data to an ASCII file as a ``duration X 386`` array (384 integer pixel values at 12 bit  + 2 binary trigger input values).  The file name should be ``[save_path]\[file_string]_DMS_raw_0000.dat``. Increment the integer until either ``save_path`` or ``file_string`` changes.  When complete, show the saved file name with full path in an informational popup.
 	
-	#. **Record data.** Prompt user for a record ``duration`` in seconds (default 10). When user clicks go, run the ``stream_data(duration)`` function. Write this data to an ASCII file as a ``duration X 386`` array (384 integer pixel values at 12 bit  + 2 binary trigger input values).  The file name should be ``[save_path]\[file_string]_DMS_raw_0000.dat``. Increment the integer until either ``save_path`` or ``file_string`` changes.  When complete, show the saved file name with full path in an informational popup. (See :ref:`recording-raw-data`.)
+	11. **Monitor dispense.** Poll ``STATUS`` to confirm ``State`` is ``READY``. If it is not, issue an error in a popup window and report ``State``. Otherwise, invoke ``MONITOR_DISPENSE``.  Wait until dispense is complete. Poll ``STATUS`` until ``State`` is READY (timeout after 15 s). If ``Last_Reported_Error`` is not zero, report the error in a popup window. Invoke ``GET_DISPENSE_DATA``. Save the resulting :numref:`Dispense Data` :ref:`Dispense Data` to ``[save_path]\[file_string]_DMS_data_0000.dat`` on the host in some sensible format **(TBD)** that we can get into Matlab. Increment the integer index in the filename until either ``save_path`` or ``file_string`` changes. (See :ref:`Supported Commands Summary`.)
 	
-	#. **Monitor dispense.** Run ``monitor_dispense()``.  Save the resulting :numref:`Dispense Data` :ref:`Dispense Data` to ``[save_path]\[file_string]_DMS_data_0000.dat`` on the host in some sensible format that we can get into Matlab. Increment the integer index in the filename until either ``save_path`` or ``file_string`` changes. (See :ref:`monitor-dispense`.)
+	12. **Set reference dispense.** Invoke ``SET_REFERENCE_DISPENSE`` (:ref:`Supported Commands Summary`). Poll ``STATUS``. If ``Last_Reported_Error`` is ``DMS_ERR_NO_RECENT_HISTORY``, show a popup error message and exit.  Otherwise, if ``Ref_Mode`` (:ref:`Calibration Data`) is not ``'user'``, prompt to set this value, with confirm and cancel buttons. Upon user confirmation, apply this value using ``CONFIG-GET`` and ``CONFIG-SET`` (:ref:`Supported Commands Summary`). (See :ref:`fault-detection`.)
 	
-	#. **Set reference dispense.** If there is at least one entry in ``history``, run ``set_reference_dispense()`` . Otherwise, show a warning ``'No reference dispense in memory.'`` and exit.  If ``ref-mode`` is not ``'user'``, prompt to set this value, with confirm and cancel buttons. (See :ref:`fault-detection`.)
-	
-	#. **Set reference mode.** Provide a listbox for the user to select one of the valid values of ``ref_mode`` as defined in :numref:`Configuration Parameters` :ref:`Configuration Parameters`.
+	13. **Set reference mode.** Provide a listbox for the user to select one of the valid values of ``Ref_Mode`` (:ref:`Calibration Data`) as defined in :numref:`Configuration Parameters` :ref:`Configuration Parameters`. Upon user confirmation, apply this value using ``CONFIG-GET`` and ``CONFIG-SET`` (:ref:`Supported Commands Summary`).
 
 .. _biotek-interface:	
 	
 BioTek Application Interface
 =============================
 
-In addition to being able to launch the GUI described above, the BioTek user interface should also be able to talk directly to the DMS to do the following:
+In addition to being able to launch the GUI described above, the BioTek LHC should also be able to talk automatically to the DMS to do the following during normal operation:
 
-	#. Connect to a specific dispenser given a known ``idstr``.
-	#.	Set the :ref:`Configuration Parameters`.
-	#.	Run ``monitor_dispense()``.
-	#.	Run ``set_reference_dispense()``.
-	#.	Retrieve fault data. (Implementation details TBD)
+	#. When initiating a dispense, activate the specific DMS associated with the active dispenser given its known ``ID``.
+	#.	Automatically set the :ref:`Configuration Data` with correct values for the current dispense using ``CONFIG-GET`` and ``CONFIG-SET``.
+	#.	Run ``MONITOR_DISPENSE`` at least 500 ms prior to each dispense.
+	#.	Retrieve fault data (``GET_WELL_FAULTS`` or ``GET_CH_FAULTS``) after each dispense and make this data available and actionable. (Implementation details TBD)
+	#.	Give the user the ability to run ``SET_REFERENCE_DISPENSE`` at any time.
+	#. Give the user the option to set the ``Ref_Mode`` (:ref:`Calibration Data`) or run ``CLEAR_HISTORY`` (:ref:`Supported Commands Summary`) at any time.
+	#. Automatically run ``CLEAR_HISTORY`` any time the :ref:`Configuration Data` changes (i.e. new cassette or dispense parameters.)

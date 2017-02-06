@@ -154,13 +154,13 @@ In response to the CONFIG_GET command, the DMS will return the current value of 
 	:name: Configuration Data
 
 	"Stream Diameter mils, (u32)",	4
-	Number of Dispenses (u32),	4
+	"Number of Dispenses (u32)",	4
 	"Dispense Time, msec (u32)",	4
 	"Dispense Period, msec (u32)",	4
-	N Ref History (u32),	4
-	User / Ref Mode (u32),	4
+	"N Ref History (u32)",	4
+	"Ref Mode (u32)",	4
 	
-Please refer to the firmware specification for the exact usage of these parameters.
+Please refer to the :ref:`Configuration Parameters` in the :ref:`firmware-spec` for the exact usage of these parameters.
 
 .. _config-set:
 
@@ -169,6 +169,8 @@ Config Set
 
 The host may overwrite the configuration parameters with this command.  The data provided
 should exactly match :numref:`Configuration Data`.
+
+.. _calibrate:
 
 Calibrate
 =========
@@ -187,11 +189,13 @@ There are currently three operations defined, which the host may select via the 
 	Calibrate,	3
 	RESERVED,	4-65535
 	
-See the firmware specification for the full details of these calibration operations.
+See :ref:`calibration` in the :ref:`firmware-spec` for the full details of these operations.
 
-After the operation is commanded, STATUS should be polled to observed the return of the DMS to the READY state.  
+After the operation is commanded, :ref:`status` should be polled to observed the return of the DMS to the READY state.  
 If the error code is zero, then the calibration operation was successful; otherwise there was a problem that requires
 operator attention.
+
+.. _get-calibration:
 
 Get Calibration
 ===============
@@ -214,7 +218,9 @@ The calibration has the format shown in :numref:`Calibration Data`.
 	Cal Amp Scale (8 * f32),	32
 	Cal Lateral Scale (8 * f32),	32
 	
-Please refer to the firmware specification for the meaning of these calibration elements.
+Please refer to the :ref:`calibration` section of the :ref:`firmware-spec` for the meaning of these calibration elements.
+
+.. _store-calibration:
 
 Store Calibration
 =================
@@ -222,15 +228,21 @@ Store Calibration
 After the calibration is computed, it is held in RAM only.  After this command is executed the
 calibration is written to non-volatile memory.
 
+.. _monitor-dispense:
+
 Monitor Dispense
 ================
 
 This command instructs the DMS to begin monitoring the sensor for a dispense operation.
 
+.. _get-dispense-data:
+
 Get Dispense Data
 =================
 
 After monitoring is complete, this command causes the DMS to emit the last results of the operation.  TBD.
+
+.. _stream:
 
 Stream
 ======

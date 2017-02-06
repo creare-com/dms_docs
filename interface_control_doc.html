@@ -57,7 +57,7 @@ of the source code tree.  Every effort has been made to make these two documents
 dmsCodes.h, and thus the source code, prevail.</p>
 </div>
 <div class="section" id="usb-interface">
-<h2>2.3. USB Interface<a class="headerlink" href="#usb-interface" title="Permalink to this headline">¶</a></h2>
+<span id="id1"></span><h2>2.3. USB Interface<a class="headerlink" href="#usb-interface" title="Permalink to this headline">¶</a></h2>
 <p>Communication between the DMS and the host PC occurs over a USB 2.0, Full speed (12 Mbps) connection.  Creare recommends,
 and our example code utilizes, Microsoft’s WinUSB driver system, but the interface is generic USB and so any low level USB
 access library, such as lib-usb, could be used.</p>
@@ -182,7 +182,7 @@ a ‘Write’ is defined as the host sending additional data along with the comm
 <p>The commands are described in more detail below.</p>
 </div>
 <div class="section" id="status">
-<h2>2.5. Status<a class="headerlink" href="#status" title="Permalink to this headline">¶</a></h2>
+<span id="id2"></span><h2>2.5. Status<a class="headerlink" href="#status" title="Permalink to this headline">¶</a></h2>
 <p>In response to this command, the DMS returns its current state of operation.  This command should be used
 to poll the DMS (~10 Hz) to determine the result of other commands.</p>
 <table border="1" class="colwidths-given docutils" id="manual-control-data">
@@ -338,7 +338,7 @@ to poll the DMS (~10 Hz) to determine the result of other commands.</p>
 </table>
 </div>
 <div class="section" id="id">
-<h2>2.6. ID<a class="headerlink" href="#id" title="Permalink to this headline">¶</a></h2>
+<span id="id3"></span><h2>2.6. ID<a class="headerlink" href="#id" title="Permalink to this headline">¶</a></h2>
 <p>This command causes the DMS to return the build date and time of its firmware, and the unique
 ID associated with the processor.</p>
 <table border="1" class="colwidths-given docutils" id="identification-data">
@@ -363,7 +363,7 @@ ID associated with the processor.</p>
 </table>
 </div>
 <div class="section" id="config-get">
-<h2>2.7. Config Get<a class="headerlink" href="#config-get" title="Permalink to this headline">¶</a></h2>
+<span id="id4"></span><h2>2.7. Config Get<a class="headerlink" href="#config-get" title="Permalink to this headline">¶</a></h2>
 <p>In response to the CONFIG_GET command, the DMS will return the current value of all configuration parameters.  See <a class="reference internal" href="#configuration-data"><span class="std std-numref">Table 2.7</span></a>.</p>
 <table border="1" class="colwidths-given docutils" id="configuration-data">
 <caption><span class="caption-number">Table 2.7 </span><span class="caption-text">Configuration Data</span><a class="headerlink" href="#configuration-data" title="Permalink to this table">¶</a></caption>
@@ -400,7 +400,7 @@ ID associated with the processor.</p>
 <p>Please refer to the firmware specification for the exact usage of these parameters.</p>
 </div>
 <div class="section" id="config-set">
-<h2>2.8. Config Set<a class="headerlink" href="#config-set" title="Permalink to this headline">¶</a></h2>
+<span id="id5"></span><h2>2.8. Config Set<a class="headerlink" href="#config-set" title="Permalink to this headline">¶</a></h2>
 <p>The host may overwrite the configuration parameters with this command.  The data provided
 should exactly match <a class="reference internal" href="#configuration-data"><span class="std std-numref">Table 2.7</span></a>.</p>
 </div>
@@ -534,7 +534,7 @@ of a packet if synchronization is lost.  The lower 16 bits contain trigger statu
 bit 1 is the plate trigger.  Bits 2 through 15 are reserved.</p>
 </div>
 <div class="section" id="dmscodes-h">
-<span id="id1"></span><h2>2.15. dmsCodes.h<a class="headerlink" href="#dmscodes-h" title="Permalink to this headline">¶</a></h2>
+<span id="id6"></span><h2>2.15. dmsCodes.h<a class="headerlink" href="#dmscodes-h" title="Permalink to this headline">¶</a></h2>
 <p>The current version of dmsCodes.h is included here for reference. Note the horizontal scroll bar at the bottom, if you need to see the end of the lines. Sorry, this is a pain!</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/*</span>
 <span class="cm">	dmsCodes.h</span>

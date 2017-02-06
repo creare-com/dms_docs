@@ -17,6 +17,8 @@ and the host computer.  It partially replicates information found in the header 
 of the source code tree.  Every effort has been made to make these two documents agree, but in the case of disagreement
 dmsCodes.h, and thus the source code, prevail.
  
+.. _usb-interface:
+ 
 USB Interface
 =============
 Communication between the DMS and the host PC occurs over a USB 2.0, Full speed (12 Mbps) connection.  Creare recommends, 
@@ -59,6 +61,8 @@ a ‘Write’ is defined as the host sending additional data along with the comm
 	STREAM,	Start / stop streaming of raw data from sensor,	R,	10,	0 or 1,	0,	0
 	
 The commands are described in more detail below. 
+
+.. _status:
 
 Status
 ======
@@ -122,6 +126,8 @@ The following error codes are currently defined.
 	10,  DMS_ERR_NO_RECENT_HISTORY,      "No dispense exists in the history to use for the user reference."
 	11-255,  RESERVED,                  ""    
 	
+.. _id:
+	
 ID
 ==
 This command causes the DMS to return the build date and time of its firmware, and the unique
@@ -135,6 +141,8 @@ ID associated with the processor.
 	Build Date / Time String(Mmm dd yyyy hh:mm:ss),	24
 	Unique ID (u32 x 4),	4
 
+.. _config-get:
+	
 Config Get
 ==========
 
@@ -153,6 +161,8 @@ In response to the CONFIG_GET command, the DMS will return the current value of 
 	User / Ref Mode (u32),	4
 	
 Please refer to the firmware specification for the exact usage of these parameters.
+
+.. _config-set:
 
 Config Set
 ==========

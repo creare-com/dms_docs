@@ -12,7 +12,7 @@ Copyright Creare LLC 2016.  This software specification is proprietary and shoul
 Overview
 ========
 
-This document describes the software interface that interacts with the DMS firmware. There are two primary components of this interface:
+This document describes the software interface that interacts with the DMS firmware.  The host software invokes the commands enumerated in the :ref:`icd` (which call the DMS to execute the functions defined in the :ref:`firmware-spec`) and then handles any results returned. There are two primary components of this interface:
 
 #. A :ref:`GUI <configuration-gui>` which allows comprehensive interaction with the DMS for purposes of alignment, calibration, and debugging. This GUI will only be accessed by trained technicians, not by the end-user.
 #. A simple, low level :ref:`interface<biotek-interface>` which the BioTek host application uses to send simple commands and recieve fault detection data from the DMS during normal operation.
@@ -20,14 +20,14 @@ This document describes the software interface that interacts with the DMS firmw
 Host
 ====
 
-For product roll-out, the DMS will be controlled by a PC (Windows 7 or later) over a USB interface. In the future, different devices may interact with the DMS and act as its host, such as the dispenser itself, which runs Windows CE. Consequently, the USB interface and commands should be kept simple and generic.
+For product roll-out, the DMS will be controlled by a PC (Windows 7 or later) over a :ref:`usb-interface`. In the future, different devices may interact with the DMS and act as its host, such as the dispenser itself, which runs Windows CE.  The expectation is that the same USB interface will be used in all cases.
 
 .. _configuration-gui:
 
 Configuration GUI
 =================
 
-A GUI is required to execute the various functions defined in the :ref:`firmware-spec` and display the results. This GUI will be used for testing here at Creare, but will also become deployable code.  Ultimately, this GUI will be activated from within the host’s user interface.  It will be used only by technicians trained to align, calibrate, and debug the device. It will not be available to end-users.
+A GUI is required to invoke firmware commands and display the results. This GUI will be activated from within the BioTek host’s user interface.  It will be used only by technicians trained to align, calibrate, and debug the device. It will not be available to end-users.
 
 Parameters stored in the GUI are tabulated in :numref:`GUI Parameters`:
 
@@ -36,7 +36,7 @@ Parameters stored in the GUI are tabulated in :numref:`GUI Parameters`:
 	:widths: 10, 30
 	:name: GUI Parameters
 	
-	"``dms_id``", 		"The ID of the currently connected DMS.
+	"``dms_id``", 		"The ID of the currently connected DMS (See :ref:`id`).
 	"
 	"``file_string``", 		"A string that is inserted into all saved filenames for identification purposes. Default is an empty string.
 	"
@@ -45,7 +45,7 @@ Parameters stored in the GUI are tabulated in :numref:`GUI Parameters`:
 
 The GUI should have buttons to:
 
-	#.	**Connect to DMS.** List all DMS systems connected to the host and allow the user to select one to connect to. Assign the result to ``dms_id``. Display the ID of the connected DMS at all times. (See :ref:`identification`.)
+	#.	**Connect to DMS.** List all DMS systems physically connected to the host and allow the user to select one to connect to. Assign the result to ``dms_id``. Display the ID of the connected DMS at all times. (See :ref:`id`.)
 	
 	#.	**Edit dispense parameters.** Display an editable list of the :numref:`Configuration Parameters`  :ref:`Configuration Parameters` in a pop-up window. Provide confirmation and cancel buttons.
 	

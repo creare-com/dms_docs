@@ -468,7 +468,7 @@ The data that results from fault detection on a single plate is defined in :numr
 	:widths: 10, 30
 	:name: Fault Detection Data
 
-	"``well_faults``",		"An ``8 x n_dispenses`` array of 32-bit packets. The first three bits code for :ref:`Fault Category<Fault Categories>`, and the remaining bits are binary flags corresponding to each of the individual :ref:`Well Fault Tests` defined below in sequential order. Initialize to all zeros.
+	"``well_faults``",		"An ``8 x n_dispenses`` array of 32-bit packets. Each pair of 2 bits code for the :ref:`Fault Category<Fault Categories>` corresponding to each of the individual :ref:`Well Fault Tests` defined below in sequential order, beginning with the least significant bits. Initialize to all zeros.
 	"
 	"``ch_faults``", "An abbreviated fault output. A single 16-bit packet, 2 bits per channel, coding for the maximum :ref:`Fault Category<Fault Categories>` recorded on each of the 8 channels."
 
@@ -549,7 +549,7 @@ Now it's time to actually detect the faults.
 
 	If ``ref_mode`` is ``'history'`` and ``history`` is empty, or if ``ref_mode`` is ``'user'`` and ``ref_features`` has not been assigned, generate message ``'No valid reference for fault detection.'`` (to be stored in ``info``) and exit fault detection.
 	
-	Execute the :ref:`Well Fault Tests` listed in :numref:`Well Fault Tests` for each well of the current plate, using the :ref:`Fault Detection Thresholds` corresponding to the current value of ``stream_diameter``. If a test evaluates as true, assign the appropriate :ref:`Fault Category<Fault Categories>` to the first three bits of the appropriate entry in ``well_faults``, and set the appropriate flag bit to true. If a well receives more than one :ref:`Fault Category<Fault Categories>`, retain only the highest value.
+	Execute the :ref:`Well Fault Tests` listed in :numref:`Well Fault Tests` for each well of the current plate, using the :ref:`Fault Detection Thresholds` corresponding to the current value of ``stream_diameter``. If a test evaluates as true, assign the appropriate :ref:`Fault Category<Fault Categories>` to the appropriate entry in ``well_faults``. If a well receives more than one :ref:`Fault Category<Fault Categories>`, retain only the highest value.
 
 	After all well tests are complete, assign the maximum fault category in each channel to the appropriate entry in ``ch_faults``.
 	

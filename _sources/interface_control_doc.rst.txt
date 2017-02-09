@@ -228,7 +228,7 @@ Store Calibration
 After the calibration is computed, it is held in RAM only.  After this command is executed the
 calibration is written to non-volatile memory.
 
-.. _monitor-dispense:
+.. _monitor-dispense-icd:
 
 Monitor Dispense
 ================

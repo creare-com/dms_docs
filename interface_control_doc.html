@@ -495,15 +495,15 @@ The calibration has the format shown in <a class="reference internal" href="#cal
 calibration is written to non-volatile memory.</p>
 </div>
 <div class="section" id="monitor-dispense">
-<span id="id9"></span><h2>2.12. Monitor Dispense<a class="headerlink" href="#monitor-dispense" title="Permalink to this headline">¶</a></h2>
+<span id="monitor-dispense-icd"></span><h2>2.12. Monitor Dispense<a class="headerlink" href="#monitor-dispense" title="Permalink to this headline">¶</a></h2>
 <p>This command instructs the DMS to begin monitoring the sensor for a dispense operation.</p>
 </div>
 <div class="section" id="get-dispense-data">
-<span id="id10"></span><h2>2.13. Get Dispense Data<a class="headerlink" href="#get-dispense-data" title="Permalink to this headline">¶</a></h2>
+<span id="id9"></span><h2>2.13. Get Dispense Data<a class="headerlink" href="#get-dispense-data" title="Permalink to this headline">¶</a></h2>
 <p>After monitoring is complete, this command causes the DMS to emit the last results of the operation.  TBD.</p>
 </div>
 <div class="section" id="stream">
-<span id="id11"></span><h2>2.14. Stream<a class="headerlink" href="#stream" title="Permalink to this headline">¶</a></h2>
+<span id="id10"></span><h2>2.14. Stream<a class="headerlink" href="#stream" title="Permalink to this headline">¶</a></h2>
 <p>This command controls raw data streaming.  The wValue parameter controls the streaming: 0 halts streaming,
 1 begins streaming, and all other values are reserved.  After receiving this command with a wValue of 1,
 the DMS will begin streaming the raw data from the sensor to the host at the full, 1kHz rate, on Bulk Transfer
@@ -534,7 +534,7 @@ of a packet if synchronization is lost.  The lower 16 bits contain trigger statu
 bit 1 is the plate trigger.  Bits 2 through 15 are reserved.</p>
 </div>
 <div class="section" id="dmscodes-h">
-<span id="id12"></span><h2>2.15. dmsCodes.h<a class="headerlink" href="#dmscodes-h" title="Permalink to this headline">¶</a></h2>
+<span id="id11"></span><h2>2.15. dmsCodes.h<a class="headerlink" href="#dmscodes-h" title="Permalink to this headline">¶</a></h2>
 <p>The current version of dmsCodes.h is included here for reference. Note the horizontal scroll bar at the bottom, if you need to see the end of the lines. Sorry, this is a pain!</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/*</span>
 <span class="cm">	dmsCodes.h</span>

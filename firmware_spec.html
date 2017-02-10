@@ -161,7 +161,7 @@
 <td>0.1</td>
 <td>Smallest amplitude to consider stream present. (mm)</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">max_stream_sigma</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">max_stream_width</span></code></td>
 <td>1</td>
 <td>Max stream width considered to be real. (mm)</td>
 </tr>
@@ -224,7 +224,10 @@
 <td>A vector of 8 values that define the shadow <em>amplitude scale</em> for each channel (mm/pixel). Minimum precision 0.001. Typical value: 0.25.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">cal_lateral_scale</span></code></td>
-<td>A vector of 8 values that define the shadow <em>lateral scale</em> for each channel (mm/pixel). These scale factors account for the physical pixel pitch as well as the varying optical magnification across the sensor.</td>
+<td>A vector of 8 values that define the shadow <em>lateral scale</em> for each channel (mm/pixel). These scale factors are applied to lateral stream displacements, and account for the physical pixel pitch as well as the varying optical magnification across the sensor.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">cal_sigma_scale</span></code></td>
+<td>A vector of 8 values that define the shadow <em>sigma scale</em> for each channel (mm/pixel). These scale factors relate the shadow width to stream diameter, and account for the physical pixel pitch as well as the varying optical magnification across the sensor.</td>
 </tr>
 </tbody>
 </table>
@@ -277,6 +280,7 @@
         <span class="n">cal_sigma</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span> <span class="p">=</span> <span class="nb">sqrt</span><span class="p">(</span> <span class="n">sum</span><span class="p">(</span> <span class="n">Y2</span> <span class="o">.*</span> <span class="n">d2</span> <span class="p">)</span> <span class="o">./</span> <span class="n">sY2</span> <span class="p">)</span>
         <span class="n">cal_rss</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span> <span class="p">=</span> <span class="nb">sqrt</span><span class="p">(</span> <span class="n">sY2</span> <span class="p">)</span>
         <span class="n">cal_amp_scale</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span> <span class="p">=</span> <span class="n">cal_pin_diameter</span> <span class="o">/</span> <span class="n">cal_rss</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span>
+        <span class="n">cal_sigma_scale</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span> <span class="p">=</span> <span class="n">cal_pin_diameter</span> <span class="o">/</span> <span class="n">cal_sigma</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span>
 <span class="k">end</span>
 
 <span class="n">sigmaMag</span> <span class="p">=</span> <span class="n">cal_sigma</span> <span class="o">./</span> <span class="n">cal_sigma</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -310,8 +314,8 @@
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">signal_disp</span></code></td>
 <td>The lateral displacement of each stream from its <em>nominal</em> position. Each channel is calibrated by multiplication with the appropriate entry in <code class="docutils literal"><span class="pre">cal_lateral_scale</span></code>, and final units are mm. Maximum expected value is 1.5 mm. Minimum precision is 0.001 mm.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">signal_sigma</span></code></td>
-<td>The standard deviation of the pseudo-gaussian shadow distribution for each channel. Each channel is calibrated by multiplication with the appropriate entry in <code class="docutils literal"><span class="pre">cal_lateral_scale</span></code>, and final units are mm. Maximum expected value is 1.5 mm. Minimum precision is 0.001 mm.</td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">signal_width</span></code></td>
+<td>The width of the stream for each channel. This is signal_sigmal calibrated by multiplication with the appropriate entry in <code class="docutils literal"><span class="pre">cal_sigma_scale</span></code>, and final units are mm. Maximum expected value is 3 mm. Minimum precision is 0.001 mm.</td>
 </tr>
 </tbody>
 </table>
@@ -337,7 +341,7 @@
                         <span class="n">d2</span> <span class="p">=</span> <span class="p">(</span> <span class="n">pix</span> – <span class="n">center</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="p">)</span><span class="o">.^</span><span class="mi">2</span>
 
                         <span class="n">sigma</span> <span class="p">=</span> <span class="nb">sqrt</span><span class="p">(</span> <span class="n">sum</span><span class="p">(</span> <span class="n">y2</span><span class="o">.*</span><span class="n">d2</span><span class="p">)</span> <span class="o">./</span> <span class="n">sy2</span> <span class="p">)</span>
-                        <span class="n">signal_sigma</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="p">=</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">cal_lateral_scale</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span>
+                        <span class="n">signal_width</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="p">=</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">cal_sigma_scale</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span>
 
                         <span class="k">if</span> <span class="n">signal_sigma</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_stream_sigma</span>
                                 <span class="n">center</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="p">=</span> <span class="nb">nan</span>
@@ -418,7 +422,7 @@
 </div>
 <div class="section" id="computing-features">
 <span id="id8"></span><h2>1.10. Computing Features<a class="headerlink" href="#computing-features" title="Permalink to this headline">¶</a></h2>
-<p>Each well on a microplate is characterized by nine features that are used to determine if the well dispense was faulty. Each feature is a single number and is calculated using one of the three time signals (<code class="docutils literal"><span class="pre">signal_amp</span></code>, <code class="docutils literal"><span class="pre">signal_disp</span></code>, <code class="docutils literal"><span class="pre">signal_sigma</span></code>). With the exception of the <code class="docutils literal"><span class="pre">amp_corr</span></code> feature (see <a class="reference internal" href="#comp-amp-corr"><span class="std std-ref">Computing amp_corr feature</span></a>), only the row of the time signal corresponding to the channel that the well is in is used when calculating the feature. Additionally, only certain frames of the time signal are used. In some cases, the frames or time interval used is during the time period that the well is being dispensed (<code class="docutils literal"><span class="pre">during_dispense</span></code>), in other cases it is the time after the dispense of the well, but before the next well dispense (<code class="docutils literal"><span class="pre">between_dispense</span></code>). Finally, it could also be the combination of <code class="docutils literal"><span class="pre">during_dispense</span></code> and <code class="docutils literal"><span class="pre">between_dispense</span></code>.</p>
+<p>Each well on a microplate is characterized by nine features that are used to determine if the well dispense was faulty. Each feature is a single number and is calculated using one of the three time signals (<code class="docutils literal"><span class="pre">signal_amp</span></code>, <code class="docutils literal"><span class="pre">signal_disp</span></code>, <code class="docutils literal"><span class="pre">signal_width</span></code>). With the exception of the <code class="docutils literal"><span class="pre">amp_corr</span></code> feature (see <a class="reference internal" href="#comp-amp-corr"><span class="std std-ref">Computing amp_corr feature</span></a>), only the row of the time signal corresponding to the channel that the well is in is used when calculating the feature. Additionally, only certain frames of the time signal are used. In some cases, the frames or time interval used is during the time period that the well is being dispensed (<code class="docutils literal"><span class="pre">during_dispense</span></code>), in other cases it is the time after the dispense of the well, but before the next well dispense (<code class="docutils literal"><span class="pre">between_dispense</span></code>). Finally, it could also be the combination of <code class="docutils literal"><span class="pre">during_dispense</span></code> and <code class="docutils literal"><span class="pre">between_dispense</span></code>.</p>
 <div class="section" id="determining-during-dispense-and-between-dispense-time-intervals">
 <h3>1.10.1. Determining <code class="docutils literal"><span class="pre">during_dispense</span></code> and <code class="docutils literal"><span class="pre">between_dispense</span></code> time intervals<a class="headerlink" href="#determining-during-dispense-and-between-dispense-time-intervals" title="Permalink to this headline">¶</a></h3>
 <p>The time intervals, <code class="docutils literal"><span class="pre">during_dispense</span></code> and <code class="docutils literal"><span class="pre">between_dispense</span></code>, can be determined using the plate trigger and the pump trigger. All intervals are while the plate trigger is low. Changes in the value of the pump trigger mark the boundries between the <code class="docutils literal"><span class="pre">during_dispense</span></code> and <code class="docutils literal"><span class="pre">between_dispense</span></code> time intervals. As such these intervals are strictly not overlapping. The pump trigger is high for the <code class="docutils literal"><span class="pre">during_dispense</span></code> time interval and low for <code class="docutils literal"><span class="pre">between_dispense</span></code>. For a given well dispense, the  <code class="docutils literal"><span class="pre">during_dispense</span></code> interval precedes the <code class="docutils literal"><span class="pre">between_dispense</span></code> interval corresponding to the same well dispense.</p>
@@ -508,7 +512,7 @@
 <h3>1.10.2. Computing standard features<a class="headerlink" href="#computing-standard-features" title="Permalink to this headline">¶</a></h3>
 <p>In general, computing the value of a feature for a well involves the following steps:</p>
 <ol class="arabic simple">
-<li>Select the signal corresponding to the feature (<code class="docutils literal"><span class="pre">signal_amp</span></code>, <code class="docutils literal"><span class="pre">signal_disp</span></code>, <code class="docutils literal"><span class="pre">signal_sigma</span></code>).</li>
+<li>Select the signal corresponding to the feature (<code class="docutils literal"><span class="pre">signal_amp</span></code>, <code class="docutils literal"><span class="pre">signal_disp</span></code>, <code class="docutils literal"><span class="pre">signal_width</span></code>).</li>
 <li>Select the row of the time signal corresponding to the well’s channel.</li>
 <li>Select the frames (columns) of the time signal corresponding to the appropriate time interval (<code class="docutils literal"><span class="pre">during_dispense</span></code>, <code class="docutils literal"><span class="pre">between_dispense</span></code>).</li>
 <li>Compute the mean or standard deviation of the selected portion of the time signal.</li>
@@ -549,20 +553,20 @@
 <td>No</td>
 <td>standard deviation</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">sigma_mean</span></code></td>
-<td><code class="docutils literal"><span class="pre">signal_sigma</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">width_mean</span></code></td>
+<td><code class="docutils literal"><span class="pre">signal_width</span></code></td>
 <td>both</td>
 <td>No</td>
 <td>mean</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">sigma_sdev</span></code></td>
-<td><code class="docutils literal"><span class="pre">signal_sigma</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">width_sdev</span></code></td>
+<td><code class="docutils literal"><span class="pre">signal_width</span></code></td>
 <td>both</td>
 <td>No</td>
 <td>standard deviation</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">sigma_mean_n</span></code></td>
-<td><code class="docutils literal"><span class="pre">signal_sigma</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">width_mean_n</span></code></td>
+<td><code class="docutils literal"><span class="pre">signal_width</span></code></td>
 <td>both</td>
 <td>Yes</td>
 <td>mean, normalize, log</td>
@@ -760,20 +764,20 @@ This allows us to catch individual well dispenses or channels that look differen
 <td><code class="docutils literal"><span class="pre">[0.6,</span> <span class="pre">0.4,</span> <span class="pre">0.25]</span></code></td>
 <td><code class="docutils literal"><span class="pre">[?,</span> <span class="pre">?,</span> <span class="pre">?]</span></code></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">sigma_mean_n_lu</span></code></td>
-<td><code class="docutils literal"><span class="pre">[0.2,</span> <span class="pre">0.3]</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">width_mean_n_lu</span></code></td>
+<td><code class="docutils literal"><span class="pre">[0.4,</span> <span class="pre">0.6]</span></code></td>
 <td><code class="docutils literal"><span class="pre">[?,</span> <span class="pre">?]</span></code></td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">sigma_mean_u</span></code></td>
-<td><code class="docutils literal"><span class="pre">[0.25,</span> <span class="pre">0.3]</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">width_mean_u</span></code></td>
+<td><code class="docutils literal"><span class="pre">[0.5,</span> <span class="pre">0.6]</span></code></td>
 <td><code class="docutils literal"><span class="pre">[?,</span> <span class="pre">?]</span></code></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">sigma_mean_l</span></code></td>
-<td><code class="docutils literal"><span class="pre">[0.07,</span> <span class="pre">0.05]</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">width_mean_l</span></code></td>
+<td><code class="docutils literal"><span class="pre">[0.14,</span> <span class="pre">0.1]</span></code></td>
 <td><code class="docutils literal"><span class="pre">[?,</span> <span class="pre">?]</span></code></td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">sigma_sdev_u</span></code></td>
-<td><code class="docutils literal"><span class="pre">[0.06,</span> <span class="pre">0.08]</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">width_sdev_u</span></code></td>
+<td><code class="docutils literal"><span class="pre">[0.12,</span> <span class="pre">0.16]</span></code></td>
 <td><code class="docutils literal"><span class="pre">[?,</span> <span class="pre">?]</span></code></td>
 </tr>
 </tbody>
@@ -828,7 +832,7 @@ This allows us to catch individual well dispenses or channels that look differen
 <td><code class="docutils literal"><span class="pre">3</span></code></td>
 </tr>
 <tr class="row-odd"><td>8</td>
-<td><code class="docutils literal"><span class="pre">amp_mean_btw</span> <span class="pre">&gt;</span> <span class="pre">amp_mean_btw_u</span></code></td>
+<td><code class="docutils literal"><span class="pre">amp_mean_btw_n</span> <span class="pre">&gt;</span> <span class="pre">amp_mean_btw_n_u</span></code></td>
 <td><code class="docutils literal"><span class="pre">[1,</span> <span class="pre">3]</span></code></td>
 </tr>
 <tr class="row-even"><td>9</td>
@@ -844,19 +848,19 @@ This allows us to catch individual well dispenses or channels that look differen
 <td><code class="docutils literal"><span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3]</span></code></td>
 </tr>
 <tr class="row-odd"><td>12</td>
-<td><code class="docutils literal"><span class="pre">abs(sigma_mean_n)</span> <span class="pre">&gt;</span> <span class="pre">sigma_mean_n_lu</span></code></td>
+<td><code class="docutils literal"><span class="pre">abs(width_mean_n)</span> <span class="pre">&gt;</span> <span class="pre">width_mean_n_lu</span></code></td>
 <td><code class="docutils literal"><span class="pre">[1,</span> <span class="pre">2]</span></code></td>
 </tr>
 <tr class="row-even"><td>13</td>
-<td><code class="docutils literal"><span class="pre">sigma_mean</span> <span class="pre">&gt;</span> <span class="pre">sigma_mean_u</span></code></td>
+<td><code class="docutils literal"><span class="pre">width_mean</span> <span class="pre">&gt;</span> <span class="pre">width_mean_u</span></code></td>
 <td><code class="docutils literal"><span class="pre">[1,</span> <span class="pre">2]</span></code></td>
 </tr>
 <tr class="row-odd"><td>14</td>
-<td><code class="docutils literal"><span class="pre">sigma_mean</span> <span class="pre">&lt;</span> <span class="pre">sigma_mean_l</span></code></td>
+<td><code class="docutils literal"><span class="pre">width_mean</span> <span class="pre">&lt;</span> <span class="pre">width_mean_l</span></code></td>
 <td><code class="docutils literal"><span class="pre">[1,</span> <span class="pre">2]</span></code></td>
 </tr>
 <tr class="row-even"><td>15</td>
-<td><code class="docutils literal"><span class="pre">sigma_sdev</span> <span class="pre">&gt;</span> <span class="pre">sigma_sdev_u</span></code></td>
+<td><code class="docutils literal"><span class="pre">width_sdev</span> <span class="pre">&gt;</span> <span class="pre">width_sdev_u</span></code></td>
 <td><code class="docutils literal"><span class="pre">[1,</span> <span class="pre">2]</span></code></td>
 </tr>
 </tbody>

@@ -100,7 +100,7 @@ Global Parameters
 	"
 	"``min_stream_amp``",	0.1,		"Smallest amplitude to consider stream present. (mm)
 	"
-	"``max_stream_sigma``",	 1,		"Max stream width considered to be real. (mm)
+	"``max_stream_width``",	 1,		"Max stream width considered to be real. (mm)
 	"
 	"``rel_min_illum``",		0.25,		"The minimum fraction (of median) considered illuminated in a background image.
 	"
@@ -141,7 +141,9 @@ Before monitoring dispenses, the DMS must collect or compute the `Calibration Pa
 	"
 	"``cal_amp_scale``",			"A vector of 8 values that define the shadow *amplitude scale* for each channel (mm/pixel). Minimum precision 0.001. Typical value: 0.25.
 	"
-	"``cal_lateral_scale``",	"A vector of 8 values that define the shadow *lateral scale* for each channel (mm/pixel). These scale factors account for the physical pixel pitch as well as the varying optical magnification across the sensor.
+	"``cal_lateral_scale``",	"A vector of 8 values that define the shadow *lateral scale* for each channel (mm/pixel). These scale factors are applied to lateral stream displacements, and account for the physical pixel pitch as well as the varying optical magnification across the sensor.
+	"
+	"``cal_sigma_scale``",	"A vector of 8 values that define the shadow *sigma scale* for each channel (mm/pixel). These scale factors relate the shadow width to stream diameter, and account for the physical pixel pitch as well as the varying optical magnification across the sensor.
 	"
 
 The first step for initial sensor calibration is to determine the dark level, the voltage the sensor outputs in the absence of light.
@@ -191,6 +193,7 @@ The next step is to perform the actual calibration. This is done with the calibr
 				cal_sigma(i) = sqrt( sum( Y2 .* d2 ) ./ sY2 )
 				cal_rss(i) = sqrt( sY2 )
 				cal_amp_scale(i) = cal_pin_diameter / cal_rss(i)
+				cal_sigma_scale(i) = cal_pin_diameter / cal_sigma(i)
 			end
 
 			sigmaMag = cal_sigma ./ cal_sigma(1)
@@ -215,7 +218,7 @@ The raw 1D video data collected during a dispense must be reduced to three time-
 	"
 	"``signal_disp``",	"The lateral displacement of each stream from its *nominal* position. Each channel is calibrated by multiplication with the appropriate entry in ``cal_lateral_scale``, and final units are mm. Maximum expected value is 1.5 mm. Minimum precision is 0.001 mm.
 	"
-	"``signal_sigma``",	"The standard deviation of the pseudo-gaussian shadow distribution for each channel. Each channel is calibrated by multiplication with the appropriate entry in ``cal_lateral_scale``, and final units are mm. Maximum expected value is 1.5 mm. Minimum precision is 0.001 mm.
+	"``signal_width``",	"The width of the stream for each channel. This is signal_sigmal calibrated by multiplication with the appropriate entry in ``cal_sigma_scale``, and final units are mm. Maximum expected value is 3 mm. Minimum precision is 0.001 mm.
 	"
 
 While recording data during a dispense, the three signals are calculated as follows:
@@ -243,7 +246,7 @@ While recording data during a dispense, the three signals are calculated as foll
 				d2 = ( pix – center(i,t) ).^2
 
 				sigma = sqrt( sum( y2.*d2) ./ sy2 )
-				signal_sigma(i,t) = sigma * cal_lateral_scale(i)
+				signal_width(i,t) = sigma * cal_sigma_scale(i)
 
 				if signal_sigma(i,t) > max_stream_sigma
 					center(i,t) = nan
@@ -313,7 +316,7 @@ The procedure is defined as follows:
 Computing Features
 ==================
 
-Each well on a microplate is characterized by nine features that are used to determine if the well dispense was faulty. Each feature is a single number and is calculated using one of the three time signals (``signal_amp``, ``signal_disp``, ``signal_sigma``). With the exception of the ``amp_corr`` feature (see :ref:`Computing amp_corr feature <comp_amp_corr>`), only the row of the time signal corresponding to the channel that the well is in is used when calculating the feature. Additionally, only certain frames of the time signal are used. In some cases, the frames or time interval used is during the time period that the well is being dispensed (``during_dispense``), in other cases it is the time after the dispense of the well, but before the next well dispense (``between_dispense``). Finally, it could also be the combination of ``during_dispense`` and ``between_dispense``. 
+Each well on a microplate is characterized by nine features that are used to determine if the well dispense was faulty. Each feature is a single number and is calculated using one of the three time signals (``signal_amp``, ``signal_disp``, ``signal_width``). With the exception of the ``amp_corr`` feature (see :ref:`Computing amp_corr feature <comp_amp_corr>`), only the row of the time signal corresponding to the channel that the well is in is used when calculating the feature. Additionally, only certain frames of the time signal are used. In some cases, the frames or time interval used is during the time period that the well is being dispensed (``during_dispense``), in other cases it is the time after the dispense of the well, but before the next well dispense (``between_dispense``). Finally, it could also be the combination of ``during_dispense`` and ``between_dispense``. 
 
 Determining ``during_dispense`` and ``between_dispense`` time intervals
 -----------------------------------------------------------------------
@@ -349,7 +352,7 @@ Computing standard features
 
 In general, computing the value of a feature for a well involves the following steps:
 
-#.	Select the signal corresponding to the feature (``signal_amp``, ``signal_disp``, ``signal_sigma``).
+#.	Select the signal corresponding to the feature (``signal_amp``, ``signal_disp``, ``signal_width``).
 #.	Select the row of the time signal corresponding to the well’s channel.
 #.	Select the frames (columns) of the time signal corresponding to the appropriate time interval (``during_dispense``, ``between_dispense``).
 #.	Compute the mean or standard deviation of the selected portion of the time signal.
@@ -367,9 +370,9 @@ The details of this process for each of the nine features can be found in `Featu
 	
 	``disp_mean``, ``signal_disp``,	both, No, mean
 	``disp_sdev``, ``signal_disp``, both, No, standard deviation
-	``sigma_mean``, ``signal_sigma``, both, No, mean
-	``sigma_sdev``, ``signal_sigma``, both, No, standard deviation
-	``sigma_mean_n``, ``signal_sigma``, both, Yes, "mean, normalize, log"
+	``width_mean``, ``signal_width``, both, No, mean
+	``width_sdev``, ``signal_width``, both, No, standard deviation
+	``width_mean_n``, ``signal_width``, both, Yes, "mean, normalize, log"
 	``amp_mean_btw_n``, ``signal_amp``, ``between_dispense``, Yes, "mean, normalize, log"
 	``amp_mean_dur_n``, ``signal_amp``, ``during_dispense``, Yes, "mean, normalize, log"
 	``amp_mean_dur``, ``signal_amp``, ``during_dispense``, No, mean
@@ -486,10 +489,10 @@ The thresholds used for fault detection are given in :numref:`Fault Detection Th
 	"``amp_mean_btw_n_u``", 	"``[0.75, 2.0]``",	"``[?, ?, ?]``"
 	"``disp_mean_lu``", 	"``1``",	"``?``"
 	"``disp_sdev_u``", 	"``[0.6, 0.4, 0.25]``",	"``[?, ?, ?]``"
-	"``sigma_mean_n_lu``", 	"``[0.2, 0.3]``",	"``[?, ?]``"
-	"``sigma_mean_u``", 	"``[0.25, 0.3]``",	"``[?, ?]``"
-	"``sigma_mean_l``", 	"``[0.07, 0.05]``",	"``[?, ?]``"
-	"``sigma_sdev_u``", 	"``[0.06, 0.08]``",	"``[?, ?]``"
+	"``width_mean_n_lu``", 	"``[0.4, 0.6]``",	"``[?, ?]``"
+	"``width_mean_u``", 	"``[0.5, 0.6]``",	"``[?, ?]``"
+	"``width_mean_l``", 	"``[0.14, 0.1]``",	"``[?, ?]``"
+	"``width_sdev_u``", 	"``[0.12, 0.16]``",	"``[?, ?]``"
 	
 The tests to be applied to each well are defined in :numref:`Well Fault Tests` below. In each definition:
 
@@ -510,14 +513,14 @@ The tests to be applied to each well are defined in :numref:`Well Fault Tests` b
 	"5", "``log10(amp_mean_dur / rf.amp_mean_dur.med) > amp_mean_dur_n_u``","``[1, 2, 3]``"
 	"6", "``log10(amp_mean_dur / rf.amp_mean_dur.med) < amp_mean_dur_n_l``","``[1, 2, 3]``"
 	"7", "``amp_corr > amp_cor_u(2) & amp_mean_dur_n < amp_mean_dur_n_l(1)``","``3``"
-	"8", "``amp_mean_btw > amp_mean_btw_u``","``[1, 3]``"
+	"8", "``amp_mean_btw_n > amp_mean_btw_n_u``","``[1, 3]``"
 	"9", "``abs(disp_mean) > disp_mean_lu``","``[3]``"
 	"10", "``abs(disp_mean-rf.disp_mean(i)) > disp_mean_lu``","``[2]``"
 	"11", "``disp_sdev > disp_sdev_u``","``[1, 2, 3]``"
-	"12", "``abs(sigma_mean_n) > sigma_mean_n_lu``","``[1, 2]``"
-	"13", "``sigma_mean > sigma_mean_u``","``[1, 2]``"
-	"14", "``sigma_mean < sigma_mean_l``","``[1, 2]``"
-	"15", "``sigma_sdev > sigma_sdev_u``","``[1, 2]``"
+	"12", "``abs(width_mean_n) > width_mean_n_lu``","``[1, 2]``"
+	"13", "``width_mean > width_mean_u``","``[1, 2]``"
+	"14", "``width_mean < width_mean_l``","``[1, 2]``"
+	"15", "``width_sdev > width_sdev_u``","``[1, 2]``"
 	
 Description strings for each of these fault tests are given in :numref:`Fault Descriptions` below. Both the ``fault_categories`` and ``fault_descriptions`` data structures should be made available for query by the host so that it can update its display functions when firmware changes.
 	

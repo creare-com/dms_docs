@@ -574,7 +574,7 @@ bit 1 is the plate trigger.  Bits 2 through 15 are reserved.</p>
 
 <span class="c1">// The maximum number of signals to process.  This is limited by the </span>
 <span class="c1">//   physical size of the memory.</span>
-<span class="cp">#define DMS_MAX_SIGNALS                                              348863</span>
+<span class="cp">#define DMS_MAX_SIGNALS                                              348180</span>
 
 <span class="c1">// The maximum number of history dispenses that can be stored.</span>
 <span class="cp">#define DMS_MAX_HISTORY                                                  10</span>
@@ -600,6 +600,9 @@ bit 1 is the plate trigger.  Bits 2 through 15 are reserved.</p>
 <span class="cp">#define DMS_CMD_SET_REFERENCE_DISPENSE                                 0x0C</span>
 
 <span class="cp">#define DMS_CMD_STREAM                                                 0x10</span>
+
+<span class="cp">#define DMS_CMD_FIRMWARE_BLOCK                                         0x20</span>
+<span class="cp">#define DMS_CMD_FIRMWARE_PROGRAM                                       0x21</span>
 
 
 <span class="cp">#define DMS_CMD_                                                       0x00</span>
@@ -655,7 +658,8 @@ bit 1 is the plate trigger.  Bits 2 through 15 are reserved.</p>
 
 <span class="k">typedef</span> <span class="k">struct</span> <span class="n">tag_dms_id</span> <span class="p">{</span>
 	<span class="kt">char</span> <span class="n">build_date_time</span><span class="p">[</span><span class="mi">24</span><span class="p">];</span>  <span class="c1">// Mmm dd yyyy hh:mm:ss  (20 char, plus 4 nulls)</span>
-	<span class="kt">uint32_t</span> <span class="n">unique_id</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>     <span class="c1">// from the processor	</span>
+	<span class="kt">uint32_t</span> <span class="n">unique_id</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>     <span class="c1">// from the processor</span>
+	<span class="kt">char</span> <span class="n">engineering_version_number</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>  <span class="c1">// null terminated string, e.g. &quot;1.0.0&quot;	</span>
 <span class="p">}</span> <span class="n">DMS_ID</span><span class="p">;</span>
 
 <span class="k">typedef</span> <span class="k">struct</span> <span class="n">tag_dms_config</span> <span class="p">{</span>

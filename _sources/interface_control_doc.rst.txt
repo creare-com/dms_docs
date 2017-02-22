@@ -42,23 +42,27 @@ Endpoint 0 Commands
 The DMS supports the commands shown in :numref:`Supported Commands Summary`.  Note that these are ‘Vendor’ Device Requests; refer to Chapter 9 of the
 USB 2.0 specification.  A ‘Read’ is defined here as the DMS sending control data back to the host (Device-to-host); 
 a ‘Write’ is defined as the host sending additional data along with the command (Host-to-device).  If the length is 
-0 the direction is immaterial.
+0 the direction is immaterial.  The function HI(x) takes the high order 16-bits of a 32-bit word x.  Likewise, LO(x) takes the low order 16-bits.
 
 .. csv-table:: Supported Commands Summary
 	:header: "Command", "Description", "R/W", "bRequest", "wValue", "wIndex", "wLength"
 	:widths: 5, 5, 2, 2, 2, 2, 2
 	:name: Supported Commands Summary
 
-	STATUS, Controller condition, R, 1,	0,	0,	12
-	ID, Build date and unique ID, R, 2, 0,	0,	TODO
-	CONFIG_GET,	Read configuration data, R,	3, 0, 0	
-	CONFIG_SET,	Write configuration data, W, 4,	0,	0	
-	CALIBRATE,	Run a calibration process,	R,	5,	"1, 2, or 3", 0, 0
-	GET_CALIBRATION, Get calibration results,	R,	6,	0,	0,	1688
-	STORE_CALIBRATION,	Write current calibration to non-volatile memory,	R,	7,	0,	0,	0
-	MONITOR_DISPENSE,	Begin monitoring,	R,	8,	0,	0,	0
-	GET_DISPENSE_DATA,	Return results from monitoring,	R,	9,	0,	0,	TBD
-	STREAM,	Start / stop streaming of raw data from sensor,	R,	10,	0 or 1,	0,	0
+	STATUS, Controller condition, R, 0x01,	0,	0,	12
+	ID, Build date and unique ID, R, 0x02, 0,	0,	TODO
+	CONFIG_GET,	Read configuration data, R,	0x03, 0, 0	
+	CONFIG_SET,	Write configuration data, W, 0x04,	0,	0	
+	CALIBRATE,	Run a calibration process,	R,	0x05,	"1, 2, or 3", 0, 0
+	GET_CALIBRATION, Get calibration results,	R,	0x06,	0,	0,	1688
+	STORE_CALIBRATION,	Write current calibration to non-volatile memory,	R,	0x07,	0,	0,	0
+	MONITOR_DISPENSE,	Begin monitoring,	R,	0x08,	0,	0,	0
+	GET_DISPENSE_DATA,	Return results from monitoring,	R,	0x09,	HI(offset),	LO(offset),	TBD
+	CLEAR_HISTORY,	Remove the accumulated previous results used as reference,	R,	0x0B,	0,	0,	0
+	SET_REFERENCE_DISPENSE,	Set the last result as a baseline for comparison,	R,	0x0C,	0,	0,	0
+	STREAM,	Start / stop streaming of raw data from sensor,	R,	0x10,	0 or 1,	0,	0
+	FIRMWARE_BLOCK,	Send a block of firmware data,	W,	0x20,	HI(offset),	LO(offset), (up to 512)   
+	FIRMWARE_PROGRAM,	Cause the DMS to rewrite its FLASH based on the blocks sent,	R,	0x21,	HI(size),	LO(SIZE), 0	
 	
 The commands are described in more detail below. 
 
@@ -89,9 +93,9 @@ The following states are currently defined.
 	0,	OFF
 	1,	INITIALIZATION
 	2,	READY
-	3-9,	RESERVED
-	10,	CALIBRATION
-	11-2 :sup:`32` ,	RESERVED
+	3,	CALIBRATION
+	4,	MONITOR
+	5,	STREAM
 	
 The following flag bits are defined.
 
@@ -124,22 +128,23 @@ The following error codes are currently defined.
 	8,  DMS_ERR_NO_VALID_REFERENCE,     "User reference mode was indicated, but no user reference has been set."
 	9,  DMS_ERR_STREAM_DIAMETER_UNSUPPORTED, "No thresholds are defined for this stream diameter."
 	10,  DMS_ERR_NO_RECENT_HISTORY,      "No dispense exists in the history to use for the user reference."
-	11-255,  RESERVED,                  ""    
+	11,	DMS_ERR_CALIBRATION_INVALID,	"The data in calibration contains errors."
+	12-255,  RESERVED,                  ""    
 	
 .. _id:
 	
 ID
 ==
-This command causes the DMS to return the build date and time of its firmware, and the unique
-ID associated with the processor.
+This command causes the DMS to return the build date and time of its firmware, the unique ID associated with the processor, and the engineering version number.
 
 .. csv-table:: Identification Data
-	:header: "Data Item", "Field Length (bytes)"
+	:header: "Data Item",	"Format",	"Field Length (bytes)"
 	:widths: 10, 5
 	:name: Identification Data
 
-	Build Date / Time String(Mmm dd yyyy hh:mm:ss),	24
-	Unique ID (u32 x 4),	4
+	Build Date / Time,	String(Mmm dd yyyy hh:mm:ss),	24
+	Unique ID,	u32 x 4,	16
+	Engineering Version Number, "String, e.g. '1.0'",	8
 
 .. _config-get:
 	
@@ -211,12 +216,13 @@ The calibration has the format shown in :numref:`Calibration Data`.
 	Dark Level (u16),	2
 	Background (384 * u16),	768
 	Pixel Range (2 * u16),	4
-	Bin Edges (2 * u16),	18
-	Cal Image (2 * u16),	768
+	Bin Edges (9 * u16),	18
+	Cal Image (384 * u16),	768
 	Cal Center (8 * f32),	32
 	Cal Sigma (8 * f32),	32
 	Cal Amp Scale (8 * f32),	32
 	Cal Lateral Scale (8 * f32),	32
+	Cal Sigma Scale (8 * f32),	32
 	
 Please refer to the :ref:`calibration` section of the :ref:`firmware-spec` for the meaning of these calibration elements.
 

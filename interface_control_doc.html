@@ -74,7 +74,7 @@ for example in alignment mode.  The DMS has no support for bulk streaming to the
 <p>The DMS supports the commands shown in <a class="reference internal" href="#supported-commands-summary"><span class="std std-numref">Table 2.1</span></a>.  Note that these are ‘Vendor’ Device Requests; refer to Chapter 9 of the
 USB 2.0 specification.  A ‘Read’ is defined here as the DMS sending control data back to the host (Device-to-host);
 a ‘Write’ is defined as the host sending additional data along with the command (Host-to-device).  If the length is
-0 the direction is immaterial.</p>
+0 the direction is immaterial.  The function HI(x) takes the high order 16-bits of a 32-bit word x.  Likewise, LO(x) takes the low order 16-bits.</p>
 <table border="1" class="colwidths-given docutils" id="supported-commands-summary">
 <caption><span class="caption-number">Table 2.1 </span><span class="caption-text">Supported Commands Summary</span><a class="headerlink" href="#supported-commands-summary" title="Permalink to this table">¶</a></caption>
 <colgroup>
@@ -100,7 +100,7 @@ a ‘Write’ is defined as the host sending additional data along with the comm
 <tr class="row-even"><td>STATUS</td>
 <td>Controller condition</td>
 <td>R</td>
-<td>1</td>
+<td>0x01</td>
 <td>0</td>
 <td>0</td>
 <td>12</td>
@@ -108,7 +108,7 @@ a ‘Write’ is defined as the host sending additional data along with the comm
 <tr class="row-odd"><td>ID</td>
 <td>Build date and unique ID</td>
 <td>R</td>
-<td>2</td>
+<td>0x02</td>
 <td>0</td>
 <td>0</td>
 <td>TODO</td>
@@ -116,7 +116,7 @@ a ‘Write’ is defined as the host sending additional data along with the comm
 <tr class="row-even"><td>CONFIG_GET</td>
 <td>Read configuration data</td>
 <td>R</td>
-<td>3</td>
+<td>0x03</td>
 <td>0</td>
 <td>0</td>
 <td>&nbsp;</td>
@@ -124,7 +124,7 @@ a ‘Write’ is defined as the host sending additional data along with the comm
 <tr class="row-odd"><td>CONFIG_SET</td>
 <td>Write configuration data</td>
 <td>W</td>
-<td>4</td>
+<td>0x04</td>
 <td>0</td>
 <td>0</td>
 <td>&nbsp;</td>
@@ -132,7 +132,7 @@ a ‘Write’ is defined as the host sending additional data along with the comm
 <tr class="row-even"><td>CALIBRATE</td>
 <td>Run a calibration process</td>
 <td>R</td>
-<td>5</td>
+<td>0x05</td>
 <td>1, 2, or 3</td>
 <td>0</td>
 <td>0</td>
@@ -140,7 +140,7 @@ a ‘Write’ is defined as the host sending additional data along with the comm
 <tr class="row-odd"><td>GET_CALIBRATION</td>
 <td>Get calibration results</td>
 <td>R</td>
-<td>6</td>
+<td>0x06</td>
 <td>0</td>
 <td>0</td>
 <td>1688</td>
@@ -148,7 +148,7 @@ a ‘Write’ is defined as the host sending additional data along with the comm
 <tr class="row-even"><td>STORE_CALIBRATION</td>
 <td>Write current calibration to non-volatile memory</td>
 <td>R</td>
-<td>7</td>
+<td>0x07</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
@@ -156,7 +156,7 @@ a ‘Write’ is defined as the host sending additional data along with the comm
 <tr class="row-odd"><td>MONITOR_DISPENSE</td>
 <td>Begin monitoring</td>
 <td>R</td>
-<td>8</td>
+<td>0x08</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
@@ -164,17 +164,49 @@ a ‘Write’ is defined as the host sending additional data along with the comm
 <tr class="row-even"><td>GET_DISPENSE_DATA</td>
 <td>Return results from monitoring</td>
 <td>R</td>
-<td>9</td>
-<td>0</td>
-<td>0</td>
+<td>0x09</td>
+<td>HI(offset)</td>
+<td>LO(offset)</td>
 <td>TBD</td>
+</tr>
+<tr class="row-odd"><td>CLEAR_HISTORY</td>
+<td>Remove the accumulated previous results used as reference</td>
+<td>R</td>
+<td>0x0B</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>SET_REFERENCE_DISPENSE</td>
+<td>Set the last result as a baseline for comparison</td>
+<td>R</td>
+<td>0x0C</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
 </tr>
 <tr class="row-odd"><td>STREAM</td>
 <td>Start / stop streaming of raw data from sensor</td>
 <td>R</td>
-<td>10</td>
+<td>0x10</td>
 <td>0 or 1</td>
 <td>0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>FIRMWARE_BLOCK</td>
+<td>Send a block of firmware data</td>
+<td>W</td>
+<td>0x20</td>
+<td>HI(offset)</td>
+<td>LO(offset)</td>
+<td>(up to 512)</td>
+</tr>
+<tr class="row-odd"><td>FIRMWARE_PROGRAM</td>
+<td>Cause the DMS to rewrite its FLASH based on the blocks sent</td>
+<td>R</td>
+<td>0x21</td>
+<td>HI(size)</td>
+<td>LO(SIZE)</td>
 <td>0</td>
 </tr>
 </tbody>
@@ -230,14 +262,14 @@ to poll the DMS (~10 Hz) to determine the result of other commands.</p>
 <tr class="row-even"><td>2</td>
 <td>READY</td>
 </tr>
-<tr class="row-odd"><td>3-9</td>
-<td>RESERVED</td>
-</tr>
-<tr class="row-even"><td>10</td>
+<tr class="row-odd"><td>3</td>
 <td>CALIBRATION</td>
 </tr>
-<tr class="row-odd"><td>11-2 <sup>32</sup></td>
-<td>RESERVED</td>
+<tr class="row-even"><td>4</td>
+<td>MONITOR</td>
+</tr>
+<tr class="row-odd"><td>5</td>
+<td>STREAM</td>
 </tr>
 </tbody>
 </table>
@@ -330,7 +362,11 @@ to poll the DMS (~10 Hz) to determine the result of other commands.</p>
 <td>DMS_ERR_NO_RECENT_HISTORY</td>
 <td>No dispense exists in the history to use for the user reference.</td>
 </tr>
-<tr class="row-odd"><td>11-255</td>
+<tr class="row-odd"><td>11</td>
+<td>DMS_ERR_CALIBRATION_INVALID</td>
+<td>The data in calibration contains errors.</td>
+</tr>
+<tr class="row-even"><td>12-255</td>
 <td>RESERVED</td>
 <td>&nbsp;</td>
 </tr>
@@ -339,34 +375,13 @@ to poll the DMS (~10 Hz) to determine the result of other commands.</p>
 </div>
 <div class="section" id="id">
 <span id="id3"></span><h2>2.6. ID<a class="headerlink" href="#id" title="Permalink to this headline">¶</a></h2>
-<p>This command causes the DMS to return the build date and time of its firmware, and the unique
-ID associated with the processor.</p>
-<table border="1" class="colwidths-given docutils" id="identification-data">
-<caption><span class="caption-number">Table 2.6 </span><span class="caption-text">Identification Data</span><a class="headerlink" href="#identification-data" title="Permalink to this table">¶</a></caption>
-<colgroup>
-<col width="67%" />
-<col width="33%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Data Item</th>
-<th class="head">Field Length (bytes)</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td>Build Date / Time String(Mmm dd yyyy hh:mm:ss)</td>
-<td>24</td>
-</tr>
-<tr class="row-odd"><td>Unique ID (u32 x 4)</td>
-<td>4</td>
-</tr>
-</tbody>
-</table>
+<p>This command causes the DMS to return the build date and time of its firmware, the unique ID associated with the processor, and the engineering version number.</p>
 </div>
 <div class="section" id="config-get">
 <span id="id4"></span><h2>2.7. Config Get<a class="headerlink" href="#config-get" title="Permalink to this headline">¶</a></h2>
-<p>In response to the CONFIG_GET command, the DMS will return the current value of all configuration parameters.  See <a class="reference internal" href="#configuration-data"><span class="std std-numref">Table 2.7</span></a>.</p>
+<p>In response to the CONFIG_GET command, the DMS will return the current value of all configuration parameters.  See <a class="reference internal" href="#configuration-data"><span class="std std-numref">Table 2.6</span></a>.</p>
 <table border="1" class="colwidths-given docutils" id="configuration-data">
-<caption><span class="caption-number">Table 2.7 </span><span class="caption-text">Configuration Data</span><a class="headerlink" href="#configuration-data" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 2.6 </span><span class="caption-text">Configuration Data</span><a class="headerlink" href="#configuration-data" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="67%" />
 <col width="33%" />
@@ -402,14 +417,14 @@ ID associated with the processor.</p>
 <div class="section" id="config-set">
 <span id="id5"></span><h2>2.8. Config Set<a class="headerlink" href="#config-set" title="Permalink to this headline">¶</a></h2>
 <p>The host may overwrite the configuration parameters with this command.  The data provided
-should exactly match <a class="reference internal" href="#configuration-data"><span class="std std-numref">Table 2.7</span></a>.</p>
+should exactly match <a class="reference internal" href="#configuration-data"><span class="std std-numref">Table 2.6</span></a>.</p>
 </div>
 <div class="section" id="calibrate">
 <span id="id6"></span><h2>2.9. Calibrate<a class="headerlink" href="#calibrate" title="Permalink to this headline">¶</a></h2>
 <p>This command requests the DMS to perform a calibration operation.  The DMS must be in the READY state.
 There are currently three operations defined, which the host may select via the wValue control parameter; see :numref: <cite>Calibration Operations</cite>.</p>
 <table border="1" class="colwidths-given docutils" id="calibration-operations">
-<caption><span class="caption-number">Table 2.8 </span><span class="caption-text">Calibration Operations</span><a class="headerlink" href="#calibration-operations" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 2.7 </span><span class="caption-text">Calibration Operations</span><a class="headerlink" href="#calibration-operations" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="67%" />
 <col width="33%" />
@@ -445,9 +460,9 @@ operator attention.</p>
 <div class="section" id="get-calibration">
 <span id="id7"></span><h2>2.10. Get Calibration<a class="headerlink" href="#get-calibration" title="Permalink to this headline">¶</a></h2>
 <p>The DMS returns the current calibration in response to this command. This is primarily for debugging purposes.
-The calibration has the format shown in <a class="reference internal" href="#calibration-data"><span class="std std-numref">Table 2.9</span></a>.</p>
+The calibration has the format shown in <a class="reference internal" href="#calibration-data"><span class="std std-numref">Table 2.8</span></a>.</p>
 <table border="1" class="colwidths-given docutils" id="calibration-data">
-<caption><span class="caption-number">Table 2.9 </span><span class="caption-text">Calibration Data</span><a class="headerlink" href="#calibration-data" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 2.8 </span><span class="caption-text">Calibration Data</span><a class="headerlink" href="#calibration-data" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="67%" />
 <col width="33%" />
@@ -467,10 +482,10 @@ The calibration has the format shown in <a class="reference internal" href="#cal
 <tr class="row-even"><td>Pixel Range (2 * u16)</td>
 <td>4</td>
 </tr>
-<tr class="row-odd"><td>Bin Edges (2 * u16)</td>
+<tr class="row-odd"><td>Bin Edges (9 * u16)</td>
 <td>18</td>
 </tr>
-<tr class="row-even"><td>Cal Image (2 * u16)</td>
+<tr class="row-even"><td>Cal Image (384 * u16)</td>
 <td>768</td>
 </tr>
 <tr class="row-odd"><td>Cal Center (8 * f32)</td>
@@ -483,6 +498,9 @@ The calibration has the format shown in <a class="reference internal" href="#cal
 <td>32</td>
 </tr>
 <tr class="row-even"><td>Cal Lateral Scale (8 * f32)</td>
+<td>32</td>
+</tr>
+<tr class="row-odd"><td>Cal Sigma Scale (8 * f32)</td>
 <td>32</td>
 </tr>
 </tbody>
@@ -510,7 +528,7 @@ the DMS will begin streaming the raw data from the sensor to the host at the ful
 endpoint 1.  The DMS will stream packets of the form described in Table 10 until commanded to stop.  Note the
 DMS must be in the READY state to use this command.</p>
 <table border="1" class="colwidths-given docutils" id="stream-packet-format">
-<caption><span class="caption-number">Table 2.10 </span><span class="caption-text">Stream Packet Format</span><a class="headerlink" href="#stream-packet-format" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 2.9 </span><span class="caption-text">Stream Packet Format</span><a class="headerlink" href="#stream-packet-format" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="33%" />
 <col width="67%" />
@@ -605,8 +623,6 @@ bit 1 is the plate trigger.  Bits 2 through 15 are reserved.</p>
 <span class="cp">#define DMS_CMD_FIRMWARE_PROGRAM                                       0x21</span>
 
 
-<span class="cp">#define DMS_CMD_                                                       0x00</span>
-
 <span class="c1">/////  Calibration Command Sub-Codes  /////</span>
 <span class="k">typedef</span> <span class="k">enum</span> <span class="n">tag_cal_mode</span> <span class="p">{</span>
 	<span class="n">DMS_CAL_OFF</span><span class="p">,</span>
@@ -619,9 +635,6 @@ bit 1 is the plate trigger.  Bits 2 through 15 are reserved.</p>
 <span class="c1">//  The first 16 are hardware errors; the last 16 are warnings.</span>
 <span class="cp">#define DMS_FLAGS_EEPROM_FAIL                                   0x00000010U</span>
 <span class="cp">#define DMS_FLAGS_CONFIG_DEFAULTS                               0x00100000U</span>
-
-
-<span class="cp">#define DMS_FLAGS_                                              0x00000000U</span>
 
 
 <span class="c1">/////  Error Codes  /////</span>

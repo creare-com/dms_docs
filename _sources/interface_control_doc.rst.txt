@@ -128,7 +128,7 @@ The following error codes are currently defined.
 	8,  DMS_ERR_NO_VALID_REFERENCE,     "User reference mode was indicated, but no user reference has been set."
 	9,  DMS_ERR_STREAM_DIAMETER_UNSUPPORTED, "No thresholds are defined for this stream diameter."
 	10,  DMS_ERR_NO_RECENT_HISTORY,      "No dispense exists in the history to use for the user reference."
-	11,	DMS_ERR_CALIBRATION_INVALID,	"The data in calibration contains errors."
+	11,	DMS_ERR_CALIBRATION_INVALID,	"The data in calibration contain errors."
 	12-255,  RESERVED,                  ""    
 	
 .. _id:
@@ -239,14 +239,50 @@ calibration is written to non-volatile memory.
 Monitor Dispense
 ================
 
-This command instructs the DMS to begin monitoring the sensor for a dispense operation.
+This command instructs the DMS to begin monitoring the sensor for a dispense operation.  Assuming it was in the READY state when the command was received,
+it will proceed to the MONITOR state, and wait for triggers.  When the DMS
+has returned to the READY state, the results are ready and can be requested.
 
 .. _get-dispense-data:
 
 Get Dispense Data
 =================
 
-After monitoring is complete, this command causes the DMS to emit the last results of the operation.  TBD.
+After monitoring is complete, this command causes the DMS to emit the last results of the operation.  4096 bytes may be captured with each read, which
+means that some fields ('signals', in particular) will require several reads
+to capture fully.  To use this command most effectively, instantiate
+an instance of the DMS_DISPENSE_DATA structure.  Then, to receive a particular
+field, use code similar to the following:
+::
+	uint32_t offsetBytes = offsetof(dmsDispenseData.info);
+	ctrl_read(
+			DMS_CMD_GET_DISPENSE_DATA,         // bReq
+			HI(offsetBytes),                   // wValue
+			LO(offsetBytes),                   // wIndex
+			&dmsDispenseData.info,             // data
+			sizeof(dmsDispenseData.info)       // nBytes
+	);
+			
+To receive larger blocks, simply loop, incrementing offsetBytes each time by
+the number of characters received.
+
+.. _clear-history:
+
+Clear History
+=============
+
+When calculation features used for fault detection, several features are
+normalized by the median of results from previous plates.  This is useful when
+the baseline has changed, for example due to the replacement of the dispense
+cartridge.
+
+.. _set-reference-dispense:
+
+Set Reference Dispense
+======================
+
+If the 'Ref Mode' configuration parameter is non-zero, a user reference will be
+used.  This command makes the most recent dispense the user reference.
 
 .. _stream:
 
@@ -270,6 +306,25 @@ DMS must be in the READY state to use this command.
 The header consists of two parts.  The upper 16 bits holds the value 0x7819, which may be used to scan for the start
 of a packet if synchronization is lost.  The lower 16 bits contain trigger status.  Bit 0 is the pump trigger, while
 bit 1 is the plate trigger.  Bits 2 through 15 are reserved.
+
+.. _firmware-block:
+
+Firmware Block
+==============
+
+In order to update the firmware on the DMS, it needs to be transferred to the
+DMS's memory using this command.  Up to 512 bytes can be sent with each
+transfer.  The offset of each block in bytes are the wValue and wIndex
+parameters.  Only send binary program files (e.g. DMS.bin).
+
+.. _firmware-program:
+
+Firmware Program
+================
+
+Once the program has been successfully transmitted to the DMS in its entirety,
+this command may be executed to copy the program from RAM into the device's
+FLASH.  The device will then be rebooted.
 
 .. _dmsCodes.h:
 

@@ -445,7 +445,7 @@ The parameters required for fault detection are defined in :numref:`Fault Detect
 	"``fault_descriptions``",		"A data structure which contains the :ref:`Fault Descriptions` table.
 	"
 	
-The ``history`` must be automatically cleared whenever any of the :numref:`configuration parameters` :ref:`configuration parameters` or :numref:`calibration parameters` :ref:`calibration parameters` change. The user or host system is responsible for explicitly clearing the history when there is a change in the dispense catrtridge, fluid, etc.
+The ``history`` must be automatically cleared whenever any of the :numref:`configuration parameters` :ref:`configuration parameters` or :numref:`calibration parameters` :ref:`calibration parameters` change. The user or host system is responsible for explicitly clearing the history when there is a change in the dispense cartridge, fluid, etc.
 	
 ``clear_history()``
 	Empty the ``history`` stack.

@@ -364,7 +364,7 @@ to poll the DMS (~10 Hz) to determine the result of other commands.</p>
 </tr>
 <tr class="row-odd"><td>11</td>
 <td>DMS_ERR_CALIBRATION_INVALID</td>
-<td>The data in calibration contains errors.</td>
+<td>The data in calibration contain errors.</td>
 </tr>
 <tr class="row-even"><td>12-255</td>
 <td>RESERVED</td>
@@ -514,14 +514,44 @@ calibration is written to non-volatile memory.</p>
 </div>
 <div class="section" id="monitor-dispense">
 <span id="monitor-dispense-icd"></span><h2>2.12. Monitor Dispense<a class="headerlink" href="#monitor-dispense" title="Permalink to this headline">¶</a></h2>
-<p>This command instructs the DMS to begin monitoring the sensor for a dispense operation.</p>
+<p>This command instructs the DMS to begin monitoring the sensor for a dispense operation.  Assuming it was in the READY state when the command was received,
+it will proceed to the MONITOR state, and wait for triggers.  When the DMS
+has returned to the READY state, the results are ready and can be requested.</p>
 </div>
 <div class="section" id="get-dispense-data">
 <span id="id9"></span><h2>2.13. Get Dispense Data<a class="headerlink" href="#get-dispense-data" title="Permalink to this headline">¶</a></h2>
-<p>After monitoring is complete, this command causes the DMS to emit the last results of the operation.  TBD.</p>
+<p>After monitoring is complete, this command causes the DMS to emit the last results of the operation.  4096 bytes may be captured with each read, which
+means that some fields (&#8216;signals&#8217;, in particular) will require several reads
+to capture fully.  To use this command most effectively, instantiate
+an instance of the DMS_DISPENSE_DATA structure.  Then, to receive a particular
+field, use code similar to the following:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">uint32_t</span> <span class="n">offsetBytes</span> <span class="o">=</span> <span class="n">offsetof</span><span class="p">(</span><span class="n">dmsDispenseData</span><span class="o">.</span><span class="n">info</span><span class="p">);</span>
+<span class="n">ctrl_read</span><span class="p">(</span>
+                <span class="n">DMS_CMD_GET_DISPENSE_DATA</span><span class="p">,</span>         <span class="o">//</span> <span class="n">bReq</span>
+                <span class="n">HI</span><span class="p">(</span><span class="n">offsetBytes</span><span class="p">),</span>                   <span class="o">//</span> <span class="n">wValue</span>
+                <span class="n">LO</span><span class="p">(</span><span class="n">offsetBytes</span><span class="p">),</span>                   <span class="o">//</span> <span class="n">wIndex</span>
+                <span class="o">&amp;</span><span class="n">dmsDispenseData</span><span class="o">.</span><span class="n">info</span><span class="p">,</span>             <span class="o">//</span> <span class="n">data</span>
+                <span class="n">sizeof</span><span class="p">(</span><span class="n">dmsDispenseData</span><span class="o">.</span><span class="n">info</span><span class="p">)</span>       <span class="o">//</span> <span class="n">nBytes</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<p>To receive larger blocks, simply loop, incrementing offsetBytes each time by
+the number of characters received.</p>
+</div>
+<div class="section" id="clear-history">
+<span id="id10"></span><h2>2.14. Clear History<a class="headerlink" href="#clear-history" title="Permalink to this headline">¶</a></h2>
+<p>When calculation features used for fault detection, several features are
+normalized by the median of results from previous plates.  This is useful when
+the baseline has changed, for example due to the replacement of the dispense
+cartridge.</p>
+</div>
+<div class="section" id="set-reference-dispense">
+<span id="id11"></span><h2>2.15. Set Reference Dispense<a class="headerlink" href="#set-reference-dispense" title="Permalink to this headline">¶</a></h2>
+<p>If the &#8216;Ref Mode&#8217; configuration parameter is non-zero, a user reference will be
+used.  This command makes the most recent dispense the user reference.</p>
 </div>
 <div class="section" id="stream">
-<span id="id10"></span><h2>2.14. Stream<a class="headerlink" href="#stream" title="Permalink to this headline">¶</a></h2>
+<span id="id12"></span><h2>2.16. Stream<a class="headerlink" href="#stream" title="Permalink to this headline">¶</a></h2>
 <p>This command controls raw data streaming.  The wValue parameter controls the streaming: 0 halts streaming,
 1 begins streaming, and all other values are reserved.  After receiving this command with a wValue of 1,
 the DMS will begin streaming the raw data from the sensor to the host at the full, 1kHz rate, on Bulk Transfer
@@ -551,8 +581,21 @@ DMS must be in the READY state to use this command.</p>
 of a packet if synchronization is lost.  The lower 16 bits contain trigger status.  Bit 0 is the pump trigger, while
 bit 1 is the plate trigger.  Bits 2 through 15 are reserved.</p>
 </div>
+<div class="section" id="firmware-block">
+<span id="id13"></span><h2>2.17. Firmware Block<a class="headerlink" href="#firmware-block" title="Permalink to this headline">¶</a></h2>
+<p>In order to update the firmware on the DMS, it needs to be transferred to the
+DMS&#8217;s memory using this command.  Up to 512 bytes can be sent with each
+transfer.  The offset of each block in bytes are the wValue and wIndex
+parameters.  Only send binary program files (e.g. DMS.bin).</p>
+</div>
+<div class="section" id="firmware-program">
+<span id="id14"></span><h2>2.18. Firmware Program<a class="headerlink" href="#firmware-program" title="Permalink to this headline">¶</a></h2>
+<p>Once the program has been successfully transmitted to the DMS in its entirety,
+this command may be executed to copy the program from RAM into the device&#8217;s
+FLASH.  The device will then be rebooted.</p>
+</div>
 <div class="section" id="dmscodes-h">
-<span id="id11"></span><h2>2.15. dmsCodes.h<a class="headerlink" href="#dmscodes-h" title="Permalink to this headline">¶</a></h2>
+<span id="id15"></span><h2>2.19. dmsCodes.h<a class="headerlink" href="#dmscodes-h" title="Permalink to this headline">¶</a></h2>
 <p>The current version of dmsCodes.h is included here for reference. Note the horizontal scroll bar at the bottom, if you need to see the end of the lines. Sorry, this is a pain!</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/*</span>
 <span class="cm">	dmsCodes.h</span>
@@ -813,8 +856,12 @@ bit 1 is the plate trigger.  Bits 2 through 15 are reserved.</p>
 <li><a class="reference internal" href="#store-calibration">2.11. Store Calibration</a></li>
 <li><a class="reference internal" href="#monitor-dispense">2.12. Monitor Dispense</a></li>
 <li><a class="reference internal" href="#get-dispense-data">2.13. Get Dispense Data</a></li>
-<li><a class="reference internal" href="#stream">2.14. Stream</a></li>
-<li><a class="reference internal" href="#dmscodes-h">2.15. dmsCodes.h</a></li>
+<li><a class="reference internal" href="#clear-history">2.14. Clear History</a></li>
+<li><a class="reference internal" href="#set-reference-dispense">2.15. Set Reference Dispense</a></li>
+<li><a class="reference internal" href="#stream">2.16. Stream</a></li>
+<li><a class="reference internal" href="#firmware-block">2.17. Firmware Block</a></li>
+<li><a class="reference internal" href="#firmware-program">2.18. Firmware Program</a></li>
+<li><a class="reference internal" href="#dmscodes-h">2.19. dmsCodes.h</a></li>
 </ul>
 </li>
 </ul>

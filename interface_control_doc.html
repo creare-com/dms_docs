@@ -665,6 +665,9 @@ FLASH.  The device will then be rebooted.</p>
 <span class="cp">#define DMS_CMD_FIRMWARE_BLOCK                                         0x20</span>
 <span class="cp">#define DMS_CMD_FIRMWARE_PROGRAM                                       0x21</span>
 
+<span class="cp">#define DMS_CMD_GET_FAULT_THRESHOLDS                                   0x30</span>
+<span class="cp">#define DMS_CMD_SET_FAULT_THRESHOLDS                                   0x31</span>
+
 
 <span class="c1">/////  Calibration Command Sub-Codes  /////</span>
 <span class="k">typedef</span> <span class="k">enum</span> <span class="n">tag_cal_mode</span> <span class="p">{</span>
@@ -819,6 +822,25 @@ FLASH.  The device will then be rebooted.</p>
 		<span class="c1">// Buffer for samples, packed 12 bits at a time into 32-bit words.</span>
 		<span class="n">packedSamples</span><span class="p">[</span><span class="n">DMS_ENTRIES_PER_SCAN</span> <span class="o">*</span> <span class="mi">12</span> <span class="o">/</span> <span class="mi">32</span><span class="p">];</span>
 <span class="p">}</span> <span class="n">DMS_STREAM_OUT</span><span class="p">;</span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="n">tag_dms_fault_det_param</span> <span class="p">{</span>
+	<span class="kt">float</span> <span class="n">thresholds</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span> <span class="c1">// corresponding to notice, warning, and error.</span>
+<span class="p">}</span> <span class="n">DMS_FAULT_DET_PARAM</span><span class="p">;</span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="n">tag_dms_fault_det_thresholds</span> <span class="p">{</span>
+	<span class="n">DMS_FAULT_DET_PARAM</span>
+		<span class="n">amp_corr_u</span><span class="p">,</span> 	
+		<span class="n">amp_mean_dur_n_u</span><span class="p">,</span>
+		<span class="n">amp_mean_dur_n_l</span><span class="p">,</span>
+		<span class="n">amp_mean_dur_min</span><span class="p">,</span>
+		<span class="n">amp_mean_btw_n_u</span><span class="p">,</span>
+		<span class="n">disp_mean_lu</span><span class="p">,</span>
+		<span class="n">disp_sdev_u</span><span class="p">,</span> 
+		<span class="n">width_mean_n_lu</span><span class="p">,</span>
+		<span class="n">width_mean_u</span><span class="p">,</span>
+		<span class="n">width_mean_l</span><span class="p">,</span>
+		<span class="n">width_sdev_u</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">DMS_FAULT_DET_THRESHOLDS</span><span class="p">;</span>
 
 
 <span class="cp">#include</span> <span class="cpf">&lt;poppack.h&gt;</span><span class="cp"></span>

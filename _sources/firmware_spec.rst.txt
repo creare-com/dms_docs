@@ -15,7 +15,7 @@ Revision Log
 ============
 
 .. csv-table:: Revision Log
-	:header: "date", "Author", "Changes"
+	:header: "Date", "Author", "Changes"
 	:widths: 10, 10, 80
 	:name: Revision Log
 	

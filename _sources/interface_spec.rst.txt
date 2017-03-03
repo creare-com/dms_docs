@@ -9,6 +9,16 @@ Copyright
 
 Copyright Creare LLC 2016.  This software specification is proprietary and should be considered confidential.  Reproduction or distribution prohibited without written permission from Creare.
 
+Revision Log
+============
+
+.. csv-table:: Revision Log
+	:header: "Date", "Author", "Changes"
+	:widths: 10, 10, 80
+	:name: Revision Log
+	
+	"3/3/2017", 	"MCR",	"Added :ref:`example-interface` section."
+
 Overview
 ========
 
@@ -75,7 +85,7 @@ The GUI should have buttons to perform the following operations. (See :ref:`Supp
 	
 	10. **Record raw data.** Prompt user for a record ``duration`` in seconds (default 10). When user clicks go, run ``STREAM`` for ``duration`` seconds. Write the returned data to an ASCII file as a ``duration X 386`` array (384 integer pixel values at 12 bit  + 2 binary trigger input values).  The file name should be ``[save_path]\[file_string]_DMS_raw_0000.dat``. Increment the integer until either ``save_path`` or ``file_string`` changes.  When complete, show the saved file name with full path in an informational popup.
 	
-	11. **Monitor dispense.** Poll ``STATUS`` to confirm ``State`` is ``READY``. If it is not, issue an error in a popup window and report ``State``. Otherwise, invoke ``MONITOR_DISPENSE``.  Wait until dispense is complete. Poll ``STATUS`` until ``State`` is READY (timeout after 15 s). If ``Last_Reported_Error`` is not zero, report the error in a popup window. Invoke ``GET_DISPENSE_DATA``. Save the resulting :numref:`Dispense Data` :ref:`Dispense Data` to ``[save_path]\[file_string]_DMS_data_0000.dat`` on the host in some sensible format **(TBD)** that we can get into Matlab. Increment the integer index in the filename until either ``save_path`` or ``file_string`` changes.
+	11. **Monitor dispense.** Poll ``STATUS`` to confirm ``State`` is ``READY``. If it is not, issue an error in a popup window and report ``State``. Otherwise, invoke ``MONITOR_DISPENSE``.  Wait until dispense is complete. Poll ``STATUS`` until ``State`` is READY (timeout after 15 s). If ``Last_Reported_Error`` is not zero, report the error in a popup window. Invoke ``GET_DISPENSE_DATA``. Save the resulting :numref:`Dispense Data` :ref:`Dispense Data` to ``[save_path]\[file_string]_DMS_data_0000.dat`` on the host in some sensible format. Increment the integer index in the filename until either ``save_path`` or ``file_string`` changes.
 	
 	12. **Set reference dispense.** Invoke ``SET_REFERENCE_DISPENSE``. Poll ``STATUS``. If ``Last_Reported_Error`` is ``DMS_ERR_NO_RECENT_HISTORY``, show a popup error message and exit.  Otherwise, if ``Ref_Mode`` (:ref:`Calibration Data`) is not ``'user'``, prompt to set this value, with confirm and cancel buttons. Upon user confirmation, apply this value using ``CONFIG-GET`` and ``CONFIG-SET``. (See :ref:`fault-detection`.)
 	
@@ -116,7 +126,116 @@ In addition to being able to launch the GUI described above, the BioTek LHC shou
 	#. When initiating a dispense, activate the specific DMS associated with the active dispenser given its known ``ID``.
 	#.	Automatically set the :ref:`Configuration Data` with correct values for the current dispense using ``CONFIG-GET`` and ``CONFIG-SET``.
 	#.	Run ``MONITOR_DISPENSE`` at least 500 ms prior to each dispense.
-	#.	Retrieve fault data (``GET_WELL_FAULTS`` or ``GET_CH_FAULTS``) after each dispense and make this data available and actionable. (Implementation details TBD)
+	#.	Retrieve fault data (``GET_WELL_FAULTS``) after each dispense and make this data available and actionable.
 	#.	Give the user the ability to run ``SET_REFERENCE_DISPENSE`` at any time.
 	#. Give the user the option to set the ``Ref_Mode`` (:ref:`Calibration Data`) or run ``CLEAR_HISTORY`` (:ref:`Supported Commands Summary`) at any time.
 	#. Automatically run ``CLEAR_HISTORY`` any time the :ref:`Configuration Data` changes (i.e. new cassette or dispense parameters.)
+	
+
+.. _example-interface:	
+	
+Example Interface
+=================
+
+Creare has written an interface in Matlab known as DMSI (DMS Interface), provided here as an example. The m-file is available either :download:`here <../Matlab/DMSI/dmsi.m>` or :download:`here <../../Matlab/DMSI/dmsi.m>`.
+
+To install the USB driver used by the DMS, download and unzip this archive (either :download:`here <../Windows/DMS_Driver/install_dms.zip>` or :download:`here <../../Windows/DMS_Driver/install_dms.zip>`), then run ``install_dms.bat``. Once you've done that, you can connect the DMS to the computer with a USB cable.
+
+To get a live sensor image for alignment of the optics, download and run this function (either :download:`here <../Windows/DMS_Viewer/bin/DMS_Viewer.exe>` or :download:`here <../../Windows/DMS_Viewer/bin/DMS_Viewer.exe>`) from Windows Explorer. When you are done, activate the command window that opened automatically and press any key to exit the alignment mode.
+
+Then open Matlab. Typical workflow to calibrate a new DMS:
+
+.. code-block:: matlab
+
+	% instantiate DMSI object
+	dms = dmsi
+
+	% to ensure the DMS is not in an active mode
+	dms.reset()
+
+	% confirm that DMS status is 'READY'
+	dms.get_status()
+
+	% cover sensor, get new dark level
+	dms.calibrate(1)
+
+	% uncover sensor, get new background
+	dms.calibrate(2)
+
+	% insert calibration cassette and perform calibration
+	dms.calibrate(3)
+
+	% verify, then store the calibration in non-volatile memory
+	dms.plot_calibration() % black dashed bins should be centered on 8 peaks
+	dms.store_calibration
+	 
+
+To manually collect some data from a dispense and get the fault detection data similar to the way the the LHC will do in production:
+	 
+.. code-block:: matlab
+
+	% instantiate DMSI object
+	dms = dmsi
+
+	% verify the ID and staus of the connected DMS
+	dms.get_id()
+	dms.get_status() % confirm that it is 'READY'
+
+	% check the configuration parameters
+	c = dms.get_config()
+
+	% set a couple relevant parameters in preperation to monitor
+	% a 384-well plate dispense with a 1 uL cassette
+	c.stream_diameter = 7 % 7 or 14 for 1 or 5/10 uL cassettes respectively
+	c.n_dispenses = 48  % 12, 48, or 192 for 96, 384, and 1536 plates respectively
+	dms.set_config(c) % send the values to the DMS
+
+	% monitor a dispense
+	dms.monitor_dispense()
+
+	% Run the dispenser.
+	% After dispense is complete, confirm that DMS status is 'READY',
+	% then download the fault detection data.
+	dms.get_status
+	faults = dms.return_well_faults
+	 
+	 
+To use Creare's higher level debugging functions to plot dispense data automatically:
+	 
+.. code-block:: matlab
+	 
+	% Set the configuration parameters as above. Then:
+	dms.monitor_dispense()
+	% Run the dispenser. When it is done:
+	dms.plot_dispense()
+
+	% To continuously monitor many dispenses and plot running data 
+	% (without downloading the full signals, which is slow):
+	dms.track_dispenses(false)
+	% then run the dispenser as many times as you like.
+	% Data is automatically plotted and saved.
+
+	% If you do want the full signals downloaded and plotted:
+	dms.track_dispenses()
+	% Make sure to wait until data download is complete before
+	% starting the next dispense.
+
+	% If you want to plot a dataset you collected earlier,
+	% and/or continue collecting data in the same file, you
+	% can simply select an existing file in the track_dispenses
+	% file selection GUI. Choose a summary file that is not prepended
+	% with a 4 digit integer dispense number.
+
+	% To plot the raw signals from a dispense collected with
+	% dms.track_dispenses:
+	dms.plot_dispense('file')
+	% Then select a file that IS prepended with the 4 digit integer.
+	 
+
+Other tidbits:
+
+.. code-block:: matlab
+	 
+	% if the DMS ever seems 'stuck', abort whatever it is doing
+	% and return to 'READY' mode
+	dms.reset()

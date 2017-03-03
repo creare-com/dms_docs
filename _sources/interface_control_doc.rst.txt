@@ -9,6 +9,16 @@ Copyright
 
 Copyright Creare LLC 2016.  This software specification is proprietary and should be considered confidential.  Reproduction or distribution prohibited without written permission from Creare.
 
+Revision Log
+============
+
+.. csv-table:: Revision Log
+	:header: "Date", "Author", "Changes"
+	:widths: 10, 10, 80
+	:name: Revision Log
+	
+	"3/3/2017", 	"MCR",	"Added this revision log."
+
 Introduction
 ============
 

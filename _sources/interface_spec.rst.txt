@@ -138,11 +138,11 @@ In addition to being able to launch the GUI described above, the BioTek LHC shou
 Example Interface
 =================
 
-Creare has written a DMS interface in Matlab (dmsi.m), provided here as an example. The m-file is available either :download:`here <../Matlab/DMSI/dmsi.m>` or :download:`here <../../Matlab/DMSI/dmsi.m>`.
+Creare has written a DMS interface in Matlab (``dmsi.m``), provided here as an example. The m-file is available either :download:`here <../Matlab/DMSI/dmsi.m>` or :download:`here <../../Matlab/DMSI/dmsi.m>`.
 
-To install the USB driver used by the DMS, download and unzip the DMS_Driver (either :download:`here <../Windows/DMS_Driver/install_dms.zip>` or :download:`here <../../Windows/DMS_Driver/install_dms.zip>`), then run ``install_dms.bat``. Once you've done that, you can connect the DMS to the computer with a USB cable.
+To install the USB driver used by the DMS, download and unzip the ``DMS_Driver`` (either :download:`here <../Windows/DMS_Driver/install_dms.zip>` or :download:`here <../../Windows/DMS_Driver/install_dms.zip>`), then run ``install_dms.bat``. Once you've done that, you can connect the DMS to the computer with a USB cable.
 
-To get a live sensor image for alignment of the optics, download and run DMS_Viewer.exe (either :download:`here <../Windows/DMS_Viewer/bin/DMS_Viewer.exe>` or :download:`here <../../Windows/DMS_Viewer/bin/DMS_Viewer.exe>`) from Windows Explorer. When you are done, activate the command window that opened automatically and press any key to exit the alignment mode.
+To get a live sensor image for alignment of the optics, download and run ``DMS_Viewer.exe`` (either :download:`here <../Windows/DMS_Viewer/bin/DMS_Viewer.exe>` or :download:`here <../../Windows/DMS_Viewer/bin/DMS_Viewer.exe>`) from Windows Explorer. When you are done, activate the command window that opened automatically and press any key to exit the alignment mode.
 
 Then open Matlab. Typical workflow to calibrate a new DMS:
 

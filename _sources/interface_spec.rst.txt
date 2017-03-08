@@ -17,6 +17,7 @@ Revision Log
 	:widths: 10, 10, 80
 	:name: Revision Log
 	
+	"3/8/2017",    "MCR",   "Minor tweaks to :ref:`example-interface` section."
 	"3/3/2017", 	"MCR",	"Added :ref:`example-interface` section."
 
 Overview
@@ -137,11 +138,11 @@ In addition to being able to launch the GUI described above, the BioTek LHC shou
 Example Interface
 =================
 
-Creare has written an interface in Matlab known as DMSI (DMS Interface), provided here as an example. The m-file is available either :download:`here <../Matlab/DMSI/dmsi.m>` or :download:`here <../../Matlab/DMSI/dmsi.m>`.
+Creare has written a DMS interface in Matlab (dmsi.m), provided here as an example. The m-file is available either :download:`here <../Matlab/DMSI/dmsi.m>` or :download:`here <../../Matlab/DMSI/dmsi.m>`.
 
-To install the USB driver used by the DMS, download and unzip this archive (either :download:`here <../Windows/DMS_Driver/install_dms.zip>` or :download:`here <../../Windows/DMS_Driver/install_dms.zip>`), then run ``install_dms.bat``. Once you've done that, you can connect the DMS to the computer with a USB cable.
+To install the USB driver used by the DMS, download and unzip the DMS_Driver (either :download:`here <../Windows/DMS_Driver/install_dms.zip>` or :download:`here <../../Windows/DMS_Driver/install_dms.zip>`), then run ``install_dms.bat``. Once you've done that, you can connect the DMS to the computer with a USB cable.
 
-To get a live sensor image for alignment of the optics, download and run this function (either :download:`here <../Windows/DMS_Viewer/bin/DMS_Viewer.exe>` or :download:`here <../../Windows/DMS_Viewer/bin/DMS_Viewer.exe>`) from Windows Explorer. When you are done, activate the command window that opened automatically and press any key to exit the alignment mode.
+To get a live sensor image for alignment of the optics, download and run DMS_Viewer.exe (either :download:`here <../Windows/DMS_Viewer/bin/DMS_Viewer.exe>` or :download:`here <../../Windows/DMS_Viewer/bin/DMS_Viewer.exe>`) from Windows Explorer. When you are done, activate the command window that opened automatically and press any key to exit the alignment mode.
 
 Then open Matlab. Typical workflow to calibrate a new DMS:
 
@@ -209,14 +210,14 @@ To use Creare's higher level debugging functions to plot dispense data automatic
 	% Run the dispenser. When it is done:
 	dms.plot_dispense()
 
-	% To continuously monitor many dispenses and plot running data 
-	% (without downloading the full signals, which is slow):
-	dms.track_dispenses(false)
+	% To continuously monitor many dispenses and plot running data:
+	dms.track_dispenses()
 	% then run the dispenser as many times as you like.
 	% Data is automatically plotted and saved.
 
 	% If you do want the full signals downloaded and plotted:
-	dms.track_dispenses()
+	dms.track_dispenses(true)
+	% Downloading the full signals takes a while.
 	% Make sure to wait until data download is complete before
 	% starting the next dispense.
 

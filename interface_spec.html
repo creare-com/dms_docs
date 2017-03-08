@@ -64,7 +64,11 @@
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td>3/3/2017</td>
+<tr class="row-even"><td>3/8/2017</td>
+<td>MCR</td>
+<td>Minor tweaks to <a class="reference internal" href="#example-interface"><span class="std std-ref">Example Interface</span></a> section.</td>
+</tr>
+<tr class="row-odd"><td>3/3/2017</td>
 <td>MCR</td>
 <td>Added <a class="reference internal" href="#example-interface"><span class="std std-ref">Example Interface</span></a> section.</td>
 </tr>
@@ -187,9 +191,9 @@
 </div>
 <div class="section" id="example-interface">
 <span id="id6"></span><h2>3.7. Example Interface<a class="headerlink" href="#example-interface" title="Permalink to this headline">¶</a></h2>
-<p>Creare has written an interface in Matlab known as DMSI (DMS Interface), provided here as an example. The m-file is available either <code class="xref download docutils literal"><span class="pre">here</span></code> or <code class="xref download docutils literal"><span class="pre">here</span></code>.</p>
-<p>To install the USB driver used by the DMS, download and unzip this archive (either <code class="xref download docutils literal"><span class="pre">here</span></code> or <code class="xref download docutils literal"><span class="pre">here</span></code>), then run <code class="docutils literal"><span class="pre">install_dms.bat</span></code>. Once you&#8217;ve done that, you can connect the DMS to the computer with a USB cable.</p>
-<p>To get a live sensor image for alignment of the optics, download and run this function (either <code class="xref download docutils literal"><span class="pre">here</span></code> or <code class="xref download docutils literal"><span class="pre">here</span></code>) from Windows Explorer. When you are done, activate the command window that opened automatically and press any key to exit the alignment mode.</p>
+<p>Creare has written a DMS interface in Matlab (dmsi.m), provided here as an example. The m-file is available either <code class="xref download docutils literal"><span class="pre">here</span></code> or <code class="xref download docutils literal"><span class="pre">here</span></code>.</p>
+<p>To install the USB driver used by the DMS, download and unzip the DMS_Driver (either <code class="xref download docutils literal"><span class="pre">here</span></code> or <code class="xref download docutils literal"><span class="pre">here</span></code>), then run <code class="docutils literal"><span class="pre">install_dms.bat</span></code>. Once you&#8217;ve done that, you can connect the DMS to the computer with a USB cable.</p>
+<p>To get a live sensor image for alignment of the optics, download and run DMS_Viewer.exe (either <code class="xref download docutils literal"><span class="pre">here</span></code> or <code class="xref download docutils literal"><span class="pre">here</span></code>) from Windows Explorer. When you are done, activate the command window that opened automatically and press any key to exit the alignment mode.</p>
 <p>Then open Matlab. Typical workflow to calibrate a new DMS:</p>
 <div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% instantiate DMSI object</span>
 <span class="n">dms</span> <span class="p">=</span> <span class="n">dmsi</span>
@@ -247,14 +251,14 @@
 <span class="c">% Run the dispenser. When it is done:</span>
 <span class="n">dms</span><span class="p">.</span><span class="n">plot_dispense</span><span class="p">()</span>
 
-<span class="c">% To continuously monitor many dispenses and plot running data</span>
-<span class="c">% (without downloading the full signals, which is slow):</span>
-<span class="n">dms</span><span class="p">.</span><span class="n">track_dispenses</span><span class="p">(</span><span class="n">false</span><span class="p">)</span>
+<span class="c">% To continuously monitor many dispenses and plot running data:</span>
+<span class="n">dms</span><span class="p">.</span><span class="n">track_dispenses</span><span class="p">()</span>
 <span class="c">% then run the dispenser as many times as you like.</span>
 <span class="c">% Data is automatically plotted and saved.</span>
 
 <span class="c">% If you do want the full signals downloaded and plotted:</span>
-<span class="n">dms</span><span class="p">.</span><span class="n">track_dispenses</span><span class="p">()</span>
+<span class="n">dms</span><span class="p">.</span><span class="n">track_dispenses</span><span class="p">(</span><span class="n">true</span><span class="p">)</span>
+<span class="c">% Downloading the full signals takes a while.</span>
 <span class="c">% Make sure to wait until data download is complete before</span>
 <span class="c">% starting the next dispense.</span>
 

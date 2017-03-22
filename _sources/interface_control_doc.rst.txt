@@ -18,6 +18,7 @@ Revision Log
 	:name: Revision Log
 	
 	"3/3/2017", 	"MCR",	"Added this revision log."
+	"2017-03-22", 	"WHF",	"Added GET_WELL_FAULTS command description."
 
 Introduction
 ============
@@ -67,9 +68,10 @@ a ‘Write’ is defined as the host sending additional data along with the comm
 	GET_CALIBRATION, Get calibration results,	R,	0x06,	0,	0,	1688
 	STORE_CALIBRATION,	Write current calibration to non-volatile memory,	R,	0x07,	0,	0,	0
 	MONITOR_DISPENSE,	Begin monitoring,	R,	0x08,	0,	0,	0
-	GET_DISPENSE_DATA,	Return results from monitoring,	R,	0x09,	HI(offset),	LO(offset),	TBD
+	GET_DISPENSE_DATA,	Return results from monitoring,	R,	0x09,	HI(offset),	LO(offset),	(up to 4096)
 	CLEAR_HISTORY,	Remove the accumulated previous results used as reference,	R,	0x0B,	0,	0,	0
 	SET_REFERENCE_DISPENSE,	Set the last result as a baseline for comparison,	R,	0x0C,	0,	0,	0
+	GET_WELL_FAULTS, Get data corresponding to well faults, R, 0x0D, 0, offset, (up to 4096)
 	STREAM,	Start / stop streaming of raw data from sensor,	R,	0x10,	0 or 1,	0,	0
 	FIRMWARE_BLOCK,	Send a block of firmware data,	W,	0x20,	HI(offset),	LO(offset), (up to 512)   
 	FIRMWARE_PROGRAM,	Cause the DMS to rewrite its FLASH based on the blocks sent,	R,	0x21,	HI(size),	LO(SIZE), 0	
@@ -293,6 +295,23 @@ Set Reference Dispense
 
 If the 'Ref Mode' configuration parameter is non-zero, a user reference will be
 used.  This command makes the most recent dispense the user reference.
+
+.. _get-well-faults:
+
+Get Well Faults
+===============
+
+This command is used to return the data corresponding to well faults.  For each
+dispense in the monitor event (available through n_dispenses in the 
+configuration data structure) there will be eight u32s, each corresponding to 
+one channel.  Each two bits correspond to a fault indication from the Fault
+Categories table.  The two LSB correspond to Fault Category 1, the next two to
+Fault Category 2, up to Fault Category 15.  The upper two MSB should be zero
+after a successful monitoring operation.
+
+Each two bits correspond to a fault severity level: 0, no fault; 1, notice; 2, 
+warning; and 3, error.
+
 
 .. _stream:
 

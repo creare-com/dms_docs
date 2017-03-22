@@ -69,6 +69,10 @@
 <td>MCR</td>
 <td>Added this revision log.</td>
 </tr>
+<tr class="row-odd"><td>2017-03-22</td>
+<td>WHF</td>
+<td>Added GET_WELL_FAULTS command description.</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -190,7 +194,7 @@ a ‘Write’ is defined as the host sending additional data along with the comm
 <td>0x09</td>
 <td>HI(offset)</td>
 <td>LO(offset)</td>
-<td>TBD</td>
+<td>(up to 4096)</td>
 </tr>
 <tr class="row-odd"><td>CLEAR_HISTORY</td>
 <td>Remove the accumulated previous results used as reference</td>
@@ -208,7 +212,15 @@ a ‘Write’ is defined as the host sending additional data along with the comm
 <td>0</td>
 <td>0</td>
 </tr>
-<tr class="row-odd"><td>STREAM</td>
+<tr class="row-odd"><td>GET_WELL_FAULTS</td>
+<td>Get data corresponding to well faults</td>
+<td>R</td>
+<td>0x0D</td>
+<td>0</td>
+<td>offset</td>
+<td>(up to 4096)</td>
+</tr>
+<tr class="row-even"><td>STREAM</td>
 <td>Start / stop streaming of raw data from sensor</td>
 <td>R</td>
 <td>0x10</td>
@@ -216,7 +228,7 @@ a ‘Write’ is defined as the host sending additional data along with the comm
 <td>0</td>
 <td>0</td>
 </tr>
-<tr class="row-even"><td>FIRMWARE_BLOCK</td>
+<tr class="row-odd"><td>FIRMWARE_BLOCK</td>
 <td>Send a block of firmware data</td>
 <td>W</td>
 <td>0x20</td>
@@ -224,7 +236,7 @@ a ‘Write’ is defined as the host sending additional data along with the comm
 <td>LO(offset)</td>
 <td>(up to 512)</td>
 </tr>
-<tr class="row-odd"><td>FIRMWARE_PROGRAM</td>
+<tr class="row-even"><td>FIRMWARE_PROGRAM</td>
 <td>Cause the DMS to rewrite its FLASH based on the blocks sent</td>
 <td>R</td>
 <td>0x21</td>
@@ -573,8 +585,20 @@ cartridge.</p>
 <p>If the &#8216;Ref Mode&#8217; configuration parameter is non-zero, a user reference will be
 used.  This command makes the most recent dispense the user reference.</p>
 </div>
+<div class="section" id="get-well-faults">
+<span id="id13"></span><h2>2.17. Get Well Faults<a class="headerlink" href="#get-well-faults" title="Permalink to this headline">¶</a></h2>
+<p>This command is used to return the data corresponding to well faults.  For each
+dispense in the monitor event (available through n_dispenses in the
+configuration data structure) there will be eight u32s, each corresponding to
+one channel.  Each two bits correspond to a fault indication from the Fault
+Categories table.  The two LSB correspond to Fault Category 1, the next two to
+Fault Category 2, up to Fault Category 15.  The upper two MSB should be zero
+after a successful monitoring operation.</p>
+<p>Each two bits correspond to a fault severity level: 0, no fault; 1, notice; 2,
+warning; and 3, error.</p>
+</div>
 <div class="section" id="stream">
-<span id="id13"></span><h2>2.17. Stream<a class="headerlink" href="#stream" title="Permalink to this headline">¶</a></h2>
+<span id="id14"></span><h2>2.18. Stream<a class="headerlink" href="#stream" title="Permalink to this headline">¶</a></h2>
 <p>This command controls raw data streaming.  The wValue parameter controls the streaming: 0 halts streaming,
 1 begins streaming, and all other values are reserved.  After receiving this command with a wValue of 1,
 the DMS will begin streaming the raw data from the sensor to the host at the full, 1kHz rate, on Bulk Transfer
@@ -605,20 +629,20 @@ of a packet if synchronization is lost.  The lower 16 bits contain trigger statu
 bit 1 is the plate trigger.  Bits 2 through 15 are reserved.</p>
 </div>
 <div class="section" id="firmware-block">
-<span id="id14"></span><h2>2.18. Firmware Block<a class="headerlink" href="#firmware-block" title="Permalink to this headline">¶</a></h2>
+<span id="id15"></span><h2>2.19. Firmware Block<a class="headerlink" href="#firmware-block" title="Permalink to this headline">¶</a></h2>
 <p>In order to update the firmware on the DMS, it needs to be transferred to the
 DMS&#8217;s memory using this command.  Up to 512 bytes can be sent with each
 transfer.  The offset of each block in bytes are the wValue and wIndex
 parameters.  Only send binary program files (e.g. DMS.bin).</p>
 </div>
 <div class="section" id="firmware-program">
-<span id="id15"></span><h2>2.19. Firmware Program<a class="headerlink" href="#firmware-program" title="Permalink to this headline">¶</a></h2>
+<span id="id16"></span><h2>2.20. Firmware Program<a class="headerlink" href="#firmware-program" title="Permalink to this headline">¶</a></h2>
 <p>Once the program has been successfully transmitted to the DMS in its entirety,
 this command may be executed to copy the program from RAM into the device&#8217;s
 FLASH.  The device will then be rebooted.</p>
 </div>
 <div class="section" id="dmscodes-h">
-<span id="id16"></span><h2>2.20. dmsCodes.h<a class="headerlink" href="#dmscodes-h" title="Permalink to this headline">¶</a></h2>
+<span id="id17"></span><h2>2.21. dmsCodes.h<a class="headerlink" href="#dmscodes-h" title="Permalink to this headline">¶</a></h2>
 <p>The current version of dmsCodes.h is included here for reference. Note the horizontal scroll bar at the bottom, if you need to see the end of the lines. Sorry, this is a pain!</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/*</span>
 <span class="cm">	dmsCodes.h</span>
@@ -907,10 +931,11 @@ FLASH.  The device will then be rebooted.</p>
 <li><a class="reference internal" href="#get-dispense-data">2.14. Get Dispense Data</a></li>
 <li><a class="reference internal" href="#clear-history">2.15. Clear History</a></li>
 <li><a class="reference internal" href="#set-reference-dispense">2.16. Set Reference Dispense</a></li>
-<li><a class="reference internal" href="#stream">2.17. Stream</a></li>
-<li><a class="reference internal" href="#firmware-block">2.18. Firmware Block</a></li>
-<li><a class="reference internal" href="#firmware-program">2.19. Firmware Program</a></li>
-<li><a class="reference internal" href="#dmscodes-h">2.20. dmsCodes.h</a></li>
+<li><a class="reference internal" href="#get-well-faults">2.17. Get Well Faults</a></li>
+<li><a class="reference internal" href="#stream">2.18. Stream</a></li>
+<li><a class="reference internal" href="#firmware-block">2.19. Firmware Block</a></li>
+<li><a class="reference internal" href="#firmware-program">2.20. Firmware Program</a></li>
+<li><a class="reference internal" href="#dmscodes-h">2.21. dmsCodes.h</a></li>
 </ul>
 </li>
 </ul>

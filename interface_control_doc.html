@@ -715,6 +715,7 @@ FLASH.  The device will then be rebooted.</p>
 
 <span class="cp">#define DMS_CMD_GET_FAULT_THRESHOLDS                                   0x30</span>
 <span class="cp">#define DMS_CMD_SET_FAULT_THRESHOLDS                                   0x31</span>
+<span class="cp">#define DMS_CMD_DELETE_FAULT_THRESHOLDS                                0x32</span>
 
 
 <span class="c1">/////  Calibration Command Sub-Codes  /////</span>
@@ -747,6 +748,8 @@ FLASH.  The device will then be rebooted.</p>
 	<span class="n">DMS_ERR_STREAM_DIAMETER_UNSUPPORTED</span><span class="p">,</span>
 	<span class="n">DMS_ERR_NO_RECENT_HISTORY</span><span class="p">,</span>
 	<span class="n">DMS_ERR_CALIBRATION_INVALID</span><span class="p">,</span>
+	
+	<span class="n">DMS_ERR_THRESHOLD_TABLE_FULL</span><span class="p">,</span>
 	
 	<span class="n">DMS_N_ERRORS</span>
 <span class="p">}</span> <span class="n">dms_err_t</span><span class="p">;</span>

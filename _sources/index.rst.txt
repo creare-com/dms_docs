@@ -19,6 +19,8 @@ Contents
 	:numbered:
 	:name: mastertoc
 
+	functional_spec
 	firmware_spec
 	interface_control_doc
 	interface_spec
+	development_interface

@@ -9,7 +9,7 @@ Copyright
 
 Copyright Creare LLC 2016.  This software specification is proprietary and should be considered confidential.  Reproduction or distribution prohibited without written permission from Creare.
 
-.. _firmware_spec_revision_log
+.. _firmware_spec_revision_log:
 
 Revision Log
 ============
@@ -17,7 +17,7 @@ Revision Log
 .. csv-table:: Revision Log
 	:header: "Date", "Author", "Changes"
 	:widths: 10, 10, 80
-	:name: Revision Log
+	:name: Firmware Spec Revision Log
 	
 	"3/3/2017", 	"MCR",	"Added :ref:`laser-power` section. Keep laser on all the time except during ``get_dark_level()``. Added trigger_delay to :ref:`Static Parameters`. Added trigger_delay to **Record Signals** in ``monitor_dispense()``."
 

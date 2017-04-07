@@ -1,0 +1,161 @@
+.. _development-interface:
+
+=====================
+Development Interface
+=====================
+
+Overview
+========
+
+This section documents the DMS interface developed at Creare and known as DMSI (Dispense Monitor System Interface). This interface is written in Matlab and is designed to efficiently collect, display, and store comprehensive fault detection and debugging data from the DMS during our development efforts. DMSI may be used long term by BioTek for internal validation testing, but we do not expect to deploy this interface to end users. This documentation is not exhaustive, and is merely intended to get a user up and going with the basic functions. Undocumented features of the interface may be explored by referring to the code itself.
+
+Installation
+============
+
+Matlab software is required to run this interface. The required code files are:
+
+	``dmsi.m``
+	``crc32.m``
+	``WUsbToFile.exe``
+	``DMS_Viewer.exe``
+	
+Within Matlab, set the working directory to the folder that contains these files.
+
+Connecting to the DMS
+=====================
+
+To connect to a DMS, power it by conecting it to its host dispenser, connect it to a USB port on your computer, and start Matlab. Then instantiate an instance of ``dmsi.m`` in the variable ``dms`` by typing ``dms = dmsi`` at the Matlab command prompt. Subsequent commands are issued to the DMS in the format ``dms.command``, or more generally:
+
+	``return_value = dms.command(argument)``
+
+The first command you should issue is ``dms.get_status``. This will display a status like 'READY' or 'MONITOR' and a couple of error codes (that should generally be 0). Alternatively, you can type ``status = dms.get_status`` to store this information in the variable ``status``. That variable can be accessed by double clicking on the variable in the Matlab workspace window.
+
+If the DMS status is not 'READY', you can always reset it with ``dms.reset``.
+
+DMS Calibration
+===============
+
+To get a live sensor image for alignment of the optics, run ``DMS_Viewer.exe`` from Windows Explorer (not Matlab). When you are done, activate the Windows command window that opened automatically and press any key to exit the alignment mode.
+
+Then go back to Matlab. Typical workflow to calibrate a new DMS looks like this:
+
+.. code-block:: matlab
+
+	% instantiate DMSI object (if you haven't already)
+	dms = dmsi
+
+	% to ensure the DMS is not in an active mode
+	dms.reset
+
+	% confirm that DMS status is 'READY'
+	dms.get_status
+
+	% cover sensor, get new dark level
+	dms.calibrate(1)
+
+	% uncover sensor, get new background
+	dms.calibrate(2)
+
+	% insert calibration cassette and perform calibration
+	dms.calibrate(3)
+
+	% verify, then store the calibration in non-volatile memory
+	dms.plot_calibration() % black dashed bins should be centered on 8 peaks
+	dms.store_calibration
+
+
+Setting Configuration Parameters
+================================
+
+Before the DMS can monitor dispenses, a few configuration parameters must be set. The most important are the approximate stream diameter in mils (7 for the 1 uL cassette, and 14 for the 5 or 10 uL cassette) and the number of dispenses in the protocol. The latter refers to the number of wells that will be dispensed by each channel, i.e. 12, 48, or 192 for 96, 384, and 1536 well plates respectively.
+
+To manually identify a DMS and set its parameters similar to the way the LHC will do in production:
+	 
+.. code-block:: matlab
+
+	% instantiate DMSI object (if you haven't already)
+	dms = dmsi
+
+	% verify the ID and staus of the connected DMS
+	dms.get_id
+	dms.get_status % confirm that it is 'READY'
+
+	% check the configuration parameters
+	c = dms.get_config
+
+	% set a couple of relevant parameters in preperation to monitor
+	% a 384-well plate dispense with a 1 uL cassette
+	c.stream_diameter = 7  % 7 or 14 for 1 or 5/10 uL cassettes respectively
+	c.n_dispenses = 48     % 12, 48, or 192 for 96, 384, and 1536 plates respectively
+	dms.set_config(c)      % send the values to the DMS
+	
+	% any time the configuration parameters are changed, clear the dispense history
+	dms.clear_history
+	
+Dispense Monitoring
+===================
+
+To manually monitor a dispense and collect fault data similar to the way the LHC will do in production, first set the appropriate configuration parameters as shown above, then:
+
+.. code-block:: matlab
+	
+	% monitor a dispense
+	dms.monitor_dispense
+
+	% Run the dispenser.
+	% After dispense is complete, confirm that DMS status is 'READY',
+	dms.get_status
+	
+	% then download the fault detection data.	
+	faults = dms.return_well_faults
+	 
+	 
+To use Creare's higher level debugging functions to plot dispense data automatically:
+	 
+.. code-block:: matlab
+	 
+	% Set the configuration parameters as above. Then:
+	dms.monitor_dispense
+	% Run the dispenser. When it is done:
+	dms.plot_dispense
+
+	% To continuously monitor many dispenses and plot running data:
+	dms.track_dispenses
+	% then run the dispenser as many times as you like.
+	% Data is automatically plotted and saved.
+
+	% If you do want the full signals downloaded and plotted:
+	dms.track_dispenses(true)
+	% Downloading the full signals takes a while.
+	% Make sure to wait until data download is complete and
+	% the plots begin to update before starting the next dispense.
+	% Click the 'exit' button to stop at any time.
+
+	% If you want to continue collecting data in a file from a
+	% previous session, you can simply select the existing file
+	% in the track_dispenses file selection GUI. Choose a
+	% summary file that is not post-pended with a 4 digit integer
+	% dispense number. To 'rewind' the data collection, you can 
+	% manually set the index number to a lower value. This will 
+	% overwrite the existing data.
+
+Plotting Previously Acquired Data
+=================================
+
+.. code-block:: matlab
+
+	% To plot the data stored in a ``NNNN_*_DMS_data.mat`` file
+	% from a dispense collected with dms.track_dispenses:
+	dms.plot_dispense('file')
+	% Then select any file that IS post-pended with a 4 digit integer.
+	
+	% To plot the summary data from many plate dispenses
+	% in a ``*_DMS_data.mat`` file collected with dms.track_dispenses:
+	dms.plot_distributions
+	% then select a summary file that is NOT post-pended with
+	% a 4 digit integer dispense number.
+
+Updating Firmware
+=================
+
+To update the DMS firmware, simply run ``dms.update_firmware`` and then navigate to the appropriate 'DMS.bin' file. Do not interrupt the update process. It should only take a few seconds. Occationally, this process will fail due to a race condition in the hardware and the firmware will not be updated. If this occurs, just run ``dms.update_firmware`` again.

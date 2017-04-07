@@ -14,11 +14,11 @@ Revision Log
 
 .. csv-table:: Revision Log
 	:header: "Date", "Author", "Changes"
-	:widths: 10, 10, 80
-	:name: Revision Log
+	:widths: 15, 10, 75
+	:name: ICD Revision Log
 	
-	"3/3/2017", 	"MCR",	"Added this revision log."
-	"2017-03-22", 	"WHF",	"Added GET_WELL_FAULTS command description."
+	"2017/03/22", 	"WHF",	"Added GET_WELL_FAULTS command description."
+	"2017/3/3", 	"MCR",	"Added this revision log."
 
 Introduction
 ============
@@ -28,7 +28,7 @@ and the host computer.  It partially replicates information found in the header 
 of the source code tree.  Every effort has been made to make these two documents agree, but in the case of disagreement
 dmsCodes.h, and thus the source code, prevail.
  
-.. _usb-interface:
+.. _icd-usb-interface:
  
 USB Interface
 =============
@@ -78,7 +78,7 @@ a ‘Write’ is defined as the host sending additional data along with the comm
 	
 The commands are described in more detail below. 
 
-.. _status:
+.. _icd-status:
 
 Status
 ======
@@ -143,7 +143,7 @@ The following error codes are currently defined.
 	11,	DMS_ERR_CALIBRATION_INVALID,	"The data in calibration contain errors."
 	12-255,  RESERVED,                  ""    
 	
-.. _id:
+.. _icd-id:
 	
 ID
 ==
@@ -151,14 +151,14 @@ This command causes the DMS to return the build date and time of its firmware, t
 
 .. csv-table:: Identification Data
 	:header: "Data Item",	"Format",	"Field Length (bytes)"
-	:widths: 10, 5
+	:widths: 5, 10, 5
 	:name: Identification Data
 
 	Build Date / Time,	String(Mmm dd yyyy hh:mm:ss),	24
 	Unique ID,	u32 x 4,	16
 	Engineering Version Number, "String, e.g. '1.0'",	8
 
-.. _config-get:
+.. _icd-config-get:
 	
 Config Get
 ==========
@@ -179,7 +179,7 @@ In response to the CONFIG_GET command, the DMS will return the current value of 
 	
 Please refer to the :ref:`Configuration Parameters` in the :ref:`firmware-spec` for the exact usage of these parameters.
 
-.. _config-set:
+.. _icd-config-set:
 
 Config Set
 ==========
@@ -187,7 +187,7 @@ Config Set
 The host may overwrite the configuration parameters with this command.  The data provided
 should exactly match :numref:`Configuration Data`.
 
-.. _calibrate:
+.. _icd-calibrate:
 
 Calibrate
 =========
@@ -208,11 +208,11 @@ There are currently three operations defined, which the host may select via the 
 	
 See :ref:`calibration` in the :ref:`firmware-spec` for the full details of these operations.
 
-After the operation is commanded, :ref:`status` should be polled to observed the return of the DMS to the READY state.  
+After the operation is commanded, :ref:`icd-status` should be polled to observed the return of the DMS to the READY state.  
 If the error code is zero, then the calibration operation was successful; otherwise there was a problem that requires
 operator attention.
 
-.. _get-calibration:
+.. _icd-get-calibration:
 
 Get Calibration
 ===============
@@ -238,7 +238,7 @@ The calibration has the format shown in :numref:`Calibration Data`.
 	
 Please refer to the :ref:`calibration` section of the :ref:`firmware-spec` for the meaning of these calibration elements.
 
-.. _store-calibration:
+.. _icd-store-calibration:
 
 Store Calibration
 =================
@@ -246,7 +246,7 @@ Store Calibration
 After the calibration is computed, it is held in RAM only.  After this command is executed the
 calibration is written to non-volatile memory.
 
-.. _monitor-dispense-icd:
+.. _icd-monitor-dispense-icd:
 
 Monitor Dispense
 ================
@@ -255,7 +255,7 @@ This command instructs the DMS to begin monitoring the sensor for a dispense ope
 it will proceed to the MONITOR state, and wait for triggers.  When the DMS
 has returned to the READY state, the results are ready and can be requested.
 
-.. _get-dispense-data:
+.. _icd-get-dispense-data:
 
 Get Dispense Data
 =================
@@ -265,7 +265,9 @@ means that some fields ('signals', in particular) will require several reads
 to capture fully.  To use this command most effectively, instantiate
 an instance of the DMS_DISPENSE_DATA structure.  Then, to receive a particular
 field, use code similar to the following:
-::
+
+.. code-block:: C
+
 	uint32_t offsetBytes = offsetof(dmsDispenseData.info);
 	ctrl_read(
 			DMS_CMD_GET_DISPENSE_DATA,         // bReq
@@ -278,7 +280,7 @@ field, use code similar to the following:
 To receive larger blocks, simply loop, incrementing offsetBytes each time by
 the number of characters received.
 
-.. _clear-history:
+.. _icd-clear-history:
 
 Clear History
 =============
@@ -288,7 +290,7 @@ normalized by the median of results from previous plates.  This is useful when
 the baseline has changed, for example due to the replacement of the dispense
 cartridge.
 
-.. _set-reference-dispense:
+.. _icd-set-reference-dispense:
 
 Set Reference Dispense
 ======================
@@ -296,7 +298,7 @@ Set Reference Dispense
 If the 'Ref Mode' configuration parameter is non-zero, a user reference will be
 used.  This command makes the most recent dispense the user reference.
 
-.. _get-well-faults:
+.. _icd-get-well-faults:
 
 Get Well Faults
 ===============
@@ -313,7 +315,7 @@ Each two bits correspond to a fault severity level: 0, no fault; 1, notice; 2,
 warning; and 3, error.
 
 
-.. _stream:
+.. _icd-stream:
 
 Stream
 ======
@@ -336,7 +338,7 @@ The header consists of two parts.  The upper 16 bits holds the value 0x7819, whi
 of a packet if synchronization is lost.  The lower 16 bits contain trigger status.  Bit 0 is the pump trigger, while
 bit 1 is the plate trigger.  Bits 2 through 15 are reserved.
 
-.. _firmware-block:
+.. _icd-firmware-block:
 
 Firmware Block
 ==============
@@ -346,7 +348,7 @@ DMS's memory using this command.  Up to 512 bytes can be sent with each
 transfer.  The offset of each block in bytes are the wValue and wIndex
 parameters.  Only send binary program files (e.g. DMS.bin).
 
-.. _firmware-program:
+.. _icd-firmware-program:
 
 Firmware Program
 ================
@@ -355,7 +357,7 @@ Once the program has been successfully transmitted to the DMS in its entirety,
 this command may be executed to copy the program from RAM into the device's
 FLASH.  The device will then be rebooted.
 
-.. _dmsCodes.h:
+.. _icd-dmsCodes.h:
 
 dmsCodes.h
 ==========

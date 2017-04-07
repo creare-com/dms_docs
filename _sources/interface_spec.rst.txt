@@ -15,68 +15,70 @@ Revision Log
 .. csv-table:: Revision Log
 	:header: "Date", "Author", "Changes"
 	:widths: 10, 10, 80
-	:name: Revision Log
+	:name: Interface Spec Revision Log
 	
-	"3/8/2017",    "MCR",   "Minor tweaks to :ref:`example-interface` section."
-	"3/3/2017", 	"MCR",	"Added :ref:`example-interface` section."
+	"4/7/2017",		"MCR", 	"Added firmware update."
+	"3/29/2017",    "MCR",   "Broke example-interface section out into new :ref:`development-interface` section."
+	"3/8/2017",    "MCR",   "Minor tweaks to example-interface section."
+	"3/3/2017", 	"MCR",	"Added example-interface section."
 
 Overview
 ========
 
 This document describes the software interface that interacts with the DMS firmware.  The host software invokes the commands enumerated in the :ref:`icd` (which call the DMS to execute the functions defined in the :ref:`firmware-spec`) and then handles any results returned. There are two primary components of this interface:
 
-#. A :ref:`GUI <configuration-gui>` which allows comprehensive interaction with the DMS for purposes of alignment, calibration, and debugging. This GUI will only be accessed by trained technicians, not by the end-user.
-#. A simple, low level :ref:`interface<biotek-interface>` which the BioTek host application uses to send simple commands and recieve fault detection data from the DMS during normal operation.
+#. A :ref:`GUI <is-configuration-gui>` which allows comprehensive interaction with the DMS for purposes of alignment, calibration, and debugging. This GUI will only be accessed by trained technicians, not by the end-user.
+#. A simple, low level :ref:`interface<is-biotek-interface>` which the BioTek host application uses to send simple commands and recieve fault detection data from the DMS during normal operation.
 
 Host
 ====
 
-For product roll-out, the DMS will be controlled by a PC (Windows 7 or later) over a :ref:`usb-interface`. In the future, different devices may interact with the DMS and act as its host, such as the dispenser itself, which runs Windows CE.  The expectation is that the same USB interface will be used in all cases.
+For product roll-out, the DMS will be controlled by a PC (Windows 7 or later) over a :ref:`icd-usb-interface`. In the future, different devices may interact with the DMS and act as its host, such as the dispenser itself, which runs Windows CE.  The expectation is that the same USB interface will be used in all cases.
 
-.. _configuration-gui:
+.. _is-configuration-gui:
 
 Configuration GUI
 =================
 
 A GUI is required to invoke the firmware commands enumerated in the :ref:`icd` and display the results. This GUI will be activated from within the BioTek host’s user interface.  It will be used only by technicians trained to align, calibrate, and debug the device. It will not be available to end-users.
 
-.. _gui_paramters:
+.. _is-gui_paramters:
 
 GUI Paramters
 -------------
 
-Parameters stored in the GUI are tabulated in :numref:`GUI Parameters`:
+Parameters stored in the GUI are tabulated in :numref:`is-gui-parameters-table`:
 
 .. csv-table:: GUI Parameters
 	:header: "Parameter", "Description"
 	:widths: 10, 30
-	:name: GUI Parameters
+	:name: is-gui-parameters-table
 	
-	"``dms_id``", 		"The ID of the currently connected DMS (See :ref:`id`).
+	"``dms_id``", 		"The ID of the currently connected DMS (See :ref:`icd-id`).
 	"
 	"``file_string``", 		"A string that is inserted into all saved filenames for identification purposes. Default is an empty string.
 	"
 	"``save_path``", 			"Path where all files are saved. Default is a ``data`` folder in the DMS GUI software base path.
 	"
 
-.. _gui_functions:
+.. _is-gui-functions:
 	
 GUI Functions
 -------------
 	
 The GUI should have buttons to perform the following operations. (See :ref:`Supported Commands Summary`.)
 
-	1.	**Connect to DMS.** List all DMS systems physically connected to the host and allow the user to select one to activate. Assign the result to ``dms_id`` (See :numref:`GUI Parameters` above.) Display the ID of the active DMS at all times, and send commands only to this unit. (See ``ID`` command.)
+	1.	**Connect to DMS.** List all DMS systems physically connected to the host and allow the user to select one to activate. Assign the result to ``dms_id`` (See :numref:`is-gui-parameters-table` above.) Display the ID of the active DMS at all times, and send commands only to this unit. (See ``ID`` command.)
 	
 	2.	**Edit dispense parameters.** Display an editable list of the :numref:`Configuration Data`  :ref:`Configuration Data` in a pop-up window. Provide confirmation and cancel buttons. (See ``CONFIG-GET`` and ``CONFIG-SET`` commands.)
 	
-	3. **Edit file strings.** Allow user to edit ``file_string`` and ``save_path``. It would be nice if there was a ‘browse’ button for the ``file_path``. (See :numref:`GUI Parameters` above.)
+	3. **Edit file strings.** Allow user to edit ``file_string`` and ``save_path``. It would be nice if there was a ‘browse’ button for the ``file_path``. (See :numref:`is-gui-parameters-table` above.)
 	
-	4.	**View background.**  Invoke ``GET_CALIBRATION`` and display ``Background`` as a bar plot. For display, the data should be normalized at the ADC full scale and the y-limit fixed at 1. If ``cal_bin_edges`` is defined, indicate these values on the bar plot by overlaying bold vertical lines at the appropriate pixel locations. (See :ref:`get-calibration`.)
+	4.	**View background.**  Invoke ``GET_CALIBRATION`` and display ``Background`` as a bar plot. For display, the data should be normalized at the ADC full scale and the y-limit fixed at 1. If ``cal_bin_edges`` is defined, indicate these values on the bar plot by overlaying bold vertical lines at the appropriate pixel locations. (See :ref:`icd-get-calibration`.)
 	
-	5.	**View calibration parameters.** Invoke ``GET_CALIBRATION`` and display the :numref:`Calibration Data` :ref:`Calibration Data` (except ``cal_background`` and ``cal_image``) in a text format in a pop-up window. Also display ``cal_image`` as a bar plot. For display, the data should be normalized at the ADC full scale and the y-limit fixed at 1. If ``cal_bin_edges`` is defined, indicate these values on the bar plot by overlaying bold vertical lines at the appropriate pixel locations. (See :ref:`get-calibration`.)
+	5.	**View calibration parameters.** Invoke ``GET_CALIBRATION`` and display the :numref:`Calibration Data` :ref:`Calibration Data` (except ``cal_background`` and ``cal_image``) in a text format in a pop-up window. Also display ``cal_image`` as a bar plot. For display, the data should be normalized at the ADC full scale and the y-limit fixed at 1. If ``cal_bin_edges`` is defined, indicate these values on the bar plot by overlaying bold vertical lines at the appropriate pixel locations. (See :ref:`icd-get-calibration`.)
 	
-	6.	**Initiate alignment mode.** Show a live bar-graph of the raw detector signal using the ``STREAM`` function. Overlay a line plot of ``cal_background`` on top of this dynamic bar plot (see :ref:`get-calibration`.) For display, the data should be normalized at the ADC full scale and the y-limit fixed at 1. Provide a button or keystroke to exit this mode.
+	6.	**Initiate alignment mode.** Show a live bar-graph of the raw detector signal using the ``STREAM`` function. Overlay a line plot of ``cal_background`` on top of this dynamic bar plot (see :ref:`icd-get-calibration`.) For display, the data should be normalized at the ADC full scale and the y-limit fixed at 1. Provide a button or keystroke to exit this mode.
 	
 	7.	**Update dark level.** Prompt the user to cover the sensor. After the user confirms, invoke ``CALIBRATE(1)``. Report both the original and the resulting ``Dark_Level`` (:ref:`Calibration Data`) in an informational pop-up window.
 	
@@ -90,9 +92,11 @@ The GUI should have buttons to perform the following operations. (See :ref:`Supp
 	
 	12. **Set reference dispense.** Invoke ``SET_REFERENCE_DISPENSE``. Poll ``STATUS``. If ``Last_Reported_Error`` is ``DMS_ERR_NO_RECENT_HISTORY``, show a popup error message and exit.  Otherwise, if ``Ref_Mode`` (:ref:`Calibration Data`) is not ``'user'``, prompt to set this value, with confirm and cancel buttons. Upon user confirmation, apply this value using ``CONFIG-GET`` and ``CONFIG-SET``. (See :ref:`fault-detection`.)
 	
-	13. **Set reference mode.** Provide a listbox for the user to select one of the valid values of ``Ref_Mode`` (:ref:`Calibration Data`) as defined in :numref:`Configuration Parameters` :ref:`Configuration Parameters`. Upon user confirmation, apply this value using ``CONFIG-GET`` and ``CONFIG-SET`` (:ref:`Supported Commands Summary`).
+	13. **Set reference mode.** Provide a listbox for the user to select one of the valid values of ``Ref_Mode`` (:ref:`Calibration Data`) as defined in :numref:`Configuration Parameters` :ref:`Configuration Parameters`. Upon user confirmation, apply this value using ``CONFIG_GET`` and ``CONFIG_SET`` (:ref:`Supported Commands Summary`).
 	
-.. _gui-layout:
+	14. **Update Firmware.** Prompt user to select a valid ``DMS.bin`` firmware file. Invoke ``FIRMWARE_BLOCK`` multiple times to upload this file to the DMS. Invoke ``FIRMWARE_GET_CRC32`` to get the checksum. Compute the CRC32 of the local file. If the checksums are equal, invoke ``FIRMWARE_PROGRAM`` to install the uploaded binary to non-volatile memory.
+	
+.. _is-gui-layout:
 	
 GUI Layout
 ----------
@@ -100,6 +104,7 @@ GUI Layout
 The layout of the configuration GUI	should be designed around the following typical workflow:
 
 	1. **Connect to DMS** will always be the first operation. This should be at the top and always visible.
+
 	
 	2. To calibrate a newly installed DMS unit:
 		a. **Initiate alignment mode**.
@@ -109,7 +114,9 @@ The layout of the configuration GUI	should be designed around the following typi
 		e. **View background**.
 		f. **View calibration paramters**.
 		
-	3. Manual dispense monitoring for debugging purposes. These commands are only likely to be used by Creare, and are the lowest priority for the BioTek configuration GUI. 
+	3. **Update Firmware** will not be used often, but should be easily accessible.
+		
+	4. Manual dispense monitoring for debugging purposes. These commands are only likely to be used by Creare, and are the lowest priority for the BioTek configuration GUI. 
 		a. **Edit file strings.**
 		b. **Record raw data.**
 		c. **Edit dispense parameters.**
@@ -117,7 +124,7 @@ The layout of the configuration GUI	should be designed around the following typi
 		e. **Set reference dispense.**
 		f. **Set reference mode.**
 
-.. _biotek-interface:	
+.. _is-biotek-interface:	
 	
 BioTek Application Interface
 =============================
@@ -133,110 +140,10 @@ In addition to being able to launch the GUI described above, the BioTek LHC shou
 	#. Automatically run ``CLEAR_HISTORY`` any time the :ref:`Configuration Data` changes (i.e. new cassette or dispense parameters.)
 	
 
-.. _example-interface:	
+.. _is-development-interface:	
 	
-Example Interface
-=================
+Development Interface
+=====================
 
-Creare has written a DMS interface in Matlab (``dmsi.m``), provided here as an example. The m-file is available either :download:`here <../Matlab/DMSI/dmsi.m>` or :download:`here <../../Matlab/DMSI/dmsi.m>`.
+Creare has created a development interface in Matlab. It is documented in :numref:`development-interface`.
 
-To install the USB driver used by the DMS, download and unzip the ``DMS_Driver`` (either :download:`here <../Windows/DMS_Driver/install_dms.zip>` or :download:`here <../../Windows/DMS_Driver/install_dms.zip>`), then run ``install_dms.bat``. Once you've done that, you can connect the DMS to the computer with a USB cable.
-
-To get a live sensor image for alignment of the optics, download and run ``DMS_Viewer.exe`` (either :download:`here <../Windows/DMS_Viewer/bin/DMS_Viewer.exe>` or :download:`here <../../Windows/DMS_Viewer/bin/DMS_Viewer.exe>`) from Windows Explorer. When you are done, activate the command window that opened automatically and press any key to exit the alignment mode.
-
-Then open Matlab. Typical workflow to calibrate a new DMS:
-
-.. code-block:: matlab
-
-	% instantiate DMSI object
-	dms = dmsi
-
-	% to ensure the DMS is not in an active mode
-	dms.reset()
-
-	% confirm that DMS status is 'READY'
-	dms.get_status()
-
-	% cover sensor, get new dark level
-	dms.calibrate(1)
-
-	% uncover sensor, get new background
-	dms.calibrate(2)
-
-	% insert calibration cassette and perform calibration
-	dms.calibrate(3)
-
-	% verify, then store the calibration in non-volatile memory
-	dms.plot_calibration() % black dashed bins should be centered on 8 peaks
-	dms.store_calibration
-	 
-
-To manually collect some data from a dispense and get the fault detection data similar to the way the the LHC will do in production:
-	 
-.. code-block:: matlab
-
-	% instantiate DMSI object
-	dms = dmsi
-
-	% verify the ID and staus of the connected DMS
-	dms.get_id()
-	dms.get_status() % confirm that it is 'READY'
-
-	% check the configuration parameters
-	c = dms.get_config()
-
-	% set a couple relevant parameters in preperation to monitor
-	% a 384-well plate dispense with a 1 uL cassette
-	c.stream_diameter = 7 % 7 or 14 for 1 or 5/10 uL cassettes respectively
-	c.n_dispenses = 48  % 12, 48, or 192 for 96, 384, and 1536 plates respectively
-	dms.set_config(c) % send the values to the DMS
-
-	% monitor a dispense
-	dms.monitor_dispense()
-
-	% Run the dispenser.
-	% After dispense is complete, confirm that DMS status is 'READY',
-	% then download the fault detection data.
-	dms.get_status
-	faults = dms.return_well_faults
-	 
-	 
-To use Creare's higher level debugging functions to plot dispense data automatically:
-	 
-.. code-block:: matlab
-	 
-	% Set the configuration parameters as above. Then:
-	dms.monitor_dispense()
-	% Run the dispenser. When it is done:
-	dms.plot_dispense()
-
-	% To continuously monitor many dispenses and plot running data:
-	dms.track_dispenses()
-	% then run the dispenser as many times as you like.
-	% Data is automatically plotted and saved.
-
-	% If you do want the full signals downloaded and plotted:
-	dms.track_dispenses(true)
-	% Downloading the full signals takes a while.
-	% Make sure to wait until data download is complete before
-	% starting the next dispense.
-
-	% If you want to plot a dataset you collected earlier,
-	% and/or continue collecting data in the same file, you
-	% can simply select an existing file in the track_dispenses
-	% file selection GUI. Choose a summary file that is not prepended
-	% with a 4 digit integer dispense number.
-
-	% To plot the raw signals from a dispense collected with
-	% dms.track_dispenses:
-	dms.plot_dispense('file')
-	% Then select a file that IS prepended with the 4 digit integer.
-	 
-
-Other tidbits:
-
-.. code-block:: matlab
-	 
-	% if the DMS ever seems 'stuck', abort whatever it is doing
-	% and return to 'READY' mode
-	dms.reset()

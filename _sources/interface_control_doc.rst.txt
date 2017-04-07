@@ -7,7 +7,7 @@ Interface Control Document
 Copyright
 =========
 
-Copyright Creare LLC 2016.  This software specification is proprietary and should be considered confidential.  Reproduction or distribution prohibited without written permission from Creare.
+Copyright Creare LLC 2017.  This software specification is proprietary and should be considered confidential.  Reproduction or distribution prohibited without written permission from Creare.
 
 Revision Log
 ============
@@ -17,6 +17,7 @@ Revision Log
 	:widths: 15, 10, 75
 	:name: ICD Revision Log
 	
+	"2017/04/04",	"WHF",	"Added FIRMWARE_GET_CRC32 command description."
 	"2017/03/22", 	"WHF",	"Added GET_WELL_FAULTS command description."
 	"2017/3/3", 	"MCR",	"Added this revision log."
 
@@ -74,7 +75,8 @@ a ‘Write’ is defined as the host sending additional data along with the comm
 	GET_WELL_FAULTS, Get data corresponding to well faults, R, 0x0D, 0, offset, (up to 4096)
 	STREAM,	Start / stop streaming of raw data from sensor,	R,	0x10,	0 or 1,	0,	0
 	FIRMWARE_BLOCK,	Send a block of firmware data,	W,	0x20,	HI(offset),	LO(offset), (up to 512)   
-	FIRMWARE_PROGRAM,	Cause the DMS to rewrite its FLASH based on the blocks sent,	R,	0x21,	HI(size),	LO(SIZE), 0	
+	FIRMWARE_PROGRAM,	Cause the DMS to rewrite its FLASH based on the blocks sent,	R,	0x21,	HI(size),	LO(size), 0	
+	FIRMWARE_GET_CRC32,	Cause the DMS to compute the 32-bit CRC of the firmware it has received,	R,	0x22,	HI(size),	LO(size),	4  
 	
 The commands are described in more detail below. 
 
@@ -356,6 +358,17 @@ Firmware Program
 Once the program has been successfully transmitted to the DMS in its entirety,
 this command may be executed to copy the program from RAM into the device's
 FLASH.  The device will then be rebooted.
+
+.. _icd-firmware-get-crc:
+
+Firmware Get CRC-32
+===================
+
+Once the program has been successfully transmitted to the DMS in its entirety,
+in response to this command the DMS will compute and transmit the CRC-32 of
+the bytes which have sent which comprise the Firmware.  This can be compared
+against the local CRC of the firmware as a verification step before programming
+it to the DMS's FLASH.
 
 .. _icd-dmsCodes.h:
 

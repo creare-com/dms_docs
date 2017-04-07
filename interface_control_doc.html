@@ -47,7 +47,7 @@
 <span id="icd"></span><h1>3. Interface Control Document<a class="headerlink" href="#interface-control-document" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="copyright">
 <h2>3.1. Copyright<a class="headerlink" href="#copyright" title="Permalink to this headline">¶</a></h2>
-<p>Copyright Creare LLC 2016.  This software specification is proprietary and should be considered confidential.  Reproduction or distribution prohibited without written permission from Creare.</p>
+<p>Copyright Creare LLC 2017.  This software specification is proprietary and should be considered confidential.  Reproduction or distribution prohibited without written permission from Creare.</p>
 </div>
 <div class="section" id="revision-log">
 <h2>3.2. Revision Log<a class="headerlink" href="#revision-log" title="Permalink to this headline">¶</a></h2>
@@ -65,11 +65,15 @@
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td>2017/03/22</td>
+<tr class="row-even"><td>2017/04/04</td>
+<td>WHF</td>
+<td>Added FIRMWARE_GET_CRC32 command description.</td>
+</tr>
+<tr class="row-odd"><td>2017/03/22</td>
 <td>WHF</td>
 <td>Added GET_WELL_FAULTS command description.</td>
 </tr>
-<tr class="row-odd"><td>2017/3/3</td>
+<tr class="row-even"><td>2017/3/3</td>
 <td>MCR</td>
 <td>Added this revision log.</td>
 </tr>
@@ -241,8 +245,16 @@ a ‘Write’ is defined as the host sending additional data along with the comm
 <td>R</td>
 <td>0x21</td>
 <td>HI(size)</td>
-<td>LO(SIZE)</td>
+<td>LO(size)</td>
 <td>0</td>
+</tr>
+<tr class="row-odd"><td>FIRMWARE_GET_CRC32</td>
+<td>Cause the DMS to compute the 32-bit CRC of the firmware it has received</td>
+<td>R</td>
+<td>0x22</td>
+<td>HI(size)</td>
+<td>LO(size)</td>
+<td>4</td>
 </tr>
 </tbody>
 </table>
@@ -669,8 +681,16 @@ parameters.  Only send binary program files (e.g. DMS.bin).</p>
 this command may be executed to copy the program from RAM into the device&#8217;s
 FLASH.  The device will then be rebooted.</p>
 </div>
+<div class="section" id="firmware-get-crc-32">
+<span id="icd-firmware-get-crc"></span><h2>3.21. Firmware Get CRC-32<a class="headerlink" href="#firmware-get-crc-32" title="Permalink to this headline">¶</a></h2>
+<p>Once the program has been successfully transmitted to the DMS in its entirety,
+in response to this command the DMS will compute and transmit the CRC-32 of
+the bytes which have sent which comprise the Firmware.  This can be compared
+against the local CRC of the firmware as a verification step before programming
+it to the DMS&#8217;s FLASH.</p>
+</div>
 <div class="section" id="dmscodes-h">
-<span id="icd-dmscodes-h"></span><h2>3.21. dmsCodes.h<a class="headerlink" href="#dmscodes-h" title="Permalink to this headline">¶</a></h2>
+<span id="icd-dmscodes-h"></span><h2>3.22. dmsCodes.h<a class="headerlink" href="#dmscodes-h" title="Permalink to this headline">¶</a></h2>
 <p>The current version of dmsCodes.h is included here for reference. Note the horizontal scroll bar at the bottom, if you need to see the end of the lines. Sorry, this is a pain!</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/*</span>
 <span class="cm">	dmsCodes.h</span>
@@ -967,7 +987,8 @@ FLASH.  The device will then be rebooted.</p>
 <li><a class="reference internal" href="#stream">3.18. Stream</a></li>
 <li><a class="reference internal" href="#firmware-block">3.19. Firmware Block</a></li>
 <li><a class="reference internal" href="#firmware-program">3.20. Firmware Program</a></li>
-<li><a class="reference internal" href="#dmscodes-h">3.21. dmsCodes.h</a></li>
+<li><a class="reference internal" href="#firmware-get-crc-32">3.21. Firmware Get CRC-32</a></li>
+<li><a class="reference internal" href="#dmscodes-h">3.22. dmsCodes.h</a></li>
 </ul>
 </li>
 </ul>

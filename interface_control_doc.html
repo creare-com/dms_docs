@@ -693,11 +693,11 @@ it to the DMS&#8217;s FLASH.</p>
 <span id="icd-dmscodes-h"></span><h2>3.22. dmsCodes.h<a class="headerlink" href="#dmscodes-h" title="Permalink to this headline">¶</a></h2>
 <p>The current version of dmsCodes.h is included here for reference. Note the horizontal scroll bar at the bottom, if you need to see the end of the lines. Sorry, this is a pain!</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/*</span>
-<span class="cm">	dmsCodes.h</span>
-<span class="cm">	</span>
-<span class="cm">	Declarations of codes common to the DMS and host devices.</span>
-<span class="cm">	</span>
-<span class="cm">	2016-08-23  WHF  Created.</span>
+<span class="cm">  dmsCodes.h</span>
+<span class="cm">  </span>
+<span class="cm">  Declarations of codes common to the DMS and host devices.</span>
+<span class="cm">  </span>
+<span class="cm">  2016-08-23  WHF  Created.</span>
 <span class="cm">*/</span>
 
 <span class="cp">#ifndef __DMSCODES_H__</span>
@@ -769,11 +769,11 @@ it to the DMS&#8217;s FLASH.</p>
 
 <span class="c1">/////  Calibration Command Sub-Codes  /////</span>
 <span class="k">typedef</span> <span class="k">enum</span> <span class="n">tag_cal_mode</span> <span class="p">{</span>
-	<span class="n">DMS_CAL_OFF</span><span class="p">,</span>
-	<span class="n">DMS_CAL_GET_DARK_LEVEL</span><span class="p">,</span>
-	<span class="n">DMS_CAL_SET_BACKGROUND</span><span class="p">,</span>
-	<span class="n">DMS_CAL_CALIBRATE</span>
-<span class="p">}</span> <span class="n">dms_cal_mode_t</span><span class="p">;</span>	
+  <span class="n">DMS_CAL_OFF</span><span class="p">,</span>
+  <span class="n">DMS_CAL_GET_DARK_LEVEL</span><span class="p">,</span>
+  <span class="n">DMS_CAL_SET_BACKGROUND</span><span class="p">,</span>
+  <span class="n">DMS_CAL_CALIBRATE</span>
+<span class="p">}</span> <span class="n">dms_cal_mode_t</span><span class="p">;</span> 
 
 <span class="c1">/////  Flags  /////</span>
 <span class="c1">//  The first 16 are hardware errors; the last 16 are warnings.</span>
@@ -784,23 +784,23 @@ it to the DMS&#8217;s FLASH.</p>
 
 <span class="c1">/////  Error Codes  /////</span>
 <span class="k">typedef</span> <span class="k">enum</span> <span class="n">tag_dms_err</span> <span class="p">{</span>
-	<span class="n">DMS_ERR_NONE</span><span class="p">,</span>
-	<span class="n">DMS_ERR_SENSOR_NOT_DARK</span><span class="p">,</span>
-	<span class="n">DMS_ERR_INSUFFICIENT_BG_ILLUM</span><span class="p">,</span>
-	<span class="n">DMS_ERR_INSUFFICIENT_PEAKS</span><span class="p">,</span>
-	<span class="n">DMS_ERR_CAL_NOT_CENTERED</span><span class="p">,</span>
-	
-	<span class="n">DMS_ERR_ILLEGAL_STATE</span><span class="p">,</span>
-	<span class="n">DMS_ERR_UNSUPPORTED_OPERATION</span><span class="p">,</span>
-	<span class="n">DMS_ERR_MEMORY</span><span class="p">,</span>
-	<span class="n">DMS_ERR_NO_VALID_REFERENCE</span><span class="p">,</span>
-	<span class="n">DMS_ERR_STREAM_DIAMETER_UNSUPPORTED</span><span class="p">,</span>
-	<span class="n">DMS_ERR_NO_RECENT_HISTORY</span><span class="p">,</span>
-	<span class="n">DMS_ERR_CALIBRATION_INVALID</span><span class="p">,</span>
-	
-	<span class="n">DMS_ERR_THRESHOLD_TABLE_FULL</span><span class="p">,</span>
-	
-	<span class="n">DMS_N_ERRORS</span>
+  <span class="n">DMS_ERR_NONE</span><span class="p">,</span>
+  <span class="n">DMS_ERR_SENSOR_NOT_DARK</span><span class="p">,</span>
+  <span class="n">DMS_ERR_INSUFFICIENT_BG_ILLUM</span><span class="p">,</span>
+  <span class="n">DMS_ERR_INSUFFICIENT_PEAKS</span><span class="p">,</span>
+  <span class="n">DMS_ERR_CAL_NOT_CENTERED</span><span class="p">,</span>
+  
+  <span class="n">DMS_ERR_ILLEGAL_STATE</span><span class="p">,</span>
+  <span class="n">DMS_ERR_UNSUPPORTED_OPERATION</span><span class="p">,</span>
+  <span class="n">DMS_ERR_MEMORY</span><span class="p">,</span>
+  <span class="n">DMS_ERR_NO_VALID_REFERENCE</span><span class="p">,</span>
+  <span class="n">DMS_ERR_STREAM_DIAMETER_UNSUPPORTED</span><span class="p">,</span>
+  <span class="n">DMS_ERR_NO_RECENT_HISTORY</span><span class="p">,</span>
+  <span class="n">DMS_ERR_CALIBRATION_INVALID</span><span class="p">,</span>
+  
+  <span class="n">DMS_ERR_THRESHOLD_TABLE_FULL</span><span class="p">,</span>
+  
+  <span class="n">DMS_N_ERRORS</span>
 <span class="p">}</span> <span class="n">dms_err_t</span><span class="p">;</span>
 
 
@@ -810,27 +810,27 @@ it to the DMS&#8217;s FLASH.</p>
 <span class="k">typedef</span> <span class="kt">uint32_t</span> <span class="n">dms_timestamp_t</span><span class="p">;</span>      <span class="c1">// type used for recording event times</span>
 
 <span class="k">typedef</span> <span class="k">struct</span> <span class="n">tag_dms_status</span> <span class="p">{</span>
-	<span class="kt">uint32_t</span>
-		<span class="n">state</span><span class="p">,</span>                 <span class="c1">// Current controller state</span>
-		<span class="n">flags</span><span class="p">,</span>                 <span class="c1">// Bit flags set</span>
-		<span class="n">lastError</span><span class="p">;</span>             <span class="c1">// Result of the last command</span>
+  <span class="kt">uint32_t</span>
+    <span class="n">state</span><span class="p">,</span>                 <span class="c1">// Current controller state</span>
+    <span class="n">flags</span><span class="p">,</span>                 <span class="c1">// Bit flags set</span>
+    <span class="n">lastError</span><span class="p">;</span>             <span class="c1">// Result of the last command</span>
 <span class="p">}</span> <span class="n">DMS_STATUS</span><span class="p">;</span>
 
 <span class="k">typedef</span> <span class="k">struct</span> <span class="n">tag_dms_id</span> <span class="p">{</span>
-	<span class="kt">char</span> <span class="n">build_date_time</span><span class="p">[</span><span class="mi">24</span><span class="p">];</span>  <span class="c1">// Mmm dd yyyy hh:mm:ss  (20 char, plus 4 nulls)</span>
-	<span class="kt">uint32_t</span> <span class="n">unique_id</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>     <span class="c1">// from the processor</span>
-	<span class="kt">char</span> <span class="n">engineering_version_number</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>  <span class="c1">// null terminated string, e.g. &quot;1.0.0&quot;	</span>
+  <span class="kt">char</span> <span class="n">build_date_time</span><span class="p">[</span><span class="mi">24</span><span class="p">];</span>  <span class="c1">// Mmm dd yyyy hh:mm:ss  (20 char, plus 4 nulls)</span>
+  <span class="kt">uint32_t</span> <span class="n">unique_id</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>     <span class="c1">// from the processor</span>
+  <span class="kt">char</span> <span class="n">engineering_version_number</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>  <span class="c1">// null terminated string, e.g. &quot;1.0.0&quot;  </span>
 <span class="p">}</span> <span class="n">DMS_ID</span><span class="p">;</span>
 
 <span class="k">typedef</span> <span class="k">struct</span> <span class="n">tag_dms_config</span> <span class="p">{</span>
-	<span class="kt">uint32_t</span>
-		<span class="n">stream_diameter_mils</span><span class="p">,</span>
-		<span class="n">n_dispenses</span><span class="p">,</span>
-		<span class="n">dispense_time_msec</span><span class="p">,</span>
-		<span class="n">dispense_period_msec</span><span class="p">,</span>
-		<span class="n">n_ref_history</span><span class="p">,</span>
-		<span class="n">user_ref_mode</span><span class="p">,</span>            <span class="c1">// non-zero if in user mode</span>
-		<span class="n">trigger_delay_msec</span><span class="p">;</span>
+  <span class="kt">uint32_t</span>
+    <span class="n">stream_diameter_mils</span><span class="p">,</span>
+    <span class="n">n_dispenses</span><span class="p">,</span>
+    <span class="n">dispense_time_msec</span><span class="p">,</span>
+    <span class="n">dispense_period_msec</span><span class="p">,</span>
+    <span class="n">n_ref_history</span><span class="p">,</span>
+    <span class="n">user_ref_mode</span><span class="p">,</span>            <span class="c1">// non-zero if in user mode</span>
+    <span class="n">trigger_delay_msec</span><span class="p">;</span>
 <span class="p">}</span> <span class="n">DMS_CONFIG</span><span class="p">;</span>
 
 <span class="cp">#include</span> <span class="cpf">&lt;poppack.h&gt;</span><span class="cp"></span>
@@ -838,42 +838,42 @@ it to the DMS&#8217;s FLASH.</p>
 <span class="cp">#include</span> <span class="cpf">&lt;pshpack2.h&gt;</span><span class="cp"></span>
 
 <span class="k">typedef</span> <span class="k">struct</span> <span class="n">tag_dms_calibration</span> <span class="p">{</span>
-	<span class="kt">uint16_t</span>
-		<span class="n">dark_level</span><span class="p">,</span>
-		<span class="n">cal_background</span><span class="p">[</span><span class="n">DMS_N_PIXELS</span><span class="p">],</span>
-		<span class="n">cal_pix_range</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
-		<span class="n">cal_bin_edges</span><span class="p">[</span><span class="n">DMS_N_BINS</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>  <span class="c1">// the left edge of bin, plus last right</span>
-		
-	<span class="kt">int16_t</span>	
-		<span class="n">cal_image</span><span class="p">[</span><span class="n">DMS_N_PIXELS</span><span class="p">];</span>
-		
-	<span class="kt">float</span>
-		<span class="n">cal_center</span><span class="p">[</span><span class="n">DMS_N_BINS</span><span class="p">],</span>
-		<span class="n">cal_sigma</span><span class="p">[</span><span class="n">DMS_N_BINS</span><span class="p">],</span>
-		<span class="n">cal_amp_scale</span><span class="p">[</span><span class="n">DMS_N_BINS</span><span class="p">],</span>
-		<span class="n">cal_lateral_scale</span><span class="p">[</span><span class="n">DMS_N_BINS</span><span class="p">],</span>
-		<span class="n">cal_sigma_scale</span><span class="p">[</span><span class="n">DMS_N_BINS</span><span class="p">];</span>
+  <span class="kt">uint16_t</span>
+    <span class="n">dark_level</span><span class="p">,</span>
+    <span class="n">cal_background</span><span class="p">[</span><span class="n">DMS_N_PIXELS</span><span class="p">],</span>
+    <span class="n">cal_pix_range</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+    <span class="n">cal_bin_edges</span><span class="p">[</span><span class="n">DMS_N_BINS</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>  <span class="c1">// the left edge of bin, plus last right</span>
+    
+  <span class="kt">int16_t</span> 
+    <span class="n">cal_image</span><span class="p">[</span><span class="n">DMS_N_PIXELS</span><span class="p">];</span>
+    
+  <span class="kt">float</span>
+    <span class="n">cal_center</span><span class="p">[</span><span class="n">DMS_N_BINS</span><span class="p">],</span>
+    <span class="n">cal_sigma</span><span class="p">[</span><span class="n">DMS_N_BINS</span><span class="p">],</span>
+    <span class="n">cal_amp_scale</span><span class="p">[</span><span class="n">DMS_N_BINS</span><span class="p">],</span>
+    <span class="n">cal_lateral_scale</span><span class="p">[</span><span class="n">DMS_N_BINS</span><span class="p">],</span>
+    <span class="n">cal_sigma_scale</span><span class="p">[</span><span class="n">DMS_N_BINS</span><span class="p">];</span>
 <span class="p">}</span> <span class="n">DMS_CALIBRATION</span><span class="p">;</span>
 <span class="cp">#include</span> <span class="cpf">&lt;poppack.h&gt;</span><span class="cp"></span>
 
 
 <span class="cp">#include</span> <span class="cpf">&lt;pshpack4.h&gt;</span><span class="cp"></span>
 <span class="k">typedef</span> <span class="k">struct</span> <span class="n">tag_dms_signals</span> <span class="p">{</span>
-	<span class="kt">float</span>
-		<span class="n">signal_amp</span><span class="p">[</span><span class="n">DMS_N_BINS</span><span class="p">],</span>
-		<span class="n">signal_disp</span><span class="p">[</span><span class="n">DMS_N_BINS</span><span class="p">],</span>
-		<span class="n">signal_width</span><span class="p">[</span><span class="n">DMS_N_BINS</span><span class="p">];</span>
+  <span class="kt">float</span>
+    <span class="n">signal_amp</span><span class="p">[</span><span class="n">DMS_N_BINS</span><span class="p">],</span>
+    <span class="n">signal_disp</span><span class="p">[</span><span class="n">DMS_N_BINS</span><span class="p">],</span>
+    <span class="n">signal_width</span><span class="p">[</span><span class="n">DMS_N_BINS</span><span class="p">];</span>
 <span class="p">}</span> <span class="n">DMS_SIGNALS</span><span class="p">;</span>
 
 <span class="k">typedef</span> <span class="k">struct</span> <span class="n">tag_dms_triggers</span> <span class="p">{</span>
-	<span class="n">dms_timestamp_t</span>
-		<span class="n">begin_dispense</span><span class="p">,</span>
-		<span class="n">end_dispense</span><span class="p">;</span>		
+  <span class="n">dms_timestamp_t</span>
+    <span class="n">begin_dispense</span><span class="p">,</span>
+    <span class="n">end_dispense</span><span class="p">;</span>   
 <span class="p">}</span> <span class="n">DMS_TRIGGERS</span><span class="p">;</span>
 
 <span class="k">typedef</span> <span class="k">struct</span> <span class="n">tag_dms_info</span> <span class="p">{</span>
-	<span class="kt">uint32_t</span>
-		<span class="n">background_warnings</span><span class="p">;</span>
+  <span class="kt">uint32_t</span>
+    <span class="n">background_warnings</span><span class="p">;</span>
 <span class="p">}</span> <span class="n">DMS_INFO</span><span class="p">;</span>
 
 <span class="c1">// Macros to generate bit-masks for warnings: </span>
@@ -881,67 +881,67 @@ it to the DMS&#8217;s FLASH.</p>
 <span class="cp">#define DMS_INFO_BACKGROUND_WARNING_LOW(c)                    (1 &lt;&lt; (c)+16)</span>
 
 <span class="c1">// These features are defined for each well (n_bins * n_dispenses elements)</span>
-<span class="k">typedef</span> <span class="k">struct</span> <span class="n">tag_dms_features</span> <span class="p">{</span>	
-	<span class="kt">float</span>
-		<span class="n">disp_mean</span><span class="p">,</span>
-		<span class="n">disp_sdev</span><span class="p">,</span>
-		<span class="n">width_mean</span><span class="p">,</span>
-		<span class="n">width_sdev</span><span class="p">,</span>
-		<span class="n">width_mean_n</span><span class="p">,</span>
-		<span class="n">amp_mean_btw_n</span><span class="p">,</span>
-		<span class="n">amp_mean_dur_n</span><span class="p">,</span>
-		<span class="n">amp_mean_dur</span><span class="p">,</span>
-		<span class="n">amp_corr</span><span class="p">;</span>	
+<span class="k">typedef</span> <span class="k">struct</span> <span class="n">tag_dms_features</span> <span class="p">{</span> 
+  <span class="kt">float</span>
+    <span class="n">disp_mean</span><span class="p">,</span>
+    <span class="n">disp_sdev</span><span class="p">,</span>
+    <span class="n">width_mean</span><span class="p">,</span>
+    <span class="n">width_sdev</span><span class="p">,</span>
+    <span class="n">width_mean_n</span><span class="p">,</span>
+    <span class="n">amp_mean_btw_n</span><span class="p">,</span>
+    <span class="n">amp_mean_dur_n</span><span class="p">,</span>
+    <span class="n">amp_mean_dur</span><span class="p">,</span>
+    <span class="n">amp_corr</span><span class="p">;</span> 
 <span class="p">}</span> <span class="n">DMS_FEATURES</span><span class="p">;</span>
 
 <span class="k">typedef</span> <span class="k">struct</span> <span class="n">tag_dms_bin_features</span> <span class="p">{</span>
-	<span class="n">DMS_FEATURES</span> <span class="n">bins</span><span class="p">[</span><span class="n">DMS_N_BINS</span><span class="p">];</span>
+  <span class="n">DMS_FEATURES</span> <span class="n">bins</span><span class="p">[</span><span class="n">DMS_N_BINS</span><span class="p">];</span>
 <span class="p">}</span> <span class="n">DMS_BIN_FEATURES</span><span class="p">;</span>
 
 <span class="k">typedef</span> <span class="k">struct</span> <span class="n">tag_dms_all_features</span> <span class="p">{</span>
-	<span class="n">DMS_BIN_FEATURES</span>
-		<span class="n">plate_features</span><span class="p">,</span>
-		<span class="n">channel_features</span><span class="p">[</span><span class="n">DMS_MAX_DISPENSE</span><span class="p">];</span>
+  <span class="n">DMS_BIN_FEATURES</span>
+    <span class="n">plate_features</span><span class="p">,</span>
+    <span class="n">channel_features</span><span class="p">[</span><span class="n">DMS_MAX_DISPENSE</span><span class="p">];</span>
 <span class="p">}</span> <span class="n">DMS_ALL_FEATURES</span><span class="p">;</span>
 
 <span class="k">typedef</span> <span class="k">struct</span> <span class="n">tag_dms_faults</span> <span class="p">{</span>
-	<span class="kt">uint32_t</span> <span class="n">well_faults</span><span class="p">[</span><span class="n">DMS_MAX_DISPENSE</span><span class="p">][</span><span class="n">DMS_N_BINS</span><span class="p">];</span>
+  <span class="kt">uint32_t</span> <span class="n">well_faults</span><span class="p">[</span><span class="n">DMS_MAX_DISPENSE</span><span class="p">][</span><span class="n">DMS_N_BINS</span><span class="p">];</span>
 <span class="p">}</span> <span class="n">DMS_FAULTS</span><span class="p">;</span>
 
 <span class="k">typedef</span> <span class="k">struct</span> <span class="n">tag_dms_dispense_data</span> <span class="p">{</span>
-	<span class="kt">uint32_t</span> <span class="n">signalCount</span><span class="p">;</span>
-	<span class="n">DMS_SIGNALS</span> <span class="n">signals</span><span class="p">[</span><span class="n">DMS_MAX_SIGNALS</span><span class="p">];</span>
-	<span class="n">DMS_TRIGGERS</span> <span class="n">triggers</span><span class="p">[</span><span class="n">DMS_MAX_DISPENSE</span><span class="p">];</span>
-	<span class="n">DMS_INFO</span> <span class="n">info</span><span class="p">;</span>
-	<span class="n">DMS_ALL_FEATURES</span> <span class="n">features</span><span class="p">;</span>
-	<span class="n">DMS_FAULTS</span> <span class="n">faults</span><span class="p">;</span>
-	<span class="n">DMS_BIN_FEATURES</span> <span class="n">reference</span><span class="p">;</span>
+  <span class="kt">uint32_t</span> <span class="n">signalCount</span><span class="p">;</span>
+  <span class="n">DMS_SIGNALS</span> <span class="n">signals</span><span class="p">[</span><span class="n">DMS_MAX_SIGNALS</span><span class="p">];</span>
+  <span class="n">DMS_TRIGGERS</span> <span class="n">triggers</span><span class="p">[</span><span class="n">DMS_MAX_DISPENSE</span><span class="p">];</span>
+  <span class="n">DMS_INFO</span> <span class="n">info</span><span class="p">;</span>
+  <span class="n">DMS_ALL_FEATURES</span> <span class="n">features</span><span class="p">;</span>
+  <span class="n">DMS_FAULTS</span> <span class="n">faults</span><span class="p">;</span>
+  <span class="n">DMS_BIN_FEATURES</span> <span class="n">reference</span><span class="p">;</span>
 <span class="p">}</span> <span class="n">DMS_DISPENSE_DATA</span><span class="p">;</span>
 
 <span class="k">typedef</span> <span class="k">struct</span> <span class="n">tag_dms_stream_out</span> <span class="p">{</span>
-	<span class="kt">uint32_t</span> 
-		<span class="n">header</span><span class="p">,</span>     <span class="c1">// magic value, and trigger state</span>
-		<span class="c1">// Buffer for samples, packed 12 bits at a time into 32-bit words.</span>
-		<span class="n">packedSamples</span><span class="p">[</span><span class="n">DMS_ENTRIES_PER_SCAN</span> <span class="o">*</span> <span class="mi">12</span> <span class="o">/</span> <span class="mi">32</span><span class="p">];</span>
+  <span class="kt">uint32_t</span> 
+    <span class="n">header</span><span class="p">,</span>     <span class="c1">// magic value, and trigger state</span>
+    <span class="c1">// Buffer for samples, packed 12 bits at a time into 32-bit words.</span>
+    <span class="n">packedSamples</span><span class="p">[</span><span class="n">DMS_ENTRIES_PER_SCAN</span> <span class="o">*</span> <span class="mi">12</span> <span class="o">/</span> <span class="mi">32</span><span class="p">];</span>
 <span class="p">}</span> <span class="n">DMS_STREAM_OUT</span><span class="p">;</span>
 
 <span class="k">typedef</span> <span class="k">struct</span> <span class="n">tag_dms_fault_det_param</span> <span class="p">{</span>
-	<span class="kt">float</span> <span class="n">thresholds</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span> <span class="c1">// corresponding to notice, warning, and error.</span>
+  <span class="kt">float</span> <span class="n">thresholds</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span> <span class="c1">// corresponding to notice, warning, and error.</span>
 <span class="p">}</span> <span class="n">DMS_FAULT_DET_PARAM</span><span class="p">;</span>
 
 <span class="k">typedef</span> <span class="k">struct</span> <span class="n">tag_dms_fault_det_thresholds</span> <span class="p">{</span>
-	<span class="n">DMS_FAULT_DET_PARAM</span>
-		<span class="n">amp_corr_u</span><span class="p">,</span> 	
-		<span class="n">amp_mean_dur_n_u</span><span class="p">,</span>
-		<span class="n">amp_mean_dur_n_l</span><span class="p">,</span>
-		<span class="n">amp_mean_dur_min</span><span class="p">,</span>
-		<span class="n">amp_mean_btw_n_u</span><span class="p">,</span>
-		<span class="n">disp_mean_lu</span><span class="p">,</span>
-		<span class="n">disp_sdev_u</span><span class="p">,</span> 
-		<span class="n">width_mean_n_lu</span><span class="p">,</span>
-		<span class="n">width_mean_u</span><span class="p">,</span>
-		<span class="n">width_mean_l</span><span class="p">,</span>
-		<span class="n">width_sdev_u</span><span class="p">;</span>
+  <span class="n">DMS_FAULT_DET_PARAM</span>
+    <span class="n">amp_corr_u</span><span class="p">,</span>   
+    <span class="n">amp_mean_dur_n_u</span><span class="p">,</span>
+    <span class="n">amp_mean_dur_n_l</span><span class="p">,</span>
+    <span class="n">amp_mean_dur_min</span><span class="p">,</span>
+    <span class="n">amp_mean_btw_n_u</span><span class="p">,</span>
+    <span class="n">disp_mean_lu</span><span class="p">,</span>
+    <span class="n">disp_sdev_u</span><span class="p">,</span> 
+    <span class="n">width_mean_n_lu</span><span class="p">,</span>
+    <span class="n">width_mean_u</span><span class="p">,</span>
+    <span class="n">width_mean_l</span><span class="p">,</span>
+    <span class="n">width_sdev_u</span><span class="p">;</span>
 <span class="p">}</span> <span class="n">DMS_FAULT_DET_THRESHOLDS</span><span class="p">;</span>
 
 

@@ -379,10 +379,11 @@ The current version of dmsCodes.h is included here for reference. Note the horiz
 
 .. literalinclude::  ../Shared/include/dmsCodes.h
 	:language: c
+	:tab-width: 2
 	
 .. *** NOTE: the following reduntant directive is used for subset builds.
 	
 .. literalinclude::  ../../Shared/include/dmsCodes.h
 	:language: c
-
+	:tab-width: 2
 

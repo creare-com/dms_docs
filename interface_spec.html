@@ -67,17 +67,21 @@
 <tbody valign="top">
 <tr class="row-even"><td>4/7/2017</td>
 <td>MCR</td>
+<td>Added mode and error check to BioTek Application Interface section.</td>
+</tr>
+<tr class="row-odd"><td>4/7/2017</td>
+<td>MCR</td>
 <td>Added firmware update.</td>
 </tr>
-<tr class="row-odd"><td>3/29/2017</td>
+<tr class="row-even"><td>3/29/2017</td>
 <td>MCR</td>
 <td>Broke example-interface section out into new <a class="reference internal" href="development_interface.html#development-interface"><span class="std std-ref">Development Interface</span></a> section.</td>
 </tr>
-<tr class="row-even"><td>3/8/2017</td>
+<tr class="row-odd"><td>3/8/2017</td>
 <td>MCR</td>
 <td>Minor tweaks to example-interface section.</td>
 </tr>
-<tr class="row-odd"><td>3/3/2017</td>
+<tr class="row-even"><td>3/3/2017</td>
 <td>MCR</td>
 <td>Added example-interface section.</td>
 </tr>
@@ -193,6 +197,7 @@
 <li>When initiating a dispense, activate the specific DMS associated with the active dispenser given its known <code class="docutils literal"><span class="pre">ID</span></code>.</li>
 <li>Automatically set the <a class="reference internal" href="interface_control_doc.html#configuration-data"><span class="std std-ref">Configuration Data</span></a> with correct values for the current dispense using <code class="docutils literal"><span class="pre">CONFIG-GET</span></code> and <code class="docutils literal"><span class="pre">CONFIG-SET</span></code>.</li>
 <li>Run <code class="docutils literal"><span class="pre">MONITOR_DISPENSE</span></code> at least 500 ms prior to each dispense.</li>
+<li>Poll <code class="docutils literal"><span class="pre">GET_STATUS</span></code> until the DMS mode returns to <code class="docutils literal"><span class="pre">READY</span></code>. Take appropriate action if there is an error code.</li>
 <li>Retrieve fault data (<code class="docutils literal"><span class="pre">GET_WELL_FAULTS</span></code>) after each dispense and make this data available and actionable.</li>
 <li>Give the user the ability to run <code class="docutils literal"><span class="pre">SET_REFERENCE_DISPENSE</span></code> at any time.</li>
 <li>Give the user the option to set the <code class="docutils literal"><span class="pre">Ref_Mode</span></code> (<a class="reference internal" href="interface_control_doc.html#calibration-data"><span class="std std-ref">Calibration Data</span></a>) or run <code class="docutils literal"><span class="pre">CLEAR_HISTORY</span></code> (<a class="reference internal" href="interface_control_doc.html#supported-commands-summary"><span class="std std-ref">Supported Commands Summary</span></a>) at any time.</li>

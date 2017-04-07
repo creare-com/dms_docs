@@ -14,10 +14,11 @@ Installation
 
 Matlab software is required to run this interface. The required code files are:
 
-	``dmsi.m``
-	``crc32.m``
-	``WUsbToFile.exe``
-	``DMS_Viewer.exe``
+- ``dmsi.m``
+- ``crc32.m``
+- ``WUsbToFile.exe``
+- ``DMS_Viewer.exe``
+- ``DMS_PerfMon.exe``
 	
 Within Matlab, set the working directory to the folder that contains these files.
 
@@ -159,3 +160,19 @@ Updating Firmware
 =================
 
 To update the DMS firmware, simply run ``dms.update_firmware`` and then navigate to the appropriate 'DMS.bin' file. Do not interrupt the update process. It should only take a few seconds. Occationally, this process will fail due to a race condition in the hardware and the firmware will not be updated. If this occurs, just run ``dms.update_firmware`` again.
+
+Performance Monitor
+===================
+
+We developed a performance monitor, ``DMS_PerfMon.exe``, for EMC certification testing. Usage is as follows:
+
+1.	Power a calibrated DMS and let it warm up for a few minutes. 
+2.	Connect to a computer and run DMS_PerfMon.exe from Windows.
+3.	Activate the command window that opens. 
+4.	With no cassette installed and nothing obstructing the laser, press the 'c' key. This performs a laser background calibration and takes a few seconds. 
+5.	Wait until the display starts updating again. 
+6.	Install the calibration cassette. 
+7.	Press the 'n' key to normalize the signals. 
+8.	Acceptable (short-term) noise for either set of signals is about 0.1 goal, 0.2 limit. 
+9.	It's ok if the signals drift a little over time. Just re-calibrate and normalize. (This drift does not degrade DMS performance. In the application, a new laser background calibration is automatically performed immediately prior to each dispense.) 
+10.	All displayed data is logged.

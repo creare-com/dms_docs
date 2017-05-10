@@ -65,7 +65,11 @@
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td>3/3/2017</td>
+<tr class="row-even"><td>2017/5/10</td>
+<td>MCR</td>
+<td>Many updates. Use nanmedian most places, define normalized features and fault tests when feature has nonsense value, stop normalizing amp_mean_betw, when no valid reference still compute faults, dis-allow unreasonable reference values, return tmp_background, implement background_mode, validate background per-pixel.</td>
+</tr>
+<tr class="row-odd"><td>2017/3/3</td>
 <td>MCR</td>
 <td>Added <a class="reference internal" href="#laser-power"><span class="std std-ref">Laser Power</span></a> section. Keep laser on all the time except during <code class="docutils literal"><span class="pre">get_dark_level()</span></code>. Added trigger_delay to <a class="reference internal" href="#static-parameters"><span class="std std-ref">Static Parameters</span></a>. Added trigger_delay to <strong>Record Signals</strong> in <code class="docutils literal"><span class="pre">monitor_dispense()</span></code>.</td>
 </tr>
@@ -138,6 +142,9 @@
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">ref_mode</span></code></td>
 <td>Can be <code class="docutils literal"><span class="pre">'user'</span></code> or <code class="docutils literal"><span class="pre">'history'</span></code>, and determines whether wells are compared to a user specified reference dispense or to a median of the recent plate dispenses for <a class="reference internal" href="#id11">Fault Detection</a>. Default is <code class="docutils literal"><span class="pre">'history'</span></code>.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">background_mode</span></code></td>
+<td>Can be <code class="docutils literal"><span class="pre">'pre-dispense'</span></code> or <code class="docutils literal"><span class="pre">'calibration'</span></code>, and determines whether sensor images are normalized by the background collected at dispense time or at calibration time. Default is <code class="docutils literal"><span class="pre">'pre-dispense'</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -384,8 +391,12 @@
 </pre></div>
 </div>
 <p>After recording an entire dispense we must decide the nominal positions of the streams so we can calculate their absolute lateral offset from nominal.  We assume that the tips are spaced the same as the calibration cassette, but possibly offset.</p>
-<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">mean_center</span> <span class="p">=</span> <span class="n">nanmean</span><span class="p">(</span><span class="n">center</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="c">% 8 bins/streams</span>
-<span class="n">offset</span> <span class="p">=</span> <span class="n">median</span><span class="p">(</span> <span class="n">mean_center</span> – <span class="n">cal_center</span> <span class="p">)</span>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% time-mean of 8 bins, ignoring nan samples (times when stream absent)</span>
+<span class="n">mean_center</span> <span class="p">=</span> <span class="n">nanmean</span><span class="p">(</span><span class="n">center</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c">% median offset, ignore nans (completely absent streams)</span>
+<span class="n">offset</span> <span class="p">=</span> <span class="n">nanmedian</span><span class="p">(</span> <span class="n">mean_center</span> – <span class="n">cal_center</span> <span class="p">)</span>
+
 <span class="n">disp_pix</span> <span class="p">=</span> <span class="nb">bsxfun</span><span class="p">(@</span><span class="n">minus</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">cal_center</span><span class="p">)</span> – <span class="n">offset</span>
 <span class="n">signal_disp</span> <span class="p">=</span> <span class="nb">bsxfun</span><span class="p">(@</span><span class="n">times</span><span class="p">,</span> <span class="n">disp_pix</span><span class="p">,</span> <span class="n">cal_lateral_scale</span><span class="p">)</span>
 </pre></div>
@@ -437,9 +448,9 @@
 </li>
 <li><p class="first"><strong>Collect Background</strong>  After receiving the plate trigger, take the mean of the rolling buffer along the time dimension, subtract <code class="docutils literal"><span class="pre">dark_level</span></code>, and store this array in both <code class="docutils literal"><span class="pre">tmp_background</span></code> and info.background.</p>
 </li>
-<li><p class="first"><strong>Validate Background</strong>  Compare <code class="docutils literal"><span class="pre">tmp_background</span></code> to <code class="docutils literal"><span class="pre">cal_background</span></code> to be sure that it is acceptable.  This task is low priority and can happen after the dispense is complete.  For each of the two background images, compute the mean value within each of the 8 bins defined by <code class="docutils literal"><span class="pre">cal_bin_edges</span></code>. If these values differ by more than <code class="docutils literal"><span class="pre">illum_dev_warn</span></code> (relative) for any bin, throw a warning stating the bin number.  If any of the 8 values for <code class="docutils literal"><span class="pre">tmp_background</span></code> are less than <code class="docutils literal"><span class="pre">abs_min_illum</span></code>, throw a warning stating the bin number.  These warnings should be stored in <code class="docutils literal"><span class="pre">info</span></code>.</p>
+<li><p class="first"><strong>Validate Background</strong>  Compare <code class="docutils literal"><span class="pre">tmp_background</span></code> to <code class="docutils literal"><span class="pre">cal_background</span></code> to be sure that it is acceptable.  This task is low priority and can happen after the dispense is complete.  Divide <code class="docutils literal"><span class="pre">tmp_background</span></code> by <code class="docutils literal"><span class="pre">cal_background</span></code>, then find the minimum value within each of the 8 bins defined by <code class="docutils literal"><span class="pre">cal_bin_edges</span></code>. If if any bin has a value less than <code class="docutils literal"><span class="pre">illum_dev_warn</span></code>, throw a <code class="docutils literal"><span class="pre">background_warning</span></code> stating the bin number.  Then compute the mean value of <code class="docutils literal"><span class="pre">tmp_background</span></code> within each of the 8 bins.  If any of these 8 values are less than <code class="docutils literal"><span class="pre">abs_min_illum</span></code>, throw a <code class="docutils literal"><span class="pre">low_illumination</span></code> warning stating the bin number.  These warnings should be stored in <code class="docutils literal"><span class="pre">info</span></code>.</p>
 </li>
-<li><p class="first"><strong>Record Signals</strong> When the first pump trigger is received (with the plate trigger already active) begin recording signals as described in <a class="reference internal" href="#extracting-signals"><span class="std std-ref">Extracting Signals</span></a>, normalizing with <code class="docutils literal"><span class="pre">tmp_background</span></code>.  Continue until the plate trigger becomes inactive.  Also record timestamps for the rising and falling edges of the pump trigger, delayed by <code class="docutils literal"><span class="pre">trigger_delay</span></code>. (This delay accounts for the lag between the electrical trigger signals and the physical fluid stream.)  These triggers will be used to determine the <code class="docutils literal"><span class="pre">during_dispense</span></code> (pump trigger low) and <code class="docutils literal"><span class="pre">between_dispense</span></code> (pump trigger high) signal segments used in <a class="reference internal" href="#computing-features"><span class="std std-ref">Computing Features</span></a>.</p>
+<li><p class="first"><strong>Record Signals</strong> When the first pump trigger is received (with the plate trigger already active) begin recording signals as described in <a class="reference internal" href="#extracting-signals"><span class="std std-ref">Extracting Signals</span></a>, normalizing with <code class="docutils literal"><span class="pre">tmp_background</span></code> if <code class="docutils literal"><span class="pre">background_mode</span></code> is <code class="docutils literal"><span class="pre">'pre-dispense'</span></code> or with <code class="docutils literal"><span class="pre">cal_background</span></code> if <code class="docutils literal"><span class="pre">background_mode</span></code> is <code class="docutils literal"><span class="pre">'calibration'</span></code>.  Continue until the plate trigger becomes inactive.  Also record timestamps for the rising and falling edges of the pump trigger, delayed by <code class="docutils literal"><span class="pre">trigger_delay</span></code>. (This delay accounts for the lag between the electrical trigger signals and the physical fluid stream.)  These triggers will be used to determine the <code class="docutils literal"><span class="pre">during_dispense</span></code> (pump trigger low) and <code class="docutils literal"><span class="pre">between_dispense</span></code> (pump trigger high) signal segments used in <a class="reference internal" href="#computing-features"><span class="std std-ref">Computing Features</span></a>.</p>
 </li>
 <li><p class="first"><strong>Compute Features</strong>  Compute features as described in <a class="reference internal" href="#computing-features"><span class="std std-ref">Computing Features</span></a>.</p>
 </li>
@@ -548,8 +559,8 @@
 <li>Select the frames (columns) of the time signal corresponding to the appropriate time interval (<code class="docutils literal"><span class="pre">during_dispense</span></code>, <code class="docutils literal"><span class="pre">between_dispense</span></code>).</li>
 <li>Compute the mean or standard deviation of the selected portion of the time signal.</li>
 <li>Optionally, normalize and then take the base 10 logarithm. Whether or not to do this step is indicated in the <a class="reference internal" href="#feature-specifications">Feature Specifications</a> table (under the column &#8220;Normalized&#8221;).<ol class="arabic">
-<li>Normalization: divide by the median (across all <code class="docutils literal"><span class="pre">8</span> <span class="pre">x</span> <span class="pre">n_dispenses</span></code> wells on the entire plate) of the result from the previous step.</li>
-<li>Then, compute the base 10 logarithm of the result from normalization.</li>
+<li>Normalization: divide by the median (across all <code class="docutils literal"><span class="pre">8</span> <span class="pre">x</span> <span class="pre">n_dispenses</span></code> wells on the entire plate, <strong>ignoring any NaNs</strong>) of the result from the previous step. <strong>If either the feature value or median is &lt;= 0 or NaN, then the normalized feature should be NaN.</strong></li>
+<li>Then, compute the base 10 logarithm of the result from normalization (unless the normalized feature has already been set to NaN in the step above.)</li>
 </ol>
 </li>
 </ol>
@@ -602,11 +613,11 @@
 <td>Yes</td>
 <td>mean, normalize, log</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">amp_mean_btw_n</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">amp_mean_btw</span></code></td>
 <td><code class="docutils literal"><span class="pre">signal_amp</span></code></td>
 <td><code class="docutils literal"><span class="pre">between_dispense</span></code></td>
-<td>Yes</td>
-<td>mean, normalize, log</td>
+<td>No</td>
+<td>mean</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">amp_mean_dur_n</span></code></td>
 <td><code class="docutils literal"><span class="pre">signal_amp</span></code></td>
@@ -628,6 +639,10 @@
 </tr>
 </tbody>
 </table>
+<p>* Exceptions:</p>
+<ol class="arabic simple">
+<li>When amp_mean_dur is</li>
+</ol>
 </div>
 <div class="section" id="computing-amp-corr-feature">
 <span id="comp-amp-corr"></span><h3>2.12.3. Computing <code class="docutils literal"><span class="pre">amp_corr</span></code> feature<a class="headerlink" href="#computing-amp-corr-feature" title="Permalink to this headline">¶</a></h3>
@@ -665,7 +680,7 @@
 </div>
 <div class="section" id="computing-plate-features">
 <h3>2.12.4. Computing <code class="docutils literal"><span class="pre">plate_features</span></code><a class="headerlink" href="#computing-plate-features" title="Permalink to this headline">¶</a></h3>
-<p>The <code class="docutils literal"><span class="pre">plate_features</span></code> is a data structure that contains 8 values for each feature, defined as the median value for that feature within each channel. Compute this each time a plate is processed. It can be overwritten for each new plate.</p>
+<p>The <code class="docutils literal"><span class="pre">plate_features</span></code> is a data structure that contains 8 values for each feature, defined as the median value for that feature within each channel (ignoring any NaNs). Compute this each time a plate is processed. It can be overwritten for each new plate.</p>
 </div>
 </div>
 <div class="section" id="fault-detection">
@@ -800,7 +815,7 @@ This allows us to catch individual well dispenses or channels that look differen
 <td><code class="docutils literal"><span class="pre">?</span></code></td>
 <td><code class="docutils literal"><span class="pre">?</span></code></td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">amp_mean_btw_n_u</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">amp_mean_btw_u</span></code></td>
 <td><code class="docutils literal"><span class="pre">[0.75,</span> <span class="pre">2.0]</span></code></td>
 <td><code class="docutils literal"><span class="pre">[?,</span> <span class="pre">?,</span> <span class="pre">?]</span></code></td>
 </tr>
@@ -880,7 +895,7 @@ This allows us to catch individual well dispenses or channels that look differen
 <td><code class="docutils literal"><span class="pre">3</span></code></td>
 </tr>
 <tr class="row-odd"><td>8</td>
-<td><code class="docutils literal"><span class="pre">amp_mean_btw_n</span> <span class="pre">&gt;</span> <span class="pre">amp_mean_btw_n_u</span></code></td>
+<td><code class="docutils literal"><span class="pre">amp_mean_btw</span> <span class="pre">&gt;</span> <span class="pre">amp_mean_btw_u</span></code></td>
 <td><code class="docutils literal"><span class="pre">[1,</span> <span class="pre">3]</span></code></td>
 </tr>
 <tr class="row-even"><td>9</td>
@@ -976,9 +991,14 @@ This allows us to catch individual well dispenses or channels that look differen
 <p>Now it&#8217;s time to actually detect the faults.</p>
 <dl class="docutils">
 <dt><code class="docutils literal"><span class="pre">detect_faults()</span></code></dt>
-<dd><p class="first">If <code class="docutils literal"><span class="pre">ref_mode</span></code> is <code class="docutils literal"><span class="pre">'history'</span></code>, then for each feature, take the median of all wells of all plates in each channel of <code class="docutils literal"><span class="pre">history</span></code> and assign this value to the corresponding entry of <code class="docutils literal"><span class="pre">ref_features</span></code>.</p>
-<p>If <code class="docutils literal"><span class="pre">ref_mode</span></code> is <code class="docutils literal"><span class="pre">'history'</span></code> and <code class="docutils literal"><span class="pre">history</span></code> is empty, or if <code class="docutils literal"><span class="pre">ref_mode</span></code> is <code class="docutils literal"><span class="pre">'user'</span></code> and <code class="docutils literal"><span class="pre">ref_features</span></code> has not been assigned, generate message <code class="docutils literal"><span class="pre">'No</span> <span class="pre">valid</span> <span class="pre">reference</span> <span class="pre">for</span> <span class="pre">fault</span> <span class="pre">detection.'</span></code> (to be stored in <code class="docutils literal"><span class="pre">info</span></code>) and exit fault detection.</p>
+<dd><p class="first">If <code class="docutils literal"><span class="pre">ref_mode</span></code> is <code class="docutils literal"><span class="pre">'history'</span></code>, then for each feature, take the median (ignoring NaNs) of all wells of all plates in each channel of <code class="docutils literal"><span class="pre">history</span></code> and assign this value to the corresponding entry of <code class="docutils literal"><span class="pre">ref_features</span></code>. If there are no valid entries for a given feature, it should be set to <code class="docutils literal"><span class="pre">nan</span></code>. <em>Exception</em>: for amp_mean_dur, also ignore values that are <code class="docutils literal"><span class="pre">&lt;=</span> <span class="pre">0</span></code> when taking the median.</p>
+<p>If <code class="docutils literal"><span class="pre">ref_mode</span></code> is <code class="docutils literal"><span class="pre">'history'</span></code> and <code class="docutils literal"><span class="pre">history</span></code> is empty, or if <code class="docutils literal"><span class="pre">ref_mode</span></code> is <code class="docutils literal"><span class="pre">'user'</span></code> and <code class="docutils literal"><span class="pre">ref_features</span></code> has not been assigned, generate message <code class="docutils literal"><span class="pre">'No</span> <span class="pre">valid</span> <span class="pre">reference</span> <span class="pre">for</span> <span class="pre">fault</span> <span class="pre">detection.'</span></code> (to be stored in <code class="docutils literal"><span class="pre">info</span></code>).</p>
 <p>Execute the <a class="reference internal" href="#well-fault-tests"><span class="std std-ref">Well Fault Tests</span></a> listed in <a class="reference internal" href="#well-fault-tests"><span class="std std-numref">Table 2.13</span></a> for each well of the current plate, using the <a class="reference internal" href="#fault-detection-thresholds"><span class="std std-ref">Fault Detection Thresholds</span></a> corresponding to the current value of <code class="docutils literal"><span class="pre">stream_diameter</span></code>. If a test evaluates as true, assign the appropriate <a class="reference internal" href="#fault-categories"><span class="std std-ref">Fault Category</span></a> to the appropriate entry in <code class="docutils literal"><span class="pre">well_faults</span></code>. If a well receives more than one <a class="reference internal" href="#fault-categories"><span class="std std-ref">Fault Category</span></a>, retain only the highest value.</p>
+<p><em>Exceptions</em>:</p>
+<ol class="arabic simple">
+<li>When no valid reference exists, or when a particular reference feature is <code class="docutils literal"><span class="pre">nan</span></code>, all the tests that depend on it should not return any fault.</li>
+<li>If either of the two normalized features (<code class="docutils literal"><span class="pre">amp_mean_dur_n</span></code> and <code class="docutils literal"><span class="pre">width_mean_n</span></code>) is <code class="docutils literal"><span class="pre">nan</span></code>, then for the tests involving them, <code class="docutils literal"><span class="pre">&lt;</span> <span class="pre">*_l</span></code> and <code class="docutils literal"><span class="pre">abs()</span> <span class="pre">&gt;</span> <span class="pre">*_lu</span></code> tests <em>do</em> return the maximum fault category, and <code class="docutils literal"><span class="pre">&gt;</span> <span class="pre">*_u</span></code> tests do <em>not</em> return any fault.</li>
+</ol>
 <p class="last">After all well tests are complete, assign the maximum fault category in each channel to the appropriate entry in <code class="docutils literal"><span class="pre">ch_faults</span></code>.</p>
 </dd>
 </dl>

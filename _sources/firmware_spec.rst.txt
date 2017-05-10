@@ -19,7 +19,8 @@ Revision Log
 	:widths: 10, 10, 80
 	:name: Firmware Spec Revision Log
 	
-	"3/3/2017", 	"MCR",	"Added :ref:`laser-power` section. Keep laser on all the time except during ``get_dark_level()``. Added trigger_delay to :ref:`Static Parameters`. Added trigger_delay to **Record Signals** in ``monitor_dispense()``."
+	"2017/5/10", 	"MCR",	"Many updates. Use nanmedian most places, define normalized features and fault tests when feature has nonsense value, stop normalizing amp_mean_betw, when no valid reference still compute faults, dis-allow unreasonable reference values, return tmp_background, implement background_mode, validate background per-pixel."
+	"2017/3/3", 	"MCR",	"Added :ref:`laser-power` section. Keep laser on all the time except during ``get_dark_level()``. Added trigger_delay to :ref:`Static Parameters`. Added trigger_delay to **Record Signals** in ``monitor_dispense()``."
 
 Introduction
 ============
@@ -94,6 +95,8 @@ Global Parameters
 	"``n_ref_history``",		"The number of previous plates to include in the calculation of reference features for `Fault Detection`_. Default is 10.
 	"
 	"``ref_mode``",			"Can be ``'user'`` or ``'history'``, and determines whether wells are compared to a user specified reference dispense or to a median of the recent plate dispenses for `Fault Detection`_. Default is ``'history'``.
+	"
+	"``background_mode``",	"Can be ``'pre-dispense'`` or ``'calibration'``, and determines whether sensor images are normalized by the background collected at dispense time or at calibration time. Default is ``'pre-dispense'``.
 	"
 
 :ref:`Static Parameters` are expected to be constant and should be invisible to the end user.
@@ -281,8 +284,12 @@ After recording an entire dispense we must decide the nominal positions of the s
 
 .. code-block:: matlab
 
-	mean_center = nanmean(center,2) % 8 bins/streams
-	offset = median( mean_center – cal_center )
+	% time-mean of 8 bins, ignoring nan samples (times when stream absent)
+	mean_center = nanmean(center,2) 
+	
+	% median offset, ignore nans (completely absent streams)
+	offset = nanmedian( mean_center – cal_center )
+	
 	disp_pix = bsxfun(@minus, center, cal_center) – offset
 	signal_disp = bsxfun(@times, disp_pix, cal_lateral_scale)
 
@@ -325,8 +332,8 @@ The procedure is defined as follows:
 			BioTek Trigger Diagram.
 		
 	#.	**Collect Background**  After receiving the plate trigger, take the mean of the rolling buffer along the time dimension, subtract ``dark_level``, and store this array in both ``tmp_background`` and info.background.
-	#.	**Validate Background**  Compare ``tmp_background`` to ``cal_background`` to be sure that it is acceptable.  This task is low priority and can happen after the dispense is complete.  For each of the two background images, compute the mean value within each of the 8 bins defined by ``cal_bin_edges``. If these values differ by more than ``illum_dev_warn`` (relative) for any bin, throw a warning stating the bin number.  If any of the 8 values for ``tmp_background`` are less than ``abs_min_illum``, throw a warning stating the bin number.  These warnings should be stored in ``info``.
-	#.	**Record Signals** When the first pump trigger is received (with the plate trigger already active) begin recording signals as described in :ref:`extracting-signals`, normalizing with ``tmp_background``.  Continue until the plate trigger becomes inactive.  Also record timestamps for the rising and falling edges of the pump trigger, delayed by ``trigger_delay``. (This delay accounts for the lag between the electrical trigger signals and the physical fluid stream.)  These triggers will be used to determine the ``during_dispense`` (pump trigger low) and ``between_dispense`` (pump trigger high) signal segments used in :ref:`computing-features`.
+	#.	**Validate Background**  Compare ``tmp_background`` to ``cal_background`` to be sure that it is acceptable.  This task is low priority and can happen after the dispense is complete.  Divide ``tmp_background`` by ``cal_background``, then find the minimum value within each of the 8 bins defined by ``cal_bin_edges``. If if any bin has a value less than ``illum_dev_warn``, throw a ``background_warning`` stating the bin number.  Then compute the mean value of ``tmp_background`` within each of the 8 bins.  If any of these 8 values are less than ``abs_min_illum``, throw a ``low_illumination`` warning stating the bin number.  These warnings should be stored in ``info``.
+	#.	**Record Signals** When the first pump trigger is received (with the plate trigger already active) begin recording signals as described in :ref:`extracting-signals`, normalizing with ``tmp_background`` if ``background_mode`` is ``'pre-dispense'`` or with ``cal_background`` if ``background_mode`` is ``'calibration'``.  Continue until the plate trigger becomes inactive.  Also record timestamps for the rising and falling edges of the pump trigger, delayed by ``trigger_delay``. (This delay accounts for the lag between the electrical trigger signals and the physical fluid stream.)  These triggers will be used to determine the ``during_dispense`` (pump trigger low) and ``between_dispense`` (pump trigger high) signal segments used in :ref:`computing-features`.
 	#.	**Compute Features**  Compute features as described in :ref:`computing-features`.
 	#.	**Detect Faults**  Compute and store faults as described in :ref:`fault-detection`.
 	#. **Store History**  Store the ``plate_features`` (see :ref:`computing-features`) from the current dispense in ``history`` (see :ref:`fault-detection`).
@@ -379,8 +386,8 @@ In general, computing the value of a feature for a well involves the following s
 #.	Compute the mean or standard deviation of the selected portion of the time signal.
 #.	Optionally, normalize and then take the base 10 logarithm. Whether or not to do this step is indicated in the `Feature Specifications`_ table (under the column "Normalized").
 
-	#.	Normalization: divide by the median (across all ``8 x n_dispenses`` wells on the entire plate) of the result from the previous step.
-	#.	Then, compute the base 10 logarithm of the result from normalization.
+	#.	Normalization: divide by the median (across all ``8 x n_dispenses`` wells on the entire plate, **ignoring any NaNs**) of the result from the previous step. **If either the feature value or median is <= 0 or NaN, then the normalized feature should be NaN.**
+ 	#.	Then, compute the base 10 logarithm of the result from normalization (unless the normalized feature has already been set to NaN in the step above.)
 
 The details of this process for each of the nine features can be found in `Feature Specifications`_. The time signal and the time interval for the amp_corr feature are listed in `Feature Specifications`_. However, after step 3, the amp_corr computation is different from the other features and is specified in :ref:`Computing amp_corr feature <comp_amp_corr>`.
 
@@ -394,10 +401,14 @@ The details of this process for each of the nine features can be found in `Featu
 	``width_mean``, ``signal_width``, both, No, mean
 	``width_sdev``, ``signal_width``, both, No, standard deviation
 	``width_mean_n``, ``signal_width``, both, Yes, "mean, normalize, log"
-	``amp_mean_btw_n``, ``signal_amp``, ``between_dispense``, Yes, "mean, normalize, log"
+	``amp_mean_btw``, ``signal_amp``, ``between_dispense``, No, "mean"
 	``amp_mean_dur_n``, ``signal_amp``, ``during_dispense``, Yes, "mean, normalize, log"
 	``amp_mean_dur``, ``signal_amp``, ``during_dispense``, No, mean
 	``amp_corr``, ``signal_amp``, ``during_dispense``, No, See :ref:`below <comp_amp_corr>`.
+	
+\* Exceptions:
+
+1. When amp_mean_dur is 
 
 .. _comp_amp_corr:
 
@@ -447,7 +458,7 @@ Now calculate the ``amp_corr`` feature for this well on channel ``ch``. We will 
 Computing ``plate_features``
 ----------------------------
 
-The ``plate_features`` is a data structure that contains 8 values for each feature, defined as the median value for that feature within each channel. Compute this each time a plate is processed. It can be overwritten for each new plate.
+The ``plate_features`` is a data structure that contains 8 values for each feature, defined as the median value for that feature within each channel (ignoring any NaNs). Compute this each time a plate is processed. It can be overwritten for each new plate.
 
 .. _fault-detection:	
 	
@@ -526,7 +537,7 @@ The thresholds used for fault detection are given in :numref:`Fault Detection Th
 	"``amp_mean_dur_n_u``", 	"``[0.1, 0.3, 0.5]``",	"``[?, ?, ?]``"
 	"``amp_mean_dur_n_l``", 	"``[-0.2, -0.3, -0.5]``",	"``[?, ?, ?]``"
 	"``amp_mean_dur_min``", 	"``?``",	"``?``"
-	"``amp_mean_btw_n_u``", 	"``[0.75, 2.0]``",	"``[?, ?, ?]``"
+	"``amp_mean_btw_u``", 	"``[0.75, 2.0]``",	"``[?, ?, ?]``"
 	"``disp_mean_lu``", 	"``1``",	"``?``"
 	"``disp_sdev_u``", 	"``[0.6, 0.4, 0.25]``",	"``[?, ?, ?]``"
 	"``width_mean_n_lu``", 	"``[0.4, 0.6]``",	"``[?, ?]``"
@@ -553,7 +564,7 @@ The tests to be applied to each well are defined in :numref:`Well Fault Tests` b
 	"5", "``log10(amp_mean_dur / rf.amp_mean_dur.med) > amp_mean_dur_n_u``","``[1, 2, 3]``"
 	"6", "``log10(amp_mean_dur / rf.amp_mean_dur.med) < amp_mean_dur_n_l``","``[1, 2, 3]``"
 	"7", "``amp_corr > amp_cor_u(2) & amp_mean_dur_n < amp_mean_dur_n_l(1)``","``3``"
-	"8", "``amp_mean_btw_n > amp_mean_btw_n_u``","``[1, 3]``"
+	"8", "``amp_mean_btw > amp_mean_btw_u``","``[1, 3]``"
 	"9", "``abs(disp_mean) > disp_mean_lu``","``[3]``"
 	"10", "``abs(disp_mean-rf.disp_mean(i)) > disp_mean_lu``","``[2]``"
 	"11", "``disp_sdev > disp_sdev_u``","``[1, 2, 3]``"
@@ -588,11 +599,16 @@ Description strings for each of these fault tests are given in :numref:`Fault De
 Now it's time to actually detect the faults.
 
 ``detect_faults()``
-	If ``ref_mode`` is ``'history'``, then for each feature, take the median of all wells of all plates in each channel of ``history`` and assign this value to the corresponding entry of ``ref_features``.
+	If ``ref_mode`` is ``'history'``, then for each feature, take the median (ignoring NaNs) of all wells of all plates in each channel of ``history`` and assign this value to the corresponding entry of ``ref_features``. If there are no valid entries for a given feature, it should be set to ``nan``. *Exception*: for amp_mean_dur, also ignore values that are ``<= 0`` when taking the median. 
 
-	If ``ref_mode`` is ``'history'`` and ``history`` is empty, or if ``ref_mode`` is ``'user'`` and ``ref_features`` has not been assigned, generate message ``'No valid reference for fault detection.'`` (to be stored in ``info``) and exit fault detection.
+	If ``ref_mode`` is ``'history'`` and ``history`` is empty, or if ``ref_mode`` is ``'user'`` and ``ref_features`` has not been assigned, generate message ``'No valid reference for fault detection.'`` (to be stored in ``info``).
 	
 	Execute the :ref:`Well Fault Tests` listed in :numref:`Well Fault Tests` for each well of the current plate, using the :ref:`Fault Detection Thresholds` corresponding to the current value of ``stream_diameter``. If a test evaluates as true, assign the appropriate :ref:`Fault Category<Fault Categories>` to the appropriate entry in ``well_faults``. If a well receives more than one :ref:`Fault Category<Fault Categories>`, retain only the highest value.
+	
+	*Exceptions*:
+	
+	1. When no valid reference exists, or when a particular reference feature is ``nan``, all the tests that depend on it should not return any fault.
+	2. If either of the two normalized features (``amp_mean_dur_n`` and ``width_mean_n``) is ``nan``, then for the tests involving them, ``< *_l`` and ``abs() > *_lu`` tests *do* return the maximum fault category, and ``> *_u`` tests do *not* return any fault.
 
 	After all well tests are complete, assign the maximum fault category in each channel to the appropriate entry in ``ch_faults``.
 	

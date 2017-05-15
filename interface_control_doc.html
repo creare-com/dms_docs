@@ -821,7 +821,7 @@ it to the DMS&#8217;s FLASH.</p>
 <span class="k">typedef</span> <span class="k">struct</span> <span class="n">tag_dms_id</span> <span class="p">{</span>
   <span class="kt">char</span> <span class="n">build_date_time</span><span class="p">[</span><span class="mi">24</span><span class="p">];</span>  <span class="c1">// Mmm dd yyyy hh:mm:ss  (20 char, plus 4 nulls)</span>
   <span class="kt">uint32_t</span> <span class="n">unique_id</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>     <span class="c1">// from the processor</span>
-  <span class="kt">char</span> <span class="n">engineering_version_number</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>  <span class="c1">// null terminated string, e.g. &quot;1.0.0&quot;  </span>
+  <span class="kt">char</span> <span class="n">engineering_version_number</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>  <span class="c1">// null terminated string, e.g. &quot;1.0.0&quot;</span>
 <span class="p">}</span> <span class="n">DMS_ID</span><span class="p">;</span>
 
 <span class="k">typedef</span> <span class="k">struct</span> <span class="n">tag_dms_config</span> <span class="p">{</span>
@@ -832,7 +832,8 @@ it to the DMS&#8217;s FLASH.</p>
     <span class="n">dispense_period_msec</span><span class="p">,</span>
     <span class="n">n_ref_history</span><span class="p">,</span>
     <span class="n">user_ref_mode</span><span class="p">,</span>            <span class="c1">// non-zero if in user mode</span>
-    <span class="n">trigger_delay_msec</span><span class="p">;</span>
+    <span class="n">trigger_delay_msec</span><span class="p">,</span>
+    <span class="n">background_mode</span><span class="p">;</span>          <span class="c1">// non-zero if calibration background is used</span>
 <span class="p">}</span> <span class="n">DMS_CONFIG</span><span class="p">;</span>
 
 <span class="cp">#include</span> <span class="cpf">&lt;poppack.h&gt;</span><span class="cp"></span>
@@ -879,7 +880,7 @@ it to the DMS&#8217;s FLASH.</p>
 <span class="p">}</span> <span class="n">DMS_INFO</span><span class="p">;</span>
 
 <span class="c1">// Macros to generate bit-masks for warnings: </span>
-<span class="cp">#define DMS_INFO_BACKGROUND_WARNING_DIFF(c)                      (1 &lt;&lt; (c))</span>
+<span class="cp">#define DMS_INFO_BACKGROUND_WARNING_RATIO(c)                     (1 &lt;&lt; (c))</span>
 <span class="cp">#define DMS_INFO_BACKGROUND_WARNING_LOW(c)                    (1 &lt;&lt; (c)+16)</span>
 
 <span class="c1">// These features are defined for each well (n_bins * n_dispenses elements)</span>

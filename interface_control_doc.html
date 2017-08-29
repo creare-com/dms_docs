@@ -712,12 +712,9 @@ it to the DMS&#8217;s FLASH.</p>
 <span class="c1">// Product ID for the Droplet Measurement System.</span>
 <span class="cp">#define DMS_PID                                                      0x7819</span>
 
-<span class="c1">// This is the number of elements per scan.  Note that not all will be valid,</span>
-<span class="c1">//  since some sampling past the end is required for integration.</span>
-<span class="cp">#define DMS_ENTRIES_PER_SCAN                                            400</span>
-
-<span class="c1">// The number of pixels in the sensor.</span>
-<span class="cp">#define DMS_N_PIXELS                                                    384</span>
+<span class="c1">// The number of pixels in the sensor.  The real number is twice this; </span>
+<span class="c1">//  every two pixels are averaged.</span>
+<span class="cp">#define DMS_N_PIXELS                                                    512</span>
 
 <span class="c1">// The number of bins to use for determining characteristics.</span>
 <span class="cp">#define DMS_N_BINS                                                        8</span>
@@ -735,8 +732,8 @@ it to the DMS&#8217;s FLASH.</p>
 <span class="c1">// The maximum number of history dispenses that can be stored.</span>
 <span class="cp">#define DMS_MAX_HISTORY                                                  10</span>
 
-
-<span class="cp">#define DMS_STREAM_HEADER_MAGIC                                  0x78190000</span>
+<span class="c1">// Note header changed for Rev. C.</span>
+<span class="cp">#define DMS_STREAM_HEADER_MAGIC                                  0x781C0000</span>
 
 <span class="cp">#define DMS_STREAM_HEADER_MAGIC_MASK                             0xFFFF0000</span>
 
@@ -925,7 +922,7 @@ it to the DMS&#8217;s FLASH.</p>
   <span class="kt">uint32_t</span> 
     <span class="n">header</span><span class="p">,</span>     <span class="c1">// magic value, and trigger state</span>
     <span class="c1">// Buffer for samples, packed 12 bits at a time into 32-bit words.</span>
-    <span class="n">packedSamples</span><span class="p">[</span><span class="n">DMS_ENTRIES_PER_SCAN</span> <span class="o">*</span> <span class="mi">12</span> <span class="o">/</span> <span class="mi">32</span><span class="p">];</span>
+    <span class="n">packedSamples</span><span class="p">[</span><span class="n">DMS_N_PIXELS</span> <span class="o">*</span> <span class="mi">12</span> <span class="o">/</span> <span class="mi">32</span><span class="p">];</span>
 <span class="p">}</span> <span class="n">DMS_STREAM_OUT</span><span class="p">;</span>
 
 <span class="k">typedef</span> <span class="k">struct</span> <span class="n">tag_dms_fault_det_param</span> <span class="p">{</span>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Firmware Specification &#8212; 7819 DMS 1.0.1 documentation</title>
+    <title>1. Firmware Specification &#8212; 7819 DMS 1.0.1 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -26,8 +26,8 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="3. Interface Control Document" href="interface_control_doc.html" />
-    <link rel="prev" title="1. Functional Specification" href="functional_spec.html" />
+    <link rel="next" title="2. Interface Control Document" href="interface_control_doc.html" />
+    <link rel="prev" title="DMS Software Specification" href="index.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -44,15 +44,15 @@
           <div class="body" role="main">
             
   <div class="section" id="firmware-specification">
-<span id="firmware-spec"></span><h1>2. Firmware Specification<a class="headerlink" href="#firmware-specification" title="Permalink to this headline">¶</a></h1>
+<span id="firmware-spec"></span><h1>1. Firmware Specification<a class="headerlink" href="#firmware-specification" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="copyright">
-<h2>2.1. Copyright<a class="headerlink" href="#copyright" title="Permalink to this headline">¶</a></h2>
+<h2>1.1. Copyright<a class="headerlink" href="#copyright" title="Permalink to this headline">¶</a></h2>
 <p>Copyright Creare LLC 2016.  This software specification is proprietary and should be considered confidential.  Reproduction or distribution prohibited without written permission from Creare.</p>
 </div>
 <div class="section" id="revision-log">
-<span id="firmware-spec-revision-log"></span><h2>2.2. Revision Log<a class="headerlink" href="#revision-log" title="Permalink to this headline">¶</a></h2>
+<span id="firmware-spec-revision-log"></span><h2>1.2. Revision Log<a class="headerlink" href="#revision-log" title="Permalink to this headline">¶</a></h2>
 <table border="1" class="colwidths-given docutils" id="id1">
-<caption><span class="caption-number">Table 2.1 </span><span class="caption-text">Revision Log</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 1.1 </span><span class="caption-text">Revision Log</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="10%" />
 <col width="10%" />
@@ -77,11 +77,11 @@
 </table>
 </div>
 <div class="section" id="introduction">
-<h2>2.3. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<h2>1.3. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>The following sections describe the functionality that is required on the DMS controller. I have written this as a series of funtions for clarity (in my mind). The actual firmware and commands may be structured however you like, as long as it can do these things.</p>
 </div>
 <div class="section" id="identification">
-<span id="id2"></span><h2>2.4. Identification<a class="headerlink" href="#identification" title="Permalink to this headline">¶</a></h2>
+<span id="id2"></span><h2>1.4. Identification<a class="headerlink" href="#identification" title="Permalink to this headline">¶</a></h2>
 <p>The DMS should be able to return a unique identifier that distinguishes it among all others.</p>
 <dl class="docutils">
 <dt><code class="docutils literal"><span class="pre">idstr</span> <span class="pre">=</span> <span class="pre">id()</span></code></dt>
@@ -89,11 +89,11 @@
 </dl>
 </div>
 <div class="section" id="laser-power">
-<span id="id3"></span><h2>2.5. Laser Power<a class="headerlink" href="#laser-power" title="Permalink to this headline">¶</a></h2>
+<span id="id3"></span><h2>1.5. Laser Power<a class="headerlink" href="#laser-power" title="Permalink to this headline">¶</a></h2>
 <p>The laser should be powered on whenever the DMS is powered, except during <code class="docutils literal"><span class="pre">get_dark_level()</span></code> (<a class="reference internal" href="#calibration"><span class="std std-ref">Calibration</span></a>). This is because diffraction patterns in the laser sheet shift during laser warmup for at least 10s of seconds, leading to unstable readings. We want to keep the laser at steady thermal equilibrium.</p>
 </div>
 <div class="section" id="alignment">
-<span id="id4"></span><h2>2.6. Alignment<a class="headerlink" href="#alignment" title="Permalink to this headline">¶</a></h2>
+<span id="id4"></span><h2>1.6. Alignment<a class="headerlink" href="#alignment" title="Permalink to this headline">¶</a></h2>
 <p>The DMS should stream the sensor data to the host at a minimum of 5 Hz until a command is received to stop this mode.</p>
 <dl class="docutils">
 <dt><code class="docutils literal"><span class="pre">align(resolution)</span></code></dt>
@@ -103,7 +103,7 @@
 </dl>
 </div>
 <div class="section" id="recording-raw-data">
-<span id="id5"></span><h2>2.7. Recording Raw Data<a class="headerlink" href="#recording-raw-data" title="Permalink to this headline">¶</a></h2>
+<span id="id5"></span><h2>1.7. Recording Raw Data<a class="headerlink" href="#recording-raw-data" title="Permalink to this headline">¶</a></h2>
 <p>The most basic function of the DMS will be to stream a segment of 1-D video data when it receives a command. It should also stream the value of the two trigger inputs at the time of each video data frame.</p>
 <dl class="docutils">
 <dt><code class="docutils literal"><span class="pre">stream_data(duration)</span></code></dt>
@@ -111,10 +111,10 @@
 </dl>
 </div>
 <div class="section" id="global-parameters">
-<span id="id6"></span><h2>2.8. Global Parameters<a class="headerlink" href="#global-parameters" title="Permalink to this headline">¶</a></h2>
+<span id="id6"></span><h2>1.8. Global Parameters<a class="headerlink" href="#global-parameters" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference internal" href="#configuration-parameters"><span class="std std-ref">Configuration Parameters</span></a> should be set by the host application. These parameters define the dispense cycle and fault detection mode, and must be set before fault detection can occur. Once set, they remain constant until explicitly reset.</p>
 <table border="1" class="colwidths-given docutils" id="configuration-parameters">
-<caption><span class="caption-number">Table 2.2 </span><span class="caption-text">Configuration Parameters</span><a class="headerlink" href="#configuration-parameters" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 1.2 </span><span class="caption-text">Configuration Parameters</span><a class="headerlink" href="#configuration-parameters" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="25%" />
 <col width="75%" />
@@ -150,7 +150,7 @@
 </table>
 <p><a class="reference internal" href="#static-parameters"><span class="std std-ref">Static Parameters</span></a> are expected to be constant and should be invisible to the end user.</p>
 <table border="1" class="colwidths-given docutils" id="static-parameters">
-<caption><span class="caption-number">Table 2.3 </span><span class="caption-text">Static Parameters</span><a class="headerlink" href="#static-parameters" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 1.3 </span><span class="caption-text">Static Parameters</span><a class="headerlink" href="#static-parameters" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="25%" />
 <col width="13%" />
@@ -223,10 +223,10 @@
 </table>
 </div>
 <div class="section" id="calibration">
-<span id="id7"></span><h2>2.9. Calibration<a class="headerlink" href="#calibration" title="Permalink to this headline">¶</a></h2>
+<span id="id7"></span><h2>1.9. Calibration<a class="headerlink" href="#calibration" title="Permalink to this headline">¶</a></h2>
 <p>Before monitoring dispenses, the DMS must collect or compute the <a class="reference internal" href="#calibration-parameters">Calibration Parameters</a>. These should be stored in non-volatile memory and remain constant until calibration is run again.</p>
 <table border="1" class="colwidths-given docutils" id="calibration-parameters">
-<caption><span class="caption-number">Table 2.4 </span><span class="caption-text">Calibration Parameters</span><a class="headerlink" href="#calibration-parameters" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 1.4 </span><span class="caption-text">Calibration Parameters</span><a class="headerlink" href="#calibration-parameters" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="25%" />
 <col width="75%" />
@@ -332,10 +332,10 @@
 </dl>
 </div>
 <div class="section" id="extracting-signals">
-<span id="id8"></span><h2>2.10. Extracting Signals<a class="headerlink" href="#extracting-signals" title="Permalink to this headline">¶</a></h2>
+<span id="id8"></span><h2>1.10. Extracting Signals<a class="headerlink" href="#extracting-signals" title="Permalink to this headline">¶</a></h2>
 <p>The raw 1D video data collected during a dispense must be reduced to three time-domain <a class="reference internal" href="#signals"><span class="std std-ref">Signals</span></a> for each of the 8 dispenser channels. Each is an 8 x <code class="docutils literal"><span class="pre">n_frames</span></code> array with one value corresponding to each video frame for each of the 8 channels. When monitoring a dispense, only these three signals need to be stored for fault detection analysis. If these signals can be computed in real time, the raw video data need not be stored.</p>
 <table border="1" class="colwidths-given docutils" id="signals">
-<caption><span class="caption-number">Table 2.5 </span><span class="caption-text">Signals</span><a class="headerlink" href="#signals" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 1.5 </span><span class="caption-text">Signals</span><a class="headerlink" href="#signals" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="25%" />
 <col width="75%" />
@@ -403,10 +403,10 @@
 </div>
 </div>
 <div class="section" id="monitor-dispense">
-<span id="id9"></span><h2>2.11. Monitor Dispense<a class="headerlink" href="#monitor-dispense" title="Permalink to this headline">¶</a></h2>
-<p>When the DMS receives a <code class="docutils literal"><span class="pre">monitor_dispense()</span></code> command, it should go through a series of automated steps to wait for the dispense and then collect <a class="reference internal" href="#dispense-data"><span class="std std-numref">Table 2.6</span></a> <a class="reference internal" href="#dispense-data">Dispense Data</a>, which should be stored for possible download to the host if requested.  This data may be discarded when a new <code class="docutils literal"><span class="pre">monitor_dispense()</span></code> command is received.</p>
+<span id="id9"></span><h2>1.11. Monitor Dispense<a class="headerlink" href="#monitor-dispense" title="Permalink to this headline">¶</a></h2>
+<p>When the DMS receives a <code class="docutils literal"><span class="pre">monitor_dispense()</span></code> command, it should go through a series of automated steps to wait for the dispense and then collect <a class="reference internal" href="#dispense-data"><span class="std std-numref">Table 1.6</span></a> <a class="reference internal" href="#dispense-data">Dispense Data</a>, which should be stored for possible download to the host if requested.  This data may be discarded when a new <code class="docutils literal"><span class="pre">monitor_dispense()</span></code> command is received.</p>
 <table border="1" class="colwidths-given docutils" id="dispense-data">
-<caption><span class="caption-number">Table 2.6 </span><span class="caption-text">Dispense Data</span><a class="headerlink" href="#dispense-data" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 1.6 </span><span class="caption-text">Dispense Data</span><a class="headerlink" href="#dispense-data" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="25%" />
 <col width="75%" />
@@ -427,10 +427,10 @@
 <td>A data structure that stores all warnings or informational messages thrown during the dispense.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">features</span></code></td>
-<td>A data structure that stores all the features computed from signals during the dispense as listed in <a class="reference internal" href="#feature-specifications"><span class="std std-numref">Table 2.8</span></a> <a class="reference internal" href="#feature-specifications"><span class="std std-ref">Feature specifications</span></a>.</td>
+<td>A data structure that stores all the features computed from signals during the dispense as listed in <a class="reference internal" href="#feature-specifications"><span class="std std-numref">Table 1.8</span></a> <a class="reference internal" href="#feature-specifications"><span class="std std-ref">Feature specifications</span></a>.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">faults</span></code></td>
-<td>A data structure that stores all the fault information computed for the dispense as listed in <a class="reference internal" href="#fault-detection-data"><span class="std std-numref">Table 2.11</span></a> <a class="reference internal" href="#fault-detection-data"><span class="std std-ref">Fault Detection Data</span></a>.</td>
+<td>A data structure that stores all the fault information computed for the dispense as listed in <a class="reference internal" href="#fault-detection-data"><span class="std std-numref">Table 1.11</span></a> <a class="reference internal" href="#fault-detection-data"><span class="std std-ref">Fault Detection Data</span></a>.</td>
 </tr>
 </tbody>
 </table>
@@ -440,10 +440,10 @@
 <dd><ol class="first last arabic">
 <li><p class="first"><strong>Prepare for Background</strong>  Immediately upon receiving the command, the DMS should begin recording raw 12-bit images (<em>without</em> the <code class="docutils literal"><span class="pre">collect_image</span></code> transform) into a rolling buffer that is <code class="docutils literal"><span class="pre">n_cal_frames</span></code> long.</p>
 </li>
-<li><p class="first"><strong>Wait for Trigger</strong>  The DMS has two trigger inputs illustrated in <a class="reference internal" href="#biotek-triggers"><span class="std std-numref">Fig. 2.1</span></a>. The pump trigger is active whenever the dispense pump is running (i.e. fluid is flowing). The plate trigger is active whenever a plate is being dispensed.  This allows us to distinguish when the pump is running for reasons other than dispensing a plate, such as a purge or pre-dispense. Both triggers are normally high, active low.  The DMS should wait until it receives a plate trigger, then proceed immediately to the next step.</p>
+<li><p class="first"><strong>Wait for Trigger</strong>  The DMS has two trigger inputs illustrated in <a class="reference internal" href="#biotek-triggers"><span class="std std-numref">Fig. 1.1</span></a>. The pump trigger is active whenever the dispense pump is running (i.e. fluid is flowing). The plate trigger is active whenever a plate is being dispensed.  This allows us to distinguish when the pump is running for reasons other than dispensing a plate, such as a purge or pre-dispense. Both triggers are normally high, active low.  The DMS should wait until it receives a plate trigger, then proceed immediately to the next step.</p>
 <div class="figure align-center" id="biotek-triggers">
-<a class="reference internal image-reference" href="_images/BioTek_Triggers.png"><img alt="BioTek Trigger Diagram" src="_images/BioTek_Triggers.png" style="width: 591.6px; height: 202.79999999999998px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 2.1 </span><span class="caption-text">BioTek Trigger Diagram.</span></p>
+<a class="reference internal image-reference" href="_images/BioTek_Triggers.png"><img alt="BioTek Trigger Diagram" src="_images/BioTek_Triggers.png" style="width: 591.6px; height: 202.8px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 1.1 </span><span class="caption-text">BioTek Trigger Diagram.</span></p>
 </div>
 </li>
 <li><p class="first"><strong>Collect Background</strong>  After receiving the plate trigger, take the mean of the rolling buffer along the time dimension, subtract <code class="docutils literal"><span class="pre">dark_level</span></code>, and store this array in both <code class="docutils literal"><span class="pre">tmp_background</span></code> and info.background.</p>
@@ -463,14 +463,14 @@
 </dl>
 </div>
 <div class="section" id="computing-features">
-<span id="id10"></span><h2>2.12. Computing Features<a class="headerlink" href="#computing-features" title="Permalink to this headline">¶</a></h2>
+<span id="id10"></span><h2>1.12. Computing Features<a class="headerlink" href="#computing-features" title="Permalink to this headline">¶</a></h2>
 <p>Each well on a microplate is characterized by nine features that are used to determine if the well dispense was faulty. Each feature is a single number and is calculated using one of the three time signals (<code class="docutils literal"><span class="pre">signal_amp</span></code>, <code class="docutils literal"><span class="pre">signal_disp</span></code>, <code class="docutils literal"><span class="pre">signal_width</span></code>). With the exception of the <code class="docutils literal"><span class="pre">amp_corr</span></code> feature (see <a class="reference internal" href="#comp-amp-corr"><span class="std std-ref">Computing amp_corr feature</span></a>), only the row of the time signal corresponding to the channel that the well is in is used when calculating the feature. Additionally, only certain frames of the time signal are used. In some cases, the frames or time interval used is during the time period that the well is being dispensed (<code class="docutils literal"><span class="pre">during_dispense</span></code>), in other cases it is the time after the dispense of the well, but before the next well dispense (<code class="docutils literal"><span class="pre">between_dispense</span></code>). Finally, it could also be the combination of <code class="docutils literal"><span class="pre">during_dispense</span></code> and <code class="docutils literal"><span class="pre">between_dispense</span></code>.</p>
 <div class="section" id="determining-during-dispense-and-between-dispense-time-intervals">
-<h3>2.12.1. Determining <code class="docutils literal"><span class="pre">during_dispense</span></code> and <code class="docutils literal"><span class="pre">between_dispense</span></code> time intervals<a class="headerlink" href="#determining-during-dispense-and-between-dispense-time-intervals" title="Permalink to this headline">¶</a></h3>
+<h3>1.12.1. Determining <code class="docutils literal"><span class="pre">during_dispense</span></code> and <code class="docutils literal"><span class="pre">between_dispense</span></code> time intervals<a class="headerlink" href="#determining-during-dispense-and-between-dispense-time-intervals" title="Permalink to this headline">¶</a></h3>
 <p>The time intervals, <code class="docutils literal"><span class="pre">during_dispense</span></code> and <code class="docutils literal"><span class="pre">between_dispense</span></code>, can be determined using the plate trigger and the pump trigger. All intervals are while the plate trigger is low. Changes in the value of the pump trigger mark the boundries between the <code class="docutils literal"><span class="pre">during_dispense</span></code> and <code class="docutils literal"><span class="pre">between_dispense</span></code> time intervals. As such these intervals are strictly not overlapping. The pump trigger is high for the <code class="docutils literal"><span class="pre">during_dispense</span></code> time interval and low for <code class="docutils literal"><span class="pre">between_dispense</span></code>. For a given well dispense, the  <code class="docutils literal"><span class="pre">during_dispense</span></code> interval precedes the <code class="docutils literal"><span class="pre">between_dispense</span></code> interval corresponding to the same well dispense.</p>
-<p>The end of the <code class="docutils literal"><span class="pre">between_dispense</span></code> interval of the last well dispense is the only point in time that can not be determined by a change in the pump trigger. This is because the pump trigger does not transition back to low to mark this end point. It stays high up through the end of the plate dispense when the value of the plate trigger becomes high again. Because it is desirable to have all <code class="docutils literal"><span class="pre">between_dispense</span></code> time intervals be roughly the same duration, it is necessary to determine this end point by averaging the duration of all previous <code class="docutils literal"><span class="pre">between_dispense</span></code> intervals from the same plate dispense. <a class="reference internal" href="#dispense-timeline"><span class="std std-numref">Table 2.7</span></a> depicts the pump trigger timeline and indicates where the various intervals fall for each of the <code class="docutils literal"><span class="pre">n_dispenses</span></code> well dispenses of a single plate.</p>
+<p>The end of the <code class="docutils literal"><span class="pre">between_dispense</span></code> interval of the last well dispense is the only point in time that can not be determined by a change in the pump trigger. This is because the pump trigger does not transition back to low to mark this end point. It stays high up through the end of the plate dispense when the value of the plate trigger becomes high again. Because it is desirable to have all <code class="docutils literal"><span class="pre">between_dispense</span></code> time intervals be roughly the same duration, it is necessary to determine this end point by averaging the duration of all previous <code class="docutils literal"><span class="pre">between_dispense</span></code> intervals from the same plate dispense. <a class="reference internal" href="#dispense-timeline"><span class="std std-numref">Table 1.7</span></a> depicts the pump trigger timeline and indicates where the various intervals fall for each of the <code class="docutils literal"><span class="pre">n_dispenses</span></code> well dispenses of a single plate.</p>
 <table border="1" class="colwidths-given docutils" id="dispense-timeline">
-<caption><span class="caption-number">Table 2.7 </span><span class="caption-text">Dispense Timeline. Increasing time from top to bottom.</span><a class="headerlink" href="#dispense-timeline" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 1.7 </span><span class="caption-text">Dispense Timeline. Increasing time from top to bottom.</span><a class="headerlink" href="#dispense-timeline" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="31%" />
 <col width="23%" />
@@ -551,7 +551,7 @@
 </table>
 </div>
 <div class="section" id="computing-standard-features">
-<h3>2.12.2. Computing standard features<a class="headerlink" href="#computing-standard-features" title="Permalink to this headline">¶</a></h3>
+<h3>1.12.2. Computing standard features<a class="headerlink" href="#computing-standard-features" title="Permalink to this headline">¶</a></h3>
 <p>In general, computing the value of a feature for a well involves the following steps:</p>
 <ol class="arabic simple">
 <li>Select the signal corresponding to the feature (<code class="docutils literal"><span class="pre">signal_amp</span></code>, <code class="docutils literal"><span class="pre">signal_disp</span></code>, <code class="docutils literal"><span class="pre">signal_width</span></code>).</li>
@@ -566,7 +566,7 @@
 </ol>
 <p>The details of this process for each of the nine features can be found in <a class="reference internal" href="#feature-specifications">Feature Specifications</a>. The time signal and the time interval for the amp_corr feature are listed in <a class="reference internal" href="#feature-specifications">Feature Specifications</a>. However, after step 3, the amp_corr computation is different from the other features and is specified in <a class="reference internal" href="#comp-amp-corr"><span class="std std-ref">Computing amp_corr feature</span></a>.</p>
 <table border="1" class="colwidths-given docutils" id="feature-specifications">
-<caption><span class="caption-number">Table 2.8 </span><span class="caption-text">Feature specifications</span><a class="headerlink" href="#feature-specifications" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 1.8 </span><span class="caption-text">Feature specifications</span><a class="headerlink" href="#feature-specifications" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="18%" />
 <col width="18%" />
@@ -645,7 +645,7 @@
 </ol>
 </div>
 <div class="section" id="computing-amp-corr-feature">
-<span id="comp-amp-corr"></span><h3>2.12.3. Computing <code class="docutils literal"><span class="pre">amp_corr</span></code> feature<a class="headerlink" href="#computing-amp-corr-feature" title="Permalink to this headline">¶</a></h3>
+<span id="comp-amp-corr"></span><h3>1.12.3. Computing <code class="docutils literal"><span class="pre">amp_corr</span></code> feature<a class="headerlink" href="#computing-amp-corr-feature" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal"><span class="pre">amp_corr</span></code> feature is calculated from the <code class="docutils literal"><span class="pre">signal_amp</span></code> signal. It is a measure of the similarity between the signal in one channel to the median signal (<code class="docutils literal"><span class="pre">amp_med</span></code>) across all of the channels. It can range from <code class="docutils literal"><span class="pre">0.0</span></code> to <code class="docutils literal"><span class="pre">+2.0</span></code>. As with the other features, there is a single <code class="docutils literal"><span class="pre">amp_corr</span></code> value for each well on a plate. What follows is a description of the calculation of a single <code class="docutils literal"><span class="pre">amp_corr</span></code> value for a well in channel <code class="docutils literal"><span class="pre">ch</span></code>.</p>
 <p>The frames corresponding to the <code class="docutils literal"><span class="pre">during_dispense</span></code> time interval of the dispense event of this well will collectively be referred to as <code class="docutils literal"><span class="pre">during_dispense_frames</span></code>. Therefore, <code class="docutils literal"><span class="pre">signal_amp(ch,</span> <span class="pre">during_dispense_frames)</span></code> would be a 1-dimensional time signal whose length is the number of frames in the particular <code class="docutils literal"><span class="pre">during_dispense</span></code> interval.</p>
 <p>First, calculate <code class="docutils literal"><span class="pre">amp_med</span></code>. This is a 1-dimensional signal with the same length as <code class="docutils literal"><span class="pre">signal_amp(ch,</span> <span class="pre">during_dispense_frames)</span></code>, except that it is padded with two additional samples on each end to allow for phase shifting:</p>
@@ -679,12 +679,12 @@
 </div>
 </div>
 <div class="section" id="computing-plate-features">
-<h3>2.12.4. Computing <code class="docutils literal"><span class="pre">plate_features</span></code><a class="headerlink" href="#computing-plate-features" title="Permalink to this headline">¶</a></h3>
+<h3>1.12.4. Computing <code class="docutils literal"><span class="pre">plate_features</span></code><a class="headerlink" href="#computing-plate-features" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal"><span class="pre">plate_features</span></code> is a data structure that contains 8 values for each feature, defined as the median value for that feature within each channel (ignoring any NaNs). Compute this each time a plate is processed. It can be overwritten for each new plate.</p>
 </div>
 </div>
 <div class="section" id="fault-detection">
-<span id="id11"></span><h2>2.13. Fault Detection<a class="headerlink" href="#fault-detection" title="Permalink to this headline">¶</a></h2>
+<span id="id11"></span><h2>1.13. Fault Detection<a class="headerlink" href="#fault-detection" title="Permalink to this headline">¶</a></h2>
 <p>Dispense faults are detected at the well level by comparing its feature values to one of the following:</p>
 <ol class="arabic">
 <li><p class="first"><strong>A pre-defined absolute value.</strong>
@@ -701,9 +701,9 @@ This allows us to catch things that are completely out-of-bounds. However, we ne
 This allows us to catch individual well dispenses or channels that look different from others on the plate without needing to know anyting about the dispense configuration. The <em>normalized</em> features do this implicitly.</p>
 </li>
 </ol>
-<p>The parameters required for fault detection are defined in <a class="reference internal" href="#fault-detection-parameters"><span class="std std-numref">Table 2.9</span></a>.</p>
+<p>The parameters required for fault detection are defined in <a class="reference internal" href="#fault-detection-parameters"><span class="std std-numref">Table 1.9</span></a>.</p>
 <table border="1" class="colwidths-given docutils" id="fault-detection-parameters">
-<caption><span class="caption-number">Table 2.9 </span><span class="caption-text">Fault Detection Parameters</span><a class="headerlink" href="#fault-detection-parameters" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 1.9 </span><span class="caption-text">Fault Detection Parameters</span><a class="headerlink" href="#fault-detection-parameters" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="25%" />
 <col width="75%" />
@@ -728,14 +728,14 @@ This allows us to catch individual well dispenses or channels that look differen
 </tr>
 </tbody>
 </table>
-<p>The <code class="docutils literal"><span class="pre">history</span></code> must be automatically cleared whenever any of the <a class="reference internal" href="#configuration-parameters"><span class="std std-numref">Table 2.2</span></a> <a class="reference internal" href="#configuration-parameters"><span class="std std-ref">Configuration Parameters</span></a> or <a class="reference internal" href="#calibration-parameters"><span class="std std-numref">Table 2.4</span></a> <a class="reference internal" href="#calibration-parameters"><span class="std std-ref">Calibration Parameters</span></a> change. The user or host system is responsible for explicitly clearing the history when there is a change in the dispense cartridge, fluid, etc.</p>
+<p>The <code class="docutils literal"><span class="pre">history</span></code> must be automatically cleared whenever any of the <a class="reference internal" href="#configuration-parameters"><span class="std std-numref">Table 1.2</span></a> <a class="reference internal" href="#configuration-parameters"><span class="std std-ref">Configuration Parameters</span></a> or <a class="reference internal" href="#calibration-parameters"><span class="std std-numref">Table 1.4</span></a> <a class="reference internal" href="#calibration-parameters"><span class="std std-ref">Calibration Parameters</span></a> change. The user or host system is responsible for explicitly clearing the history when there is a change in the dispense cartridge, fluid, etc.</p>
 <dl class="docutils">
 <dt><code class="docutils literal"><span class="pre">clear_history()</span></code></dt>
 <dd>Empty the <code class="docutils literal"><span class="pre">history</span></code> stack.</dd>
 </dl>
-<p>There are a few discrete categories of faults that indicate the severity of the event and the level of response required. These are givin in <a class="reference internal" href="#fault-categories"><span class="std std-numref">Table 2.10</span></a>.</p>
+<p>There are a few discrete categories of faults that indicate the severity of the event and the level of response required. These are givin in <a class="reference internal" href="#fault-categories"><span class="std std-numref">Table 1.10</span></a>.</p>
 <table border="1" class="colwidths-given docutils" id="fault-categories">
-<caption><span class="caption-number">Table 2.10 </span><span class="caption-text">Fault Categories</span><a class="headerlink" href="#fault-categories" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 1.10 </span><span class="caption-text">Fault Categories</span><a class="headerlink" href="#fault-categories" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="14%" />
 <col width="86%" />
@@ -763,9 +763,9 @@ This allows us to catch individual well dispenses or channels that look differen
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>The data that results from fault detection on a single plate is defined in <a class="reference internal" href="#fault-detection-data"><span class="std std-numref">Table 2.11</span></a>.</p>
+<p>The data that results from fault detection on a single plate is defined in <a class="reference internal" href="#fault-detection-data"><span class="std std-numref">Table 1.11</span></a>.</p>
 <table border="1" class="colwidths-given docutils" id="fault-detection-data">
-<caption><span class="caption-number">Table 2.11 </span><span class="caption-text">Fault Detection Data</span><a class="headerlink" href="#fault-detection-data" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 1.11 </span><span class="caption-text">Fault Detection Data</span><a class="headerlink" href="#fault-detection-data" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="25%" />
 <col width="75%" />
@@ -784,9 +784,9 @@ This allows us to catch individual well dispenses or channels that look differen
 </tr>
 </tbody>
 </table>
-<p>The thresholds used for fault detection are given in <a class="reference internal" href="#fault-detection-thresholds"><span class="std std-numref">Table 2.12</span></a>. We anticipate that these will ultimately remain constant, and so should be hardcoded.  However, they may change during testing and development, and new parameters or stream diameters may be added in the future.</p>
+<p>The thresholds used for fault detection are given in <a class="reference internal" href="#fault-detection-thresholds"><span class="std std-numref">Table 1.12</span></a>. We anticipate that these will ultimately remain constant, and so should be hardcoded.  However, they may change during testing and development, and new parameters or stream diameters may be added in the future.</p>
 <table border="1" class="colwidths-given docutils" id="fault-detection-thresholds">
-<caption><span class="caption-number">Table 2.12 </span><span class="caption-text">Fault Detection Thresholds</span><a class="headerlink" href="#fault-detection-thresholds" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 1.12 </span><span class="caption-text">Fault Detection Thresholds</span><a class="headerlink" href="#fault-detection-thresholds" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="14%" />
 <col width="43%" />
@@ -845,7 +845,7 @@ This allows us to catch individual well dispenses or channels that look differen
 </tr>
 </tbody>
 </table>
-<p>The tests to be applied to each well are defined in <a class="reference internal" href="#well-fault-tests"><span class="std std-numref">Table 2.13</span></a> below. In each definition:</p>
+<p>The tests to be applied to each well are defined in <a class="reference internal" href="#well-fault-tests"><span class="std std-numref">Table 1.13</span></a> below. In each definition:</p>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">feature_name</span></code> refers to that value for a given well from the current dispense.</li>
 <li><code class="docutils literal"><span class="pre">rf.feature_name.med</span></code> refers to the median of the 8 values stored for that feature in <code class="docutils literal"><span class="pre">ref_features</span></code>.</li>
@@ -853,7 +853,7 @@ This allows us to catch individual well dispenses or channels that look differen
 <li>For thresholds with multiple values, these correspond to the multiple category codes.</li>
 </ul>
 <table border="1" class="colwidths-given docutils" id="well-fault-tests">
-<caption><span class="caption-number">Table 2.13 </span><span class="caption-text">Well Fault Tests</span><a class="headerlink" href="#well-fault-tests" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 1.13 </span><span class="caption-text">Well Fault Tests</span><a class="headerlink" href="#well-fault-tests" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="3%" />
 <col width="77%" />
@@ -928,9 +928,9 @@ This allows us to catch individual well dispenses or channels that look differen
 </tr>
 </tbody>
 </table>
-<p>Description strings for each of these fault tests are given in <a class="reference internal" href="#fault-descriptions"><span class="std std-numref">Table 2.14</span></a> below. Both the <code class="docutils literal"><span class="pre">fault_categories</span></code> and <code class="docutils literal"><span class="pre">fault_descriptions</span></code> data structures should be made available for query by the host so that it can update its display functions when firmware changes.</p>
+<p>Description strings for each of these fault tests are given in <a class="reference internal" href="#fault-descriptions"><span class="std std-numref">Table 1.14</span></a> below. Both the <code class="docutils literal"><span class="pre">fault_categories</span></code> and <code class="docutils literal"><span class="pre">fault_descriptions</span></code> data structures should be made available for query by the host so that it can update its display functions when firmware changes.</p>
 <table border="1" class="colwidths-given docutils" id="fault-descriptions">
-<caption><span class="caption-number">Table 2.14 </span><span class="caption-text">Fault Descriptions</span><a class="headerlink" href="#fault-descriptions" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 1.14 </span><span class="caption-text">Fault Descriptions</span><a class="headerlink" href="#fault-descriptions" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="14%" />
 <col width="86%" />
@@ -993,7 +993,7 @@ This allows us to catch individual well dispenses or channels that look differen
 <dt><code class="docutils literal"><span class="pre">detect_faults()</span></code></dt>
 <dd><p class="first">If <code class="docutils literal"><span class="pre">ref_mode</span></code> is <code class="docutils literal"><span class="pre">'history'</span></code>, then for each feature, take the median (ignoring NaNs) of all wells of all plates in each channel of <code class="docutils literal"><span class="pre">history</span></code> and assign this value to the corresponding entry of <code class="docutils literal"><span class="pre">ref_features</span></code>. If there are no valid entries for a given feature, it should be set to <code class="docutils literal"><span class="pre">nan</span></code>. <em>Exception</em>: for amp_mean_dur, also ignore values that are <code class="docutils literal"><span class="pre">&lt;=</span> <span class="pre">0</span></code> when taking the median.</p>
 <p>If <code class="docutils literal"><span class="pre">ref_mode</span></code> is <code class="docutils literal"><span class="pre">'history'</span></code> and <code class="docutils literal"><span class="pre">history</span></code> is empty, or if <code class="docutils literal"><span class="pre">ref_mode</span></code> is <code class="docutils literal"><span class="pre">'user'</span></code> and <code class="docutils literal"><span class="pre">ref_features</span></code> has not been assigned, generate message <code class="docutils literal"><span class="pre">'No</span> <span class="pre">valid</span> <span class="pre">reference</span> <span class="pre">for</span> <span class="pre">fault</span> <span class="pre">detection.'</span></code> (to be stored in <code class="docutils literal"><span class="pre">info</span></code>).</p>
-<p>Execute the <a class="reference internal" href="#well-fault-tests"><span class="std std-ref">Well Fault Tests</span></a> listed in <a class="reference internal" href="#well-fault-tests"><span class="std std-numref">Table 2.13</span></a> for each well of the current plate, using the <a class="reference internal" href="#fault-detection-thresholds"><span class="std std-ref">Fault Detection Thresholds</span></a> corresponding to the current value of <code class="docutils literal"><span class="pre">stream_diameter</span></code>. If a test evaluates as true, assign the appropriate <a class="reference internal" href="#fault-categories"><span class="std std-ref">Fault Category</span></a> to the appropriate entry in <code class="docutils literal"><span class="pre">well_faults</span></code>. If a well receives more than one <a class="reference internal" href="#fault-categories"><span class="std std-ref">Fault Category</span></a>, retain only the highest value.</p>
+<p>Execute the <a class="reference internal" href="#well-fault-tests"><span class="std std-ref">Well Fault Tests</span></a> listed in <a class="reference internal" href="#well-fault-tests"><span class="std std-numref">Table 1.13</span></a> for each well of the current plate, using the <a class="reference internal" href="#fault-detection-thresholds"><span class="std std-ref">Fault Detection Thresholds</span></a> corresponding to the current value of <code class="docutils literal"><span class="pre">stream_diameter</span></code>. If a test evaluates as true, assign the appropriate <a class="reference internal" href="#fault-categories"><span class="std std-ref">Fault Category</span></a> to the appropriate entry in <code class="docutils literal"><span class="pre">well_faults</span></code>. If a well receives more than one <a class="reference internal" href="#fault-categories"><span class="std std-ref">Fault Category</span></a>, retain only the highest value.</p>
 <p><em>Exceptions</em>:</p>
 <ol class="arabic simple">
 <li>When no valid reference exists, or when a particular reference feature is <code class="docutils literal"><span class="pre">nan</span></code>, all the tests that depend on it should not return any fault.</li>
@@ -1004,14 +1004,14 @@ This allows us to catch individual well dispenses or channels that look differen
 </dl>
 </div>
 <div class="section" id="set-reference-dispense">
-<span id="id12"></span><h2>2.14. Set Reference Dispense<a class="headerlink" href="#set-reference-dispense" title="Permalink to this headline">¶</a></h2>
+<span id="id12"></span><h2>1.14. Set Reference Dispense<a class="headerlink" href="#set-reference-dispense" title="Permalink to this headline">¶</a></h2>
 <dl class="docutils">
 <dt><code class="docutils literal"><span class="pre">set_reference_dispense()</span></code></dt>
 <dd>Assign the <code class="docutils literal"><span class="pre">plate_features</span></code> data structure from the most recent dispense in <code class="docutils literal"><span class="pre">history</span></code> to <code class="docutils literal"><span class="pre">ref_features</span></code>. (If <code class="docutils literal"><span class="pre">history</span></code> is empty, throw and appropriate error code and exit.)  If <code class="docutils literal"><span class="pre">ref_mode</span></code> is <code class="docutils literal"><span class="pre">'user'</span></code>, this will be used as the reference for subsequent <a class="reference internal" href="#id11">Fault Detection</a> as described above.</dd>
 </dl>
 </div>
 <div class="section" id="return-fault-data">
-<span id="id13"></span><h2>2.15. Return Fault Data<a class="headerlink" href="#return-fault-data" title="Permalink to this headline">¶</a></h2>
+<span id="id13"></span><h2>1.15. Return Fault Data<a class="headerlink" href="#return-fault-data" title="Permalink to this headline">¶</a></h2>
 <p>The DMS needs a few functions for returning data to the host:</p>
 <dl class="docutils">
 <dt><code class="docutils literal"><span class="pre">return_well_faults()</span></code></dt>
@@ -1023,7 +1023,7 @@ This allows us to catch individual well dispenses or channels that look differen
 </dl>
 </div>
 <div class="section" id="expose-parameters-to-host">
-<h2>2.16. Expose Parameters to Host<a class="headerlink" href="#expose-parameters-to-host" title="Permalink to this headline">¶</a></h2>
+<h2>1.16. Expose Parameters to Host<a class="headerlink" href="#expose-parameters-to-host" title="Permalink to this headline">¶</a></h2>
 <p>Many of the parameters defined in this spec need to be made available to the host for both read and write access as defined in the <a class="reference internal" href="interface_spec.html#interface-spec"><span class="std std-ref">Interface Specification</span></a>.</p>
 </div>
 </div>
@@ -1039,29 +1039,29 @@ This allows us to catch individual well dispenses or channels that look differen
             </a></p>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">2. Firmware Specification</a><ul>
-<li><a class="reference internal" href="#copyright">2.1. Copyright</a></li>
-<li><a class="reference internal" href="#revision-log">2.2. Revision Log</a></li>
-<li><a class="reference internal" href="#introduction">2.3. Introduction</a></li>
-<li><a class="reference internal" href="#identification">2.4. Identification</a></li>
-<li><a class="reference internal" href="#laser-power">2.5. Laser Power</a></li>
-<li><a class="reference internal" href="#alignment">2.6. Alignment</a></li>
-<li><a class="reference internal" href="#recording-raw-data">2.7. Recording Raw Data</a></li>
-<li><a class="reference internal" href="#global-parameters">2.8. Global Parameters</a></li>
-<li><a class="reference internal" href="#calibration">2.9. Calibration</a></li>
-<li><a class="reference internal" href="#extracting-signals">2.10. Extracting Signals</a></li>
-<li><a class="reference internal" href="#monitor-dispense">2.11. Monitor Dispense</a></li>
-<li><a class="reference internal" href="#computing-features">2.12. Computing Features</a><ul>
-<li><a class="reference internal" href="#determining-during-dispense-and-between-dispense-time-intervals">2.12.1. Determining <code class="docutils literal"><span class="pre">during_dispense</span></code> and <code class="docutils literal"><span class="pre">between_dispense</span></code> time intervals</a></li>
-<li><a class="reference internal" href="#computing-standard-features">2.12.2. Computing standard features</a></li>
-<li><a class="reference internal" href="#computing-amp-corr-feature">2.12.3. Computing <code class="docutils literal"><span class="pre">amp_corr</span></code> feature</a></li>
-<li><a class="reference internal" href="#computing-plate-features">2.12.4. Computing <code class="docutils literal"><span class="pre">plate_features</span></code></a></li>
+<li><a class="reference internal" href="#">1. Firmware Specification</a><ul>
+<li><a class="reference internal" href="#copyright">1.1. Copyright</a></li>
+<li><a class="reference internal" href="#revision-log">1.2. Revision Log</a></li>
+<li><a class="reference internal" href="#introduction">1.3. Introduction</a></li>
+<li><a class="reference internal" href="#identification">1.4. Identification</a></li>
+<li><a class="reference internal" href="#laser-power">1.5. Laser Power</a></li>
+<li><a class="reference internal" href="#alignment">1.6. Alignment</a></li>
+<li><a class="reference internal" href="#recording-raw-data">1.7. Recording Raw Data</a></li>
+<li><a class="reference internal" href="#global-parameters">1.8. Global Parameters</a></li>
+<li><a class="reference internal" href="#calibration">1.9. Calibration</a></li>
+<li><a class="reference internal" href="#extracting-signals">1.10. Extracting Signals</a></li>
+<li><a class="reference internal" href="#monitor-dispense">1.11. Monitor Dispense</a></li>
+<li><a class="reference internal" href="#computing-features">1.12. Computing Features</a><ul>
+<li><a class="reference internal" href="#determining-during-dispense-and-between-dispense-time-intervals">1.12.1. Determining <code class="docutils literal"><span class="pre">during_dispense</span></code> and <code class="docutils literal"><span class="pre">between_dispense</span></code> time intervals</a></li>
+<li><a class="reference internal" href="#computing-standard-features">1.12.2. Computing standard features</a></li>
+<li><a class="reference internal" href="#computing-amp-corr-feature">1.12.3. Computing <code class="docutils literal"><span class="pre">amp_corr</span></code> feature</a></li>
+<li><a class="reference internal" href="#computing-plate-features">1.12.4. Computing <code class="docutils literal"><span class="pre">plate_features</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#fault-detection">2.13. Fault Detection</a></li>
-<li><a class="reference internal" href="#set-reference-dispense">2.14. Set Reference Dispense</a></li>
-<li><a class="reference internal" href="#return-fault-data">2.15. Return Fault Data</a></li>
-<li><a class="reference internal" href="#expose-parameters-to-host">2.16. Expose Parameters to Host</a></li>
+<li><a class="reference internal" href="#fault-detection">1.13. Fault Detection</a></li>
+<li><a class="reference internal" href="#set-reference-dispense">1.14. Set Reference Dispense</a></li>
+<li><a class="reference internal" href="#return-fault-data">1.15. Return Fault Data</a></li>
+<li><a class="reference internal" href="#expose-parameters-to-host">1.16. Expose Parameters to Host</a></li>
 </ul>
 </li>
 </ul>
@@ -1069,8 +1069,8 @@ This allows us to catch individual well dispenses or channels that look differen
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="functional_spec.html" title="previous chapter">1. Functional Specification</a></li>
-      <li>Next: <a href="interface_control_doc.html" title="next chapter">3. Interface Control Document</a></li>
+      <li>Previous: <a href="index.html" title="previous chapter">DMS Software Specification</a></li>
+      <li>Next: <a href="interface_control_doc.html" title="next chapter">2. Interface Control Document</a></li>
   </ul></li>
 </ul>
 </div>

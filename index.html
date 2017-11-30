@@ -26,7 +26,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="1. Firmware Specification" href="firmware_spec.html" />
+    <link rel="next" title="1. Functional Specification" href="functional_spec.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -52,58 +52,80 @@
 <h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound" id="mastertoc">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="firmware_spec.html">1. Firmware Specification</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#copyright">1.1. Copyright</a></li>
-<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#revision-log">1.2. Revision Log</a></li>
-<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#introduction">1.3. Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#identification">1.4. Identification</a></li>
-<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#laser-power">1.5. Laser Power</a></li>
-<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#alignment">1.6. Alignment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#recording-raw-data">1.7. Recording Raw Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#global-parameters">1.8. Global Parameters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#calibration">1.9. Calibration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#extracting-signals">1.10. Extracting Signals</a></li>
-<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#monitor-dispense">1.11. Monitor Dispense</a></li>
-<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#computing-features">1.12. Computing Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#fault-detection">1.13. Fault Detection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#set-reference-dispense">1.14. Set Reference Dispense</a></li>
-<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#return-fault-data">1.15. Return Fault Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#expose-parameters-to-host">1.16. Expose Parameters to Host</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functional_spec.html">1. Functional Specification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="functional_spec.html#introduction">1.1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functional_spec.html#interface">1.2. Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functional_spec.html#fault-detection">1.3. Fault Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functional_spec.html#fault-thresholds">1.4. Fault Thresholds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functional_spec.html#reference-mode">1.5. Reference Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functional_spec.html#subtleties">1.6. Subtleties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functional_spec.html#testing-results">1.7. Testing Results</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="interface_control_doc.html">2. Interface Control Document</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#copyright">2.1. Copyright</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#revision-log">2.2. Revision Log</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#introduction">2.3. Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#usb-interface">2.4. USB Interface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#endpoint-0-commands">2.5. Endpoint 0 Commands</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#status">2.6. Status</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#icd-id">2.7. ID</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#config-get">2.8. Config Get</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#config-set">2.9. Config Set</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#calibrate">2.10. Calibrate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#get-calibration">2.11. Get Calibration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#store-calibration">2.12. Store Calibration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#monitor-dispense">2.13. Monitor Dispense</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#get-dispense-data">2.14. Get Dispense Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#clear-history">2.15. Clear History</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#set-reference-dispense">2.16. Set Reference Dispense</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#get-well-faults">2.17. Get Well Faults</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#stream">2.18. Stream</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#firmware-block">2.19. Firmware Block</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#firmware-program">2.20. Firmware Program</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#firmware-get-crc-32">2.21. Firmware Get CRC-32</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#dmscodes-h">2.22. dmsCodes.h</a></li>
+<li class="toctree-l1"><a class="reference internal" href="firmware_spec.html">2. Firmware Specification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#copyright">2.1. Copyright</a></li>
+<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#revision-log">2.2. Revision Log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#introduction">2.3. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#identification">2.4. Identification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#laser-power">2.5. Laser Power</a></li>
+<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#alignment">2.6. Alignment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#recording-raw-data">2.7. Recording Raw Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#global-parameters">2.8. Global Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#calibration">2.9. Calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#extracting-signals">2.10. Extracting Signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#monitor-dispense">2.11. Monitor Dispense</a></li>
+<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#computing-features">2.12. Computing Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#fault-detection">2.13. Fault Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#set-reference-dispense">2.14. Set Reference Dispense</a></li>
+<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#return-fault-data">2.15. Return Fault Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="firmware_spec.html#expose-parameters-to-host">2.16. Expose Parameters to Host</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="interface_spec.html">3. Interface Specification</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="interface_spec.html#copyright">3.1. Copyright</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_spec.html#revision-log">3.2. Revision Log</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_spec.html#overview">3.3. Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_spec.html#host">3.4. Host</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_spec.html#configuration-gui">3.5. Configuration GUI</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_spec.html#biotek-application-interface">3.6. BioTek Application Interface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interface_spec.html#development-interface">3.7. Development Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interface_control_doc.html">3. Interface Control Document</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#copyright">3.1. Copyright</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#revision-log">3.2. Revision Log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#introduction">3.3. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#usb-interface">3.4. USB Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#endpoint-0-commands">3.5. Endpoint 0 Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#status">3.6. Status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#icd-id">3.7. ID</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#config-get">3.8. Config Get</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#config-set">3.9. Config Set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#calibrate">3.10. Calibrate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#get-calibration">3.11. Get Calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#store-calibration">3.12. Store Calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#monitor-dispense">3.13. Monitor Dispense</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#get-dispense-data">3.14. Get Dispense Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#clear-history">3.15. Clear History</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#set-reference-dispense">3.16. Set Reference Dispense</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#get-well-faults">3.17. Get Well Faults</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#stream">3.18. Stream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#firmware-block">3.19. Firmware Block</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#firmware-program">3.20. Firmware Program</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#firmware-get-crc-32">3.21. Firmware Get CRC-32</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_control_doc.html#dmscodes-h">3.22. dmsCodes.h</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interface_spec.html">4. Interface Specification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="interface_spec.html#copyright">4.1. Copyright</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_spec.html#revision-log">4.2. Revision Log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_spec.html#overview">4.3. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_spec.html#host">4.4. Host</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_spec.html#configuration-gui">4.5. Configuration GUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_spec.html#biotek-application-interface">4.6. BioTek Application Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface_spec.html#development-interface">4.7. Development Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="development_interface.html">5. Development Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="development_interface.html#overview">5.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development_interface.html#installation">5.2. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development_interface.html#connecting-to-the-dms">5.3. Connecting to the DMS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development_interface.html#dms-calibration">5.4. DMS Calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development_interface.html#setting-configuration-parameters">5.5. Setting Configuration Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development_interface.html#dispense-monitoring">5.6. Dispense Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development_interface.html#plotting-previously-acquired-data">5.7. Plotting Previously Acquired Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development_interface.html#updating-firmware">5.8. Updating Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development_interface.html#performance-monitor">5.9. Performance Monitor</a></li>
 </ul>
 </li>
 </ul>
@@ -132,7 +154,7 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="#">Documentation overview</a><ul>
-      <li>Next: <a href="firmware_spec.html" title="next chapter">1. Firmware Specification</a></li>
+      <li>Next: <a href="functional_spec.html" title="next chapter">1. Functional Specification</a></li>
   </ul></li>
 </ul>
 </div>

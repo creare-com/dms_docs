@@ -62,9 +62,9 @@ a ‘Write’ is defined as the host sending additional data along with the comm
 	:name: Supported Commands Summary
 
 	STATUS, Controller condition, R, 0x01,	0,	0,	12
-	ID, Build date and unique ID, R, 0x02, 0,	0,	TODO
-	CONFIG_GET,	Read configuration data, R,	0x03, 0, 0	
-	CONFIG_SET,	Write configuration data, W, 0x04,	0,	0	
+	ID, Build date and unique ID, R, 0x02, 0,	0,	48
+	CONFIG_GET,	Read configuration data, R,	0x03, 0, 0,	24
+	CONFIG_SET,	Write configuration data, W, 0x04,	0,	0,	24
 	CALIBRATE,	Run a calibration process,	R,	0x05,	"1, 2, or 3", 0, 0
 	GET_CALIBRATION, Get calibration results,	R,	0x06,	0,	0,	1688
 	STORE_CALIBRATION,	Write current calibration to non-volatile memory,	R,	0x07,	0,	0,	0

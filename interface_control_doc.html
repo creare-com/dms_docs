@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Interface Control Document &#8212; 7819 DMS 1.0.1 documentation</title>
+    <title>3. Interface Control Document &#8212; 7819 DMS 1.0.1 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -26,8 +26,8 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="3. Interface Specification" href="interface_spec.html" />
-    <link rel="prev" title="1. Firmware Specification" href="firmware_spec.html" />
+    <link rel="next" title="4. Interface Specification" href="interface_spec.html" />
+    <link rel="prev" title="2. Firmware Specification" href="firmware_spec.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -44,15 +44,15 @@
           <div class="body" role="main">
             
   <div class="section" id="interface-control-document">
-<span id="icd"></span><h1>2. Interface Control Document<a class="headerlink" href="#interface-control-document" title="Permalink to this headline">¶</a></h1>
+<span id="icd"></span><h1>3. Interface Control Document<a class="headerlink" href="#interface-control-document" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="copyright">
-<h2>2.1. Copyright<a class="headerlink" href="#copyright" title="Permalink to this headline">¶</a></h2>
+<h2>3.1. Copyright<a class="headerlink" href="#copyright" title="Permalink to this headline">¶</a></h2>
 <p>Copyright Creare LLC 2017.  This software specification is proprietary and should be considered confidential.  Reproduction or distribution prohibited without written permission from Creare.</p>
 </div>
 <div class="section" id="revision-log">
-<h2>2.2. Revision Log<a class="headerlink" href="#revision-log" title="Permalink to this headline">¶</a></h2>
+<h2>3.2. Revision Log<a class="headerlink" href="#revision-log" title="Permalink to this headline">¶</a></h2>
 <table border="1" class="colwidths-given docutils" id="icd-revision-log">
-<caption><span class="caption-number">Table 2.1 </span><span class="caption-text">Revision Log</span><a class="headerlink" href="#icd-revision-log" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 3.1 </span><span class="caption-text">Revision Log</span><a class="headerlink" href="#icd-revision-log" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="15%" />
 <col width="10%" />
@@ -81,14 +81,14 @@
 </table>
 </div>
 <div class="section" id="introduction">
-<h2>2.3. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<h2>3.3. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>This document describes the communication protocols used between the DMS controller (hereafter simply referred to as the DMS),
 and the host computer.  It partially replicates information found in the header file, <span class="xref std std-ref">dmsCodes.h</span>, found in the ‘Shared’ area
 of the source code tree.  Every effort has been made to make these two documents agree, but in the case of disagreement
 dmsCodes.h, and thus the source code, prevail.</p>
 </div>
 <div class="section" id="usb-interface">
-<span id="icd-usb-interface"></span><h2>2.4. USB Interface<a class="headerlink" href="#usb-interface" title="Permalink to this headline">¶</a></h2>
+<span id="icd-usb-interface"></span><h2>3.4. USB Interface<a class="headerlink" href="#usb-interface" title="Permalink to this headline">¶</a></h2>
 <p>Communication between the DMS and the host PC occurs over a USB 2.0, Full speed (12 Mbps) connection.  Creare recommends,
 and our example code utilizes, Microsoft’s WinUSB driver system, but the interface is generic USB and so any low level USB
 access library, such as lib-usb, could be used.</p>
@@ -101,13 +101,13 @@ for example in alignment mode.  The DMS has no support for bulk streaming to the
 <p>Note that in all cases, all data elements are transmitted and received in LSB (little endian) format.</p>
 </div>
 <div class="section" id="endpoint-0-commands">
-<h2>2.5. Endpoint 0 Commands<a class="headerlink" href="#endpoint-0-commands" title="Permalink to this headline">¶</a></h2>
-<p>The DMS supports the commands shown in <a class="reference internal" href="#supported-commands-summary"><span class="std std-numref">Table 2.2</span></a>.  Note that these are ‘Vendor’ Device Requests; refer to Chapter 9 of the
+<h2>3.5. Endpoint 0 Commands<a class="headerlink" href="#endpoint-0-commands" title="Permalink to this headline">¶</a></h2>
+<p>The DMS supports the commands shown in <a class="reference internal" href="#supported-commands-summary"><span class="std std-numref">Table 3.2</span></a>.  Note that these are ‘Vendor’ Device Requests; refer to Chapter 9 of the
 USB 2.0 specification.  A ‘Read’ is defined here as the DMS sending control data back to the host (Device-to-host);
 a ‘Write’ is defined as the host sending additional data along with the command (Host-to-device).  If the length is
 0 the direction is immaterial.  The function HI(x) takes the high order 16-bits of a 32-bit word x.  Likewise, LO(x) takes the low order 16-bits.</p>
 <table border="1" class="colwidths-given docutils" id="supported-commands-summary">
-<caption><span class="caption-number">Table 2.2 </span><span class="caption-text">Supported Commands Summary</span><a class="headerlink" href="#supported-commands-summary" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 3.2 </span><span class="caption-text">Supported Commands Summary</span><a class="headerlink" href="#supported-commands-summary" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="25%" />
 <col width="25%" />
@@ -261,11 +261,11 @@ a ‘Write’ is defined as the host sending additional data along with the comm
 <p>The commands are described in more detail below.</p>
 </div>
 <div class="section" id="status">
-<span id="icd-status"></span><h2>2.6. Status<a class="headerlink" href="#status" title="Permalink to this headline">¶</a></h2>
+<span id="icd-status"></span><h2>3.6. Status<a class="headerlink" href="#status" title="Permalink to this headline">¶</a></h2>
 <p>In response to this command, the DMS returns its current state of operation.  This command should be used
 to poll the DMS (~10 Hz) to determine the result of other commands.</p>
 <table border="1" class="colwidths-given docutils" id="manual-control-data">
-<caption><span class="caption-number">Table 2.3 </span><span class="caption-text">Manual Control Data</span><a class="headerlink" href="#manual-control-data" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 3.3 </span><span class="caption-text">Manual Control Data</span><a class="headerlink" href="#manual-control-data" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="62%" />
 <col width="38%" />
@@ -289,7 +289,7 @@ to poll the DMS (~10 Hz) to determine the result of other commands.</p>
 </table>
 <p>The following states are currently defined.</p>
 <table border="1" class="colwidths-given docutils" id="controller-states">
-<caption><span class="caption-number">Table 2.4 </span><span class="caption-text">Controller States</span><a class="headerlink" href="#controller-states" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 3.4 </span><span class="caption-text">Controller States</span><a class="headerlink" href="#controller-states" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="33%" />
 <col width="67%" />
@@ -322,7 +322,7 @@ to poll the DMS (~10 Hz) to determine the result of other commands.</p>
 </table>
 <p>The following flag bits are defined.</p>
 <table border="1" class="colwidths-given docutils" id="controller-status-bit-field">
-<caption><span class="caption-number">Table 2.5 </span><span class="caption-text">Controller Status Bit Field</span><a class="headerlink" href="#controller-status-bit-field" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 3.5 </span><span class="caption-text">Controller Status Bit Field</span><a class="headerlink" href="#controller-status-bit-field" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="33%" />
 <col width="67%" />
@@ -352,7 +352,7 @@ to poll the DMS (~10 Hz) to determine the result of other commands.</p>
 </table>
 <p>The following error codes are currently defined.</p>
 <table border="1" class="colwidths-given docutils" id="error-codes">
-<caption><span class="caption-number">Table 2.6 </span><span class="caption-text">Error Codes</span><a class="headerlink" href="#error-codes" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 3.6 </span><span class="caption-text">Error Codes</span><a class="headerlink" href="#error-codes" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="20%" />
 <col width="40%" />
@@ -421,10 +421,10 @@ to poll the DMS (~10 Hz) to determine the result of other commands.</p>
 </table>
 </div>
 <div class="section" id="icd-id">
-<span id="id"></span><h2>2.7. ID<a class="headerlink" href="#icd-id" title="Permalink to this headline">¶</a></h2>
+<span id="id"></span><h2>3.7. ID<a class="headerlink" href="#icd-id" title="Permalink to this headline">¶</a></h2>
 <p>This command causes the DMS to return the build date and time of its firmware, the unique ID associated with the processor, and the engineering version number.</p>
 <table border="1" class="colwidths-given docutils" id="identification-data">
-<caption><span class="caption-number">Table 2.7 </span><span class="caption-text">Identification Data</span><a class="headerlink" href="#identification-data" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 3.7 </span><span class="caption-text">Identification Data</span><a class="headerlink" href="#identification-data" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="25%" />
 <col width="50%" />
@@ -453,10 +453,10 @@ to poll the DMS (~10 Hz) to determine the result of other commands.</p>
 </table>
 </div>
 <div class="section" id="config-get">
-<span id="icd-config-get"></span><h2>2.8. Config Get<a class="headerlink" href="#config-get" title="Permalink to this headline">¶</a></h2>
-<p>In response to the CONFIG_GET command, the DMS will return the current value of all configuration parameters.  See <a class="reference internal" href="#configuration-data"><span class="std std-numref">Table 2.8</span></a>.</p>
+<span id="icd-config-get"></span><h2>3.8. Config Get<a class="headerlink" href="#config-get" title="Permalink to this headline">¶</a></h2>
+<p>In response to the CONFIG_GET command, the DMS will return the current value of all configuration parameters.  See <a class="reference internal" href="#configuration-data"><span class="std std-numref">Table 3.8</span></a>.</p>
 <table border="1" class="colwidths-given docutils" id="configuration-data">
-<caption><span class="caption-number">Table 2.8 </span><span class="caption-text">Configuration Data</span><a class="headerlink" href="#configuration-data" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 3.8 </span><span class="caption-text">Configuration Data</span><a class="headerlink" href="#configuration-data" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="67%" />
 <col width="33%" />
@@ -490,16 +490,16 @@ to poll the DMS (~10 Hz) to determine the result of other commands.</p>
 <p>Please refer to the <a class="reference internal" href="firmware_spec.html#configuration-parameters"><span class="std std-ref">Configuration Parameters</span></a> in the <a class="reference internal" href="firmware_spec.html#firmware-spec"><span class="std std-ref">Firmware Specification</span></a> for the exact usage of these parameters.</p>
 </div>
 <div class="section" id="config-set">
-<span id="icd-config-set"></span><h2>2.9. Config Set<a class="headerlink" href="#config-set" title="Permalink to this headline">¶</a></h2>
+<span id="icd-config-set"></span><h2>3.9. Config Set<a class="headerlink" href="#config-set" title="Permalink to this headline">¶</a></h2>
 <p>The host may overwrite the configuration parameters with this command.  The data provided
-should exactly match <a class="reference internal" href="#configuration-data"><span class="std std-numref">Table 2.8</span></a>.</p>
+should exactly match <a class="reference internal" href="#configuration-data"><span class="std std-numref">Table 3.8</span></a>.</p>
 </div>
 <div class="section" id="calibrate">
-<span id="icd-calibrate"></span><h2>2.10. Calibrate<a class="headerlink" href="#calibrate" title="Permalink to this headline">¶</a></h2>
+<span id="icd-calibrate"></span><h2>3.10. Calibrate<a class="headerlink" href="#calibrate" title="Permalink to this headline">¶</a></h2>
 <p>This command requests the DMS to perform a calibration operation.  The DMS must be in the READY state.
 There are currently three operations defined, which the host may select via the wValue control parameter; see :numref: <cite>Calibration Operations</cite>.</p>
 <table border="1" class="colwidths-given docutils" id="calibration-operations">
-<caption><span class="caption-number">Table 2.9 </span><span class="caption-text">Calibration Operations</span><a class="headerlink" href="#calibration-operations" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 3.9 </span><span class="caption-text">Calibration Operations</span><a class="headerlink" href="#calibration-operations" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="67%" />
 <col width="33%" />
@@ -533,11 +533,11 @@ If the error code is zero, then the calibration operation was successful; otherw
 operator attention.</p>
 </div>
 <div class="section" id="get-calibration">
-<span id="icd-get-calibration"></span><h2>2.11. Get Calibration<a class="headerlink" href="#get-calibration" title="Permalink to this headline">¶</a></h2>
+<span id="icd-get-calibration"></span><h2>3.11. Get Calibration<a class="headerlink" href="#get-calibration" title="Permalink to this headline">¶</a></h2>
 <p>The DMS returns the current calibration in response to this command. This is primarily for debugging purposes.
-The calibration has the format shown in <a class="reference internal" href="#calibration-data"><span class="std std-numref">Table 2.10</span></a>.</p>
+The calibration has the format shown in <a class="reference internal" href="#calibration-data"><span class="std std-numref">Table 3.10</span></a>.</p>
 <table border="1" class="colwidths-given docutils" id="calibration-data">
-<caption><span class="caption-number">Table 2.10 </span><span class="caption-text">Calibration Data</span><a class="headerlink" href="#calibration-data" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 3.10 </span><span class="caption-text">Calibration Data</span><a class="headerlink" href="#calibration-data" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="67%" />
 <col width="33%" />
@@ -583,18 +583,18 @@ The calibration has the format shown in <a class="reference internal" href="#cal
 <p>Please refer to the <a class="reference internal" href="firmware_spec.html#calibration"><span class="std std-ref">Calibration</span></a> section of the <a class="reference internal" href="firmware_spec.html#firmware-spec"><span class="std std-ref">Firmware Specification</span></a> for the meaning of these calibration elements.</p>
 </div>
 <div class="section" id="store-calibration">
-<span id="icd-store-calibration"></span><h2>2.12. Store Calibration<a class="headerlink" href="#store-calibration" title="Permalink to this headline">¶</a></h2>
+<span id="icd-store-calibration"></span><h2>3.12. Store Calibration<a class="headerlink" href="#store-calibration" title="Permalink to this headline">¶</a></h2>
 <p>After the calibration is computed, it is held in RAM only.  After this command is executed the
 calibration is written to non-volatile memory.</p>
 </div>
 <div class="section" id="monitor-dispense">
-<span id="icd-monitor-dispense-icd"></span><h2>2.13. Monitor Dispense<a class="headerlink" href="#monitor-dispense" title="Permalink to this headline">¶</a></h2>
+<span id="icd-monitor-dispense-icd"></span><h2>3.13. Monitor Dispense<a class="headerlink" href="#monitor-dispense" title="Permalink to this headline">¶</a></h2>
 <p>This command instructs the DMS to begin monitoring the sensor for a dispense operation.  Assuming it was in the READY state when the command was received,
 it will proceed to the MONITOR state, and wait for triggers.  When the DMS
 has returned to the READY state, the results are ready and can be requested.</p>
 </div>
 <div class="section" id="get-dispense-data">
-<span id="icd-get-dispense-data"></span><h2>2.14. Get Dispense Data<a class="headerlink" href="#get-dispense-data" title="Permalink to this headline">¶</a></h2>
+<span id="icd-get-dispense-data"></span><h2>3.14. Get Dispense Data<a class="headerlink" href="#get-dispense-data" title="Permalink to this headline">¶</a></h2>
 <p>After monitoring is complete, this command causes the DMS to emit the last results of the operation.  4096 bytes may be captured with each read, which
 means that some fields (&#8216;signals&#8217;, in particular) will require several reads
 to capture fully.  To use this command most effectively, instantiate
@@ -614,19 +614,19 @@ field, use code similar to the following:</p>
 the number of characters received.</p>
 </div>
 <div class="section" id="clear-history">
-<span id="icd-clear-history"></span><h2>2.15. Clear History<a class="headerlink" href="#clear-history" title="Permalink to this headline">¶</a></h2>
+<span id="icd-clear-history"></span><h2>3.15. Clear History<a class="headerlink" href="#clear-history" title="Permalink to this headline">¶</a></h2>
 <p>When calculation features used for fault detection, several features are
 normalized by the median of results from previous plates.  This is useful when
 the baseline has changed, for example due to the replacement of the dispense
 cartridge.</p>
 </div>
 <div class="section" id="set-reference-dispense">
-<span id="icd-set-reference-dispense"></span><h2>2.16. Set Reference Dispense<a class="headerlink" href="#set-reference-dispense" title="Permalink to this headline">¶</a></h2>
+<span id="icd-set-reference-dispense"></span><h2>3.16. Set Reference Dispense<a class="headerlink" href="#set-reference-dispense" title="Permalink to this headline">¶</a></h2>
 <p>If the &#8216;Ref Mode&#8217; configuration parameter is non-zero, a user reference will be
 used.  This command makes the most recent dispense the user reference.</p>
 </div>
 <div class="section" id="get-well-faults">
-<span id="icd-get-well-faults"></span><h2>2.17. Get Well Faults<a class="headerlink" href="#get-well-faults" title="Permalink to this headline">¶</a></h2>
+<span id="icd-get-well-faults"></span><h2>3.17. Get Well Faults<a class="headerlink" href="#get-well-faults" title="Permalink to this headline">¶</a></h2>
 <p>This command is used to return the data corresponding to well faults.  For each
 dispense in the monitor event (available through n_dispenses in the
 configuration data structure) there will be eight u32s, each corresponding to
@@ -638,14 +638,14 @@ after a successful monitoring operation.</p>
 warning; and 3, error.</p>
 </div>
 <div class="section" id="stream">
-<span id="icd-stream"></span><h2>2.18. Stream<a class="headerlink" href="#stream" title="Permalink to this headline">¶</a></h2>
+<span id="icd-stream"></span><h2>3.18. Stream<a class="headerlink" href="#stream" title="Permalink to this headline">¶</a></h2>
 <p>This command controls raw data streaming.  The wValue parameter controls the streaming: 0 halts streaming,
 1 begins streaming, and all other values are reserved.  After receiving this command with a wValue of 1,
 the DMS will begin streaming the raw data from the sensor to the host at the full, 1kHz rate, on Bulk Transfer
 endpoint 1.  The DMS will stream packets of the form described in Table 10 until commanded to stop.  Note the
 DMS must be in the READY state to use this command.</p>
 <table border="1" class="colwidths-given docutils" id="stream-packet-format">
-<caption><span class="caption-number">Table 2.11 </span><span class="caption-text">Stream Packet Format</span><a class="headerlink" href="#stream-packet-format" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 3.11 </span><span class="caption-text">Stream Packet Format</span><a class="headerlink" href="#stream-packet-format" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="33%" />
 <col width="67%" />
@@ -669,20 +669,20 @@ of a packet if synchronization is lost.  The lower 16 bits contain trigger statu
 bit 1 is the plate trigger.  Bits 2 through 15 are reserved.</p>
 </div>
 <div class="section" id="firmware-block">
-<span id="icd-firmware-block"></span><h2>2.19. Firmware Block<a class="headerlink" href="#firmware-block" title="Permalink to this headline">¶</a></h2>
+<span id="icd-firmware-block"></span><h2>3.19. Firmware Block<a class="headerlink" href="#firmware-block" title="Permalink to this headline">¶</a></h2>
 <p>In order to update the firmware on the DMS, it needs to be transferred to the
 DMS&#8217;s memory using this command.  Up to 512 bytes can be sent with each
 transfer.  The offset of each block in bytes are the wValue and wIndex
 parameters.  Only send binary program files (e.g. DMS.bin).</p>
 </div>
 <div class="section" id="firmware-program">
-<span id="icd-firmware-program"></span><h2>2.20. Firmware Program<a class="headerlink" href="#firmware-program" title="Permalink to this headline">¶</a></h2>
+<span id="icd-firmware-program"></span><h2>3.20. Firmware Program<a class="headerlink" href="#firmware-program" title="Permalink to this headline">¶</a></h2>
 <p>Once the program has been successfully transmitted to the DMS in its entirety,
 this command may be executed to copy the program from RAM into the device&#8217;s
 FLASH.  The device will then be rebooted.</p>
 </div>
 <div class="section" id="firmware-get-crc-32">
-<span id="icd-firmware-get-crc"></span><h2>2.21. Firmware Get CRC-32<a class="headerlink" href="#firmware-get-crc-32" title="Permalink to this headline">¶</a></h2>
+<span id="icd-firmware-get-crc"></span><h2>3.21. Firmware Get CRC-32<a class="headerlink" href="#firmware-get-crc-32" title="Permalink to this headline">¶</a></h2>
 <p>Once the program has been successfully transmitted to the DMS in its entirety,
 in response to this command the DMS will compute and transmit the CRC-32 of
 the bytes which have sent which comprise the Firmware.  This can be compared
@@ -690,7 +690,7 @@ against the local CRC of the firmware as a verification step before programming
 it to the DMS&#8217;s FLASH.</p>
 </div>
 <div class="section" id="dmscodes-h">
-<span id="icd-dmscodes-h"></span><h2>2.22. dmsCodes.h<a class="headerlink" href="#dmscodes-h" title="Permalink to this headline">¶</a></h2>
+<span id="icd-dmscodes-h"></span><h2>3.22. dmsCodes.h<a class="headerlink" href="#dmscodes-h" title="Permalink to this headline">¶</a></h2>
 <p>The current version of dmsCodes.h is included here for reference. Note the horizontal scroll bar at the bottom, if you need to see the end of the lines. Sorry, this is a pain!</p>
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/*</span>
 <span class="cm">  dmsCodes.h</span>
@@ -966,29 +966,29 @@ it to the DMS&#8217;s FLASH.</p>
             </a></p>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">2. Interface Control Document</a><ul>
-<li><a class="reference internal" href="#copyright">2.1. Copyright</a></li>
-<li><a class="reference internal" href="#revision-log">2.2. Revision Log</a></li>
-<li><a class="reference internal" href="#introduction">2.3. Introduction</a></li>
-<li><a class="reference internal" href="#usb-interface">2.4. USB Interface</a></li>
-<li><a class="reference internal" href="#endpoint-0-commands">2.5. Endpoint 0 Commands</a></li>
-<li><a class="reference internal" href="#status">2.6. Status</a></li>
-<li><a class="reference internal" href="#icd-id">2.7. ID</a></li>
-<li><a class="reference internal" href="#config-get">2.8. Config Get</a></li>
-<li><a class="reference internal" href="#config-set">2.9. Config Set</a></li>
-<li><a class="reference internal" href="#calibrate">2.10. Calibrate</a></li>
-<li><a class="reference internal" href="#get-calibration">2.11. Get Calibration</a></li>
-<li><a class="reference internal" href="#store-calibration">2.12. Store Calibration</a></li>
-<li><a class="reference internal" href="#monitor-dispense">2.13. Monitor Dispense</a></li>
-<li><a class="reference internal" href="#get-dispense-data">2.14. Get Dispense Data</a></li>
-<li><a class="reference internal" href="#clear-history">2.15. Clear History</a></li>
-<li><a class="reference internal" href="#set-reference-dispense">2.16. Set Reference Dispense</a></li>
-<li><a class="reference internal" href="#get-well-faults">2.17. Get Well Faults</a></li>
-<li><a class="reference internal" href="#stream">2.18. Stream</a></li>
-<li><a class="reference internal" href="#firmware-block">2.19. Firmware Block</a></li>
-<li><a class="reference internal" href="#firmware-program">2.20. Firmware Program</a></li>
-<li><a class="reference internal" href="#firmware-get-crc-32">2.21. Firmware Get CRC-32</a></li>
-<li><a class="reference internal" href="#dmscodes-h">2.22. dmsCodes.h</a></li>
+<li><a class="reference internal" href="#">3. Interface Control Document</a><ul>
+<li><a class="reference internal" href="#copyright">3.1. Copyright</a></li>
+<li><a class="reference internal" href="#revision-log">3.2. Revision Log</a></li>
+<li><a class="reference internal" href="#introduction">3.3. Introduction</a></li>
+<li><a class="reference internal" href="#usb-interface">3.4. USB Interface</a></li>
+<li><a class="reference internal" href="#endpoint-0-commands">3.5. Endpoint 0 Commands</a></li>
+<li><a class="reference internal" href="#status">3.6. Status</a></li>
+<li><a class="reference internal" href="#icd-id">3.7. ID</a></li>
+<li><a class="reference internal" href="#config-get">3.8. Config Get</a></li>
+<li><a class="reference internal" href="#config-set">3.9. Config Set</a></li>
+<li><a class="reference internal" href="#calibrate">3.10. Calibrate</a></li>
+<li><a class="reference internal" href="#get-calibration">3.11. Get Calibration</a></li>
+<li><a class="reference internal" href="#store-calibration">3.12. Store Calibration</a></li>
+<li><a class="reference internal" href="#monitor-dispense">3.13. Monitor Dispense</a></li>
+<li><a class="reference internal" href="#get-dispense-data">3.14. Get Dispense Data</a></li>
+<li><a class="reference internal" href="#clear-history">3.15. Clear History</a></li>
+<li><a class="reference internal" href="#set-reference-dispense">3.16. Set Reference Dispense</a></li>
+<li><a class="reference internal" href="#get-well-faults">3.17. Get Well Faults</a></li>
+<li><a class="reference internal" href="#stream">3.18. Stream</a></li>
+<li><a class="reference internal" href="#firmware-block">3.19. Firmware Block</a></li>
+<li><a class="reference internal" href="#firmware-program">3.20. Firmware Program</a></li>
+<li><a class="reference internal" href="#firmware-get-crc-32">3.21. Firmware Get CRC-32</a></li>
+<li><a class="reference internal" href="#dmscodes-h">3.22. dmsCodes.h</a></li>
 </ul>
 </li>
 </ul>
@@ -996,8 +996,8 @@ it to the DMS&#8217;s FLASH.</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="firmware_spec.html" title="previous chapter">1. Firmware Specification</a></li>
-      <li>Next: <a href="interface_spec.html" title="next chapter">3. Interface Specification</a></li>
+      <li>Previous: <a href="firmware_spec.html" title="previous chapter">2. Firmware Specification</a></li>
+      <li>Next: <a href="interface_spec.html" title="next chapter">4. Interface Specification</a></li>
   </ul></li>
 </ul>
 </div>

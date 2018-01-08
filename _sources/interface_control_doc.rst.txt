@@ -210,7 +210,7 @@ There are currently three operations defined, which the host may select via the 
 	
 See :ref:`calibration` in the :ref:`firmware-spec` for the full details of these operations.
 
-After the operation is commanded, :ref:`icd-status` should be polled to observed the return of the DMS to the READY state.  
+After the operation is commanded, :ref:`icd-status` should be polled to observe the return of the DMS to the READY state.  
 If the error code is zero, then the calibration operation was successful; otherwise there was a problem that requires
 operator attention.
 
@@ -325,8 +325,7 @@ Stream
 This command controls raw data streaming.  The wValue parameter controls the streaming: 0 halts streaming,
 1 begins streaming, and all other values are reserved.  After receiving this command with a wValue of 1,
 the DMS will begin streaming the raw data from the sensor to the host at the full, 1kHz rate, on Bulk Transfer
-endpoint 1.  The DMS will stream packets of the form described in Table 10 until commanded to stop.  Note the 
-DMS must be in the READY state to use this command.
+endpoint 1.  The DMS will stream packets of the form described in :numref:`Stream Packet Format` until commanded to stop.  Note the DMS must be in the READY state to use this command.
 
 .. csv-table:: Stream Packet Format
 	:header: "Data Item", "Field Length (bytes)"
@@ -334,7 +333,7 @@ DMS must be in the READY state to use this command.
 	:name: Stream Packet Format
 
 	Header (u32),	4
-	Packed Samples (u32),	150
+	Packed Samples (u32),	"768 (512 pixels, 12 bits per pixel, packed into 192 32-bit words)"
 
 The header consists of two parts.  The upper 16 bits holds the value 0x7819, which may be used to scan for the start
 of a packet if synchronization is lost.  The lower 16 bits contain trigger status.  Bit 0 is the pump trigger, while

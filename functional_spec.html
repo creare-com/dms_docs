@@ -1,16 +1,13 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>1. Functional Specification &#8212; 7819 DMS 1.0.1 documentation</title>
-    
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
@@ -35,7 +32,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">
+  <body>
   
 
     <div class="document">
@@ -77,7 +74,7 @@
 <dt><em>between</em></dt>
 <dd>The time period between well dispenses when the pump is not running and no stream is expected to be present.</dd>
 </dl>
-<p>The result of each fault test is a <em>severity</em> in the range of 0-3 as tabulated in <a class="reference internal" href="#fs-fault-severity-levels-table"><span class="std std-numref">Table 1.1</span></a>. The severity levels are roughly quantified in terms of false positive ratio (FPR), or the probability that the fault indication might occur for a normal, good dispense.  A &#8216;notice&#8217; might be expected to occur once in each 100 normal dispenses, and thus one or a few notices on a 96 well plate would probably not be cause for concern. However, if a notice occurs frequently on a particular channel, this may indicate a real issue that needs attention. An &#8216;alert&#8217; is only likely to occur once in 10,000 normal dispenses, so even on a 1536 well plate, one alert is likely to be meaningful.</p>
+<p>The result of each fault test is a <em>severity</em> in the range of 0-3 as tabulated in <a class="reference internal" href="#fs-fault-severity-levels-table"><span class="std std-numref">Table 1.1</span></a>. The severity levels are roughly quantified in terms of false positive ratio (FPR), or the probability that the fault indication might occur for a normal, good dispense.  A ‘notice’ might be expected to occur once in each 100 normal dispenses, and thus one or a few notices on a 96 well plate would probably not be cause for concern. However, if a notice occurs frequently on a particular channel, this may indicate a real issue that needs attention. An ‘alert’ is only likely to occur once in 10,000 normal dispenses, so even on a 1536 well plate, one alert is likely to be meaningful.</p>
 <table border="1" class="colwidths-given docutils" id="fs-fault-severity-levels-table">
 <caption><span class="caption-number">Table 1.1 </span><span class="caption-text">Fault Severity Levels</span><a class="headerlink" href="#fs-fault-severity-levels-table" title="Permalink to this table">¶</a></caption>
 <colgroup>
@@ -94,7 +91,7 @@
 <tbody valign="top">
 <tr class="row-even"><td>0</td>
 <td>normal</td>
-<td>&#8211;</td>
+<td>–</td>
 </tr>
 <tr class="row-odd"><td>1</td>
 <td>notice</td>
@@ -133,8 +130,8 @@ This allows the DMS to catch individual well dispenses or channels that look dif
 </div>
 <div class="section" id="reference-mode">
 <h2>1.5. Reference Mode<a class="headerlink" href="#reference-mode" title="Permalink to this headline">¶</a></h2>
-<p>The DMS can be operated in one of two <em>reference modes</em>, either &#8216;user&#8217; or &#8216;history&#8217;. These determine which of the two possible references sourses listed in item 3 above are used. In &#8216;user&#8217; mode, the user conducts an initial dispense, validates it (visual check, gravimetric, optical, etc.), then designates that dispense as the reference that all subsequent dispenses are compared to. This ensures that all new dispenses are compared to a known reference that does not drift with time.</p>
-<p>For simpler (and typically equally reliable) operation, the DMS can be operated in &#8216;history&#8217; mode. In this mode, the DMS automatically maintains reference values based on the median of the last few dispenses (10 by default). This typically works quite well, and is transparent to the user. However, it is theoretically possible for a hypothetical slow drift in the dispense dynamics to go undetected. It is also important that the history be cleared anytime the cassette or dispense protocol is changed in any way.</p>
+<p>The DMS can be operated in one of two <em>reference modes</em>, either ‘user’ or ‘history’. These determine which of the two possible references sourses listed in item 3 above are used. In ‘user’ mode, the user conducts an initial dispense, validates it (visual check, gravimetric, optical, etc.), then designates that dispense as the reference that all subsequent dispenses are compared to. This ensures that all new dispenses are compared to a known reference that does not drift with time.</p>
+<p>For simpler (and typically equally reliable) operation, the DMS can be operated in ‘history’ mode. In this mode, the DMS automatically maintains reference values based on the median of the last few dispenses (10 by default). This typically works quite well, and is transparent to the user. However, it is theoretically possible for a hypothetical slow drift in the dispense dynamics to go undetected. It is also important that the history be cleared anytime the cassette or dispense protocol is changed in any way.</p>
 </div>
 <div class="section" id="subtleties">
 <h2>1.6. Subtleties<a class="headerlink" href="#subtleties" title="Permalink to this headline">¶</a></h2>
@@ -159,14 +156,14 @@ This allows the DMS to catch individual well dispenses or channels that look dif
 <p>We then dispensed many wells using different cassettes and dispense volumes while monitoring with the DMS. We also quantified the true dispensed volume in each well with an absorbance plate reader. We used this data set in two ways: first, to characterize the normative DMS <em>feature</em> distributions among all good dispenses and establish fault thresholds based on <a class="reference internal" href="#fs-fault-severity-levels-table"><span class="std std-numref">Table 1.1</span></a>; and second, to quantify the <em>true fault</em> detection confidence that was achieved by applying those thresholds.</p>
 <p><strong>Feature Distributions.</strong> We compiled the <em>feature</em> distributions for all non-fault wells as shown in <a class="reference internal" href="#fs-feature-cdf-1ul-fig"><span class="std std-numref">Fig. 1.2</span></a>. Each of these plots shows two cumulative distribution functions, one ascending (red) and one descending (green). To understand these plots, look at the upper-right plot, for the <code class="docutils literal"><span class="pre">width_mean</span></code> feature. Looking at the red curve, this feature has a 1% (.01) probability of taking on a value above 0.6. Looking at the green curve, this feature has a 1% probability of taking on a value below 0.37. The vertical lines indicate our fault detection thresholds, with blue, orange, and red indicating notice, warning, and alert respectively. Dashed lines indicate lower bounds, and solid lines indicate upper bounds.</p>
 <div class="figure align-center" id="fs-feature-cdf-1ul-fig">
-<a class="reference internal image-reference" href="_images/feature_cdf_pre-BioTek_MCR_tmp.png"><img alt="New 1 uL Feature CDFs" src="_images/feature_cdf_pre-BioTek_MCR_tmp.png" style="width: 646.2px; height: 415.8px;" /></a>
+<a class="reference internal image-reference" href="_images/feature_cdf_pre-BioTek_MCR_tmp.png"><img alt="New 1 uL Feature CDFs" src="_images/feature_cdf_pre-BioTek_MCR_tmp.png" style="width: 646.1999999999999px; height: 415.8px;" /></a>
 <p class="caption"><span class="caption-number">Fig. 1.2 </span><span class="caption-text">Newer DMS Feature CDFs, 1 uL Cassette.</span></p>
 </div>
 <p>These feature distributions will vary somewhat with each experiment. But in general, for a large population of ‘good’ dispenses, we’re shooting for a false positive ratio (FPR) of about .01, .001, and .0001 for ‘notice’, ‘warning’, and ‘alert’ respectively. Thus, the red distribution curve should typically cross the solid blue threshold at a probability of about .01, the solid orange at about .001, and the solid red at about .0001. Similarly, the green distribution curve should cross the dashed thresholds at about the same values.</p>
 <p>Note that we have not defined all three thresholds for all the fault tests, and we have not always adhered strictly to the .01, .001, and .0001 target levels. These choices are based on our best judgement of what is most likely to be useful in practice.</p>
 <p><strong>Detection Confidence.</strong> We compared the DMS detection results to the true faults identified by the absorbance plate reader. <a class="reference internal" href="#fs-feature-distributions-fig"><span class="std std-numref">Fig. 1.3</span></a> shows the feature distributions for both the no-fault and fault dispense populations, while the black curve indicates the probabability that a dispense with a given feature value is a fault. The regions of these distributions most likely to be useful for fault detection are those that both have a high fault probability and contain a significant fraction of the fault population. Examples would be the first plot (for the <code class="docutils literal"><span class="pre">amp_corr</span></code> feature) at values above 0.4 or the upper-right plot (feature <code class="docutils literal"><span class="pre">amp_mean_dur_n</span></code>) at values below -0.3.</p>
 <div class="figure align-center" id="fs-feature-distributions-fig">
-<a class="reference internal image-reference" href="_images/feature_dist_original_training.png"><img alt="Feature Distriutions" src="_images/feature_dist_original_training.png" style="width: 667.2px; height: 574.2px;" /></a>
+<a class="reference internal image-reference" href="_images/feature_dist_original_training.png"><img alt="Feature Distriutions" src="_images/feature_dist_original_training.png" style="width: 667.1999999999999px; height: 574.1999999999999px;" /></a>
 <p class="caption"><span class="caption-number">Fig. 1.3 </span><span class="caption-text">DMS Feature Distributions, 1 uL Cassette.</span></p>
 </div>
 <p>Given the feature distributions observed in this test of 170,000 wells, the DMS achieved the fault detection results tabulated in <a class="reference internal" href="#fs-fault-detection-fig"><span class="std std-numref">Fig. 1.4</span></a>. We would expect similar results in most real-world scenarios.</p>
@@ -233,8 +230,8 @@ This allows the DMS to catch individual well dispenses or channels that look dif
       &copy;2016, Creare.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
       <a href="_sources/functional_spec.rst.txt"

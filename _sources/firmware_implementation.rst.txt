@@ -1,0 +1,13 @@
+=======================
+Firmware Implementation
+=======================
+
+Overview
+========
+
+* What language is used?
+* Where are the files?
+* What supporting packages are required?
+* How are versions released / controlled?
+* How to compile?
+* How to flash the hardware?

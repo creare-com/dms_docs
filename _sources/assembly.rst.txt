@@ -1,0 +1,70 @@
+========
+Assembly
+========
+
+Introduction
+============
+This documents describes the procedure for assembly of the three subunits that
+will become one unit of the DMS ready for installation. Objective is to build
+a single item ready as a simple reto-fit to fluid dispensers already in field use.
+
+Optics Assembly
+===============
+For this subassembly, first ensure you have all items as listed in :numref:`Optics Assembly Parts and Equipment` and 
+the associated referenced tools or supplies. More complete details on each item, such as part number, 
+vendor etc., is located in the master BOM maintained here `7818-Droplet SVN\\trunk\\Documents\\7819 DMS Master BOM.xls`, 
+and it is mirrored :download:`here <7819 DMS Master BOM.xls>` (for **viewing** only). 
+
+.. csv-table:: Optics Assembly Parts and Equipment
+	:header: "Quantity", "Description", "Tools and Supplies"
+	:widths: 2, 10, 8
+	:name: Optics Assembly Parts and Equipment
+
+	1, 1/2" square aluminum Mirror, Loctite 414 Instant Adhesive
+	1, Micro VLM Laser Diode,
+	1, Collimating Mirror, 5-minute epoxy
+	1, X-Y-Z Adaptor,
+	1, X-Y-Z Mount,
+	1, Optics Sub-assembly Mount,
+	1, Optics Housing Cover,
+	1, Optics Housing Base,
+	1, Optics Spine,
+	1, Housing Window,
+	2, Flat Head Cap Screws .112-40 x .5625, 1/16 Hex Driver
+	6, Button Head Cap Screws .138-32 x .375, 5/64 Hex Driver
+	4, Dowel Pin .0625 x .375, "Tweezers and Loctite 430"
+	4, Tension Springs,
+	8, Socket Head Set Screws .086-56 x .375,
+	2, Socket Head Set Screw .190-32 x.375 Oval Point, 3/32 Hex Driver
+	4, Socket Head Set Screw .190-32 x.375 Cone Point, 3/32 Hex Driver
+	7, Thread Insert .138-32 x.207, 6-32 Helicoil Installation Tools
+	1, Socket Head Cap Screw .138-32 x.625, 7/64 Hex Driver
+
+
+
+	
+.. figure:: images/Droplet_1.png
+	:scale: 60 %
+	:alt: Feature Distriutions
+	:align: center
+	:name: assembly-feat-dist
+
+	DMS Feature Distributions, 1 uL Cassette.
+	
+.. figure:: images/Droplet_1.png
+	:scale: 60 %
+	:alt: Place Holder Image
+	:align: center
+	:name: Place Holder
+	
+	Place Holder
+
+Detector Assembly
+=================
+
+Control Assembly
+================
+
+Cables
+======
+

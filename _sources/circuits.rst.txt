@@ -1,0 +1,23 @@
+========
+Circuits
+========
+
+Introduction
+============
+
+Components
+==========
+
+Sensor
+------
+
+The Phase I DMS prototypes employed a 16 pixel detector (Hamamatsu s4111-16R). The pixels were binned in groups of two, with each pair detecting one dispense channel.
+
+Schematics
+==========
+
+Layouts
+=======
+
+Fabrication
+===========

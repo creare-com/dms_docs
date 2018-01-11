@@ -1,13 +1,16 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
     <title>7. Interface Control Document &#8212; 7819 DMS 1.0.1 documentation</title>
+    
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
@@ -32,7 +35,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -412,7 +415,7 @@ to poll the DMS (~10 Hz) to determine the result of other commands.</p>
 </tr>
 <tr class="row-even"><td>12-255</td>
 <td>RESERVED</td>
-<td>&#160;</td>
+<td>&nbsp;</td>
 </tr>
 </tbody>
 </table>
@@ -443,7 +446,7 @@ to poll the DMS (~10 Hz) to determine the result of other commands.</p>
 <td>16</td>
 </tr>
 <tr class="row-even"><td>Engineering Version Number</td>
-<td>String, e.g. ‘1.0’</td>
+<td>String, e.g. &#8216;1.0&#8217;</td>
 <td>8</td>
 </tr>
 </tbody>
@@ -593,7 +596,7 @@ has returned to the READY state, the results are ready and can be requested.</p>
 <div class="section" id="get-dispense-data">
 <span id="icd-get-dispense-data"></span><h2>7.14. Get Dispense Data<a class="headerlink" href="#get-dispense-data" title="Permalink to this headline">¶</a></h2>
 <p>After monitoring is complete, this command causes the DMS to emit the last results of the operation.  4096 bytes may be captured with each read, which
-means that some fields (‘signals’, in particular) will require several reads
+means that some fields (&#8216;signals&#8217;, in particular) will require several reads
 to capture fully.  To use this command most effectively, instantiate
 an instance of the DMS_DISPENSE_DATA structure.  Then, to receive a particular
 field, use code similar to the following:</p>
@@ -619,7 +622,7 @@ cartridge.</p>
 </div>
 <div class="section" id="set-reference-dispense">
 <span id="icd-set-reference-dispense"></span><h2>7.16. Set Reference Dispense<a class="headerlink" href="#set-reference-dispense" title="Permalink to this headline">¶</a></h2>
-<p>If the ‘Ref Mode’ configuration parameter is non-zero, a user reference will be
+<p>If the &#8216;Ref Mode&#8217; configuration parameter is non-zero, a user reference will be
 used.  This command makes the most recent dispense the user reference.</p>
 </div>
 <div class="section" id="get-well-faults">
@@ -667,14 +670,14 @@ bit 1 is the plate trigger.  Bits 2 through 15 are reserved.</p>
 <div class="section" id="firmware-block">
 <span id="icd-firmware-block"></span><h2>7.19. Firmware Block<a class="headerlink" href="#firmware-block" title="Permalink to this headline">¶</a></h2>
 <p>In order to update the firmware on the DMS, it needs to be transferred to the
-DMS’s memory using this command.  Up to 512 bytes can be sent with each
+DMS&#8217;s memory using this command.  Up to 512 bytes can be sent with each
 transfer.  The offset of each block in bytes are the wValue and wIndex
 parameters.  Only send binary program files (e.g. DMS.bin).</p>
 </div>
 <div class="section" id="firmware-program">
 <span id="icd-firmware-program"></span><h2>7.20. Firmware Program<a class="headerlink" href="#firmware-program" title="Permalink to this headline">¶</a></h2>
 <p>Once the program has been successfully transmitted to the DMS in its entirety,
-this command may be executed to copy the program from RAM into the device’s
+this command may be executed to copy the program from RAM into the device&#8217;s
 FLASH.  The device will then be rebooted.</p>
 </div>
 <div class="section" id="firmware-get-crc-32">
@@ -683,7 +686,7 @@ FLASH.  The device will then be rebooted.</p>
 in response to this command the DMS will compute and transmit the CRC-32 of
 the bytes which have sent which comprise the Firmware.  This can be compared
 against the local CRC of the firmware as a verification step before programming
-it to the DMS’s FLASH.</p>
+it to the DMS&#8217;s FLASH.</p>
 </div>
 <div class="section" id="dmscodes-h">
 <span id="icd-dmscodes-h"></span><h2>7.22. dmsCodes.h<a class="headerlink" href="#dmscodes-h" title="Permalink to this headline">¶</a></h2>
@@ -1022,8 +1025,8 @@ it to the DMS’s FLASH.</p>
       &copy;2016, Creare.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |
       <a href="_sources/interface_control_doc.rst.txt"

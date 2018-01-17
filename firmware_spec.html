@@ -1,16 +1,13 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>6. Firmware Specification &#8212; 7819 DMS 1.0.1 documentation</title>
-    
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
@@ -35,7 +32,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">
+  <body>
   
 
     <div class="document">
@@ -126,7 +123,7 @@
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">stream_diameter</span></code></td>
-<td>The nominal diameter of the dispense stream in mils (.001 &#8221;). Range: [1, 50]. Typical values: 7 (1 uL cassette) and 14 (5 and 10 uL cassettes).</td>
+<td>The nominal diameter of the dispense stream in mils (.001 “). Range: [1, 50]. Typical values: 7 (1 uL cassette) and 14 (5 and 10 uL cassettes).</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">n_dispenses</span></code></td>
 <td>The number of wells dispensed by a given channel on each microplate. Range: [1, 192]. Typical values are 12, 48, and 192.</td>
@@ -442,7 +439,7 @@
 </li>
 <li><p class="first"><strong>Wait for Trigger</strong>  The DMS has two trigger inputs illustrated in <a class="reference internal" href="#biotek-triggers"><span class="std std-numref">Fig. 6.1</span></a>. The pump trigger is active whenever the dispense pump is running (i.e. fluid is flowing). The plate trigger is active whenever a plate is being dispensed.  This allows us to distinguish when the pump is running for reasons other than dispensing a plate, such as a purge or pre-dispense. Both triggers are normally high, active low.  The DMS should wait until it receives a plate trigger, then proceed immediately to the next step.</p>
 <div class="figure align-center" id="biotek-triggers">
-<a class="reference internal image-reference" href="_images/BioTek_Triggers.png"><img alt="BioTek Trigger Diagram" src="_images/BioTek_Triggers.png" style="width: 591.6px; height: 202.8px;" /></a>
+<a class="reference internal image-reference" href="_images/BioTek_Triggers.png"><img alt="BioTek Trigger Diagram" src="_images/BioTek_Triggers.png" style="width: 591.6px; height: 202.79999999999998px;" /></a>
 <p class="caption"><span class="caption-number">Fig. 6.1 </span><span class="caption-text">BioTek Trigger Diagram.</span></p>
 </div>
 </li>
@@ -484,38 +481,38 @@
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">t_start</span></code></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>Plate trigger goes LOW</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">t_low(1</span></code>)</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>Pump tigger goes LOW</td>
 </tr>
-<tr class="row-even"><td>&nbsp;</td>
+<tr class="row-even"><td>&#160;</td>
 <td><code class="docutils literal"><span class="pre">during_dispense</span></code></td>
 <td>well dispense #1</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">t_high(1)</span></code></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>Pump trigger goes HIGH</td>
 </tr>
-<tr class="row-even"><td>&nbsp;</td>
+<tr class="row-even"><td>&#160;</td>
 <td><code class="docutils literal"><span class="pre">between_dispense</span></code></td>
 <td>well dispense #1</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">t_low(2)</span></code></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>Pump tigger goes LOW</td>
 </tr>
-<tr class="row-even"><td>&nbsp;</td>
+<tr class="row-even"><td>&#160;</td>
 <td><code class="docutils literal"><span class="pre">during_dispense</span></code></td>
 <td>well dispense #2</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">t_high(2)</span></code></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>Pump trigger goes HIGH</td>
 </tr>
-<tr class="row-even"><td>&nbsp;</td>
+<tr class="row-even"><td>&#160;</td>
 <td><code class="docutils literal"><span class="pre">between_dispense</span></code></td>
 <td>well dispense #2</td>
 </tr>
@@ -524,27 +521,27 @@
 <td>…</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">t_low(n_dispenses)</span></code></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>Pump tigger goes LOW</td>
 </tr>
-<tr class="row-odd"><td>&nbsp;</td>
+<tr class="row-odd"><td>&#160;</td>
 <td><code class="docutils literal"><span class="pre">during_dispense</span></code></td>
 <td>last well dispense of plate (# n_dispenses)</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">t_high(n_dispenses)</span></code></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>Pump trigger goes HIGH</td>
 </tr>
-<tr class="row-odd"><td>&nbsp;</td>
+<tr class="row-odd"><td>&#160;</td>
 <td><code class="docutils literal"><span class="pre">between_dispense</span></code></td>
 <td>last well dispense of plate (# n_dispenses)</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">t_high(n_dispenses)</span> <span class="pre">+</span> <span class="pre">avg(t_low(i+1)</span>&#160; <span class="pre">–</span> <span class="pre">t_high(i))</span></code></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>END of last <code class="docutils literal"><span class="pre">between_dispense</span></code> No event. Must be computed using average of the previous <code class="docutils literal"><span class="pre">between_dispense</span></code> durations.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">t_end</span></code></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>Plate trigger goes HIGH</td>
 </tr>
 </tbody>
@@ -558,7 +555,7 @@
 <li>Select the row of the time signal corresponding to the well’s channel.</li>
 <li>Select the frames (columns) of the time signal corresponding to the appropriate time interval (<code class="docutils literal"><span class="pre">during_dispense</span></code>, <code class="docutils literal"><span class="pre">between_dispense</span></code>).</li>
 <li>Compute the mean or standard deviation of the selected portion of the time signal.</li>
-<li>Optionally, normalize and then take the base 10 logarithm. Whether or not to do this step is indicated in the <a class="reference internal" href="#feature-specifications">Feature Specifications</a> table (under the column &#8220;Normalized&#8221;).<ol class="arabic">
+<li>Optionally, normalize and then take the base 10 logarithm. Whether or not to do this step is indicated in the <a class="reference internal" href="#feature-specifications">Feature Specifications</a> table (under the column “Normalized”).<ol class="arabic">
 <li>Normalization: divide by the median (across all <code class="docutils literal"><span class="pre">8</span> <span class="pre">x</span> <span class="pre">n_dispenses</span></code> wells on the entire plate, <strong>ignoring any NaNs</strong>) of the result from the previous step. <strong>If either the feature value or median is &lt;= 0 or NaN, then the normalized feature should be NaN.</strong></li>
 <li>Then, compute the base 10 logarithm of the result from normalization (unless the normalized feature has already been set to NaN in the step above.)</li>
 </ol>
@@ -659,7 +656,7 @@
 <span class="k">end</span>
 </pre></div>
 </div>
-<p>Note, <code class="docutils literal"><span class="pre">amp_med</span></code> need only be computed once for each well dispense event. It can be reused for calculation of each channel&#8217;s particular <code class="docutils literal"><span class="pre">amp_corr</span></code> feature.</p>
+<p>Note, <code class="docutils literal"><span class="pre">amp_med</span></code> need only be computed once for each well dispense event. It can be reused for calculation of each channel’s particular <code class="docutils literal"><span class="pre">amp_corr</span></code> feature.</p>
 <p>Now calculate the <code class="docutils literal"><span class="pre">amp_corr</span></code> feature for this well on channel <code class="docutils literal"><span class="pre">ch</span></code>. We will compute five candidate values of the feature at different phase lags. We will select the minimum of these five values.</p>
 <div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">S</span> <span class="p">=</span> <span class="n">signal_amp</span><span class="p">(</span><span class="n">ch</span><span class="p">,</span> <span class="n">during_dispense_frames</span><span class="p">)</span>
 <span class="n">S</span> <span class="p">=</span> <span class="n">S</span> <span class="o">-</span> <span class="n">mean</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
@@ -988,7 +985,7 @@ This allows us to catch individual well dispenses or channels that look differen
 </tr>
 </tbody>
 </table>
-<p>Now it&#8217;s time to actually detect the faults.</p>
+<p>Now it’s time to actually detect the faults.</p>
 <dl class="docutils">
 <dt><code class="docutils literal"><span class="pre">detect_faults()</span></code></dt>
 <dd><p class="first">If <code class="docutils literal"><span class="pre">ref_mode</span></code> is <code class="docutils literal"><span class="pre">'history'</span></code>, then for each feature, take the median (ignoring NaNs) of all wells of all plates in each channel of <code class="docutils literal"><span class="pre">history</span></code> and assign this value to the corresponding entry of <code class="docutils literal"><span class="pre">ref_features</span></code>. If there are no valid entries for a given feature, it should be set to <code class="docutils literal"><span class="pre">nan</span></code>. <em>Exception</em>: for amp_mean_dur, also ignore values that are <code class="docutils literal"><span class="pre">&lt;=</span> <span class="pre">0</span></code> when taking the median.</p>
@@ -1099,8 +1096,8 @@ This allows us to catch individual well dispenses or channels that look differen
       &copy;2016, Creare.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
       <a href="_sources/firmware_spec.rst.txt"

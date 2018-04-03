@@ -309,8 +309,8 @@ This command is used to return the data corresponding to well faults.  For each
 dispense in the monitor event (available through n_dispenses in the 
 configuration data structure) there will be eight u32s, each corresponding to 
 one channel.  Each two bits correspond to a fault indication from the Fault
-Categories table.  The two LSB correspond to Fault Category 1, the next two to
-Fault Category 2, up to Fault Category 15.  The upper two MSB should be zero
+Categories table.  The two LSB correspond to Fault Description 1, the next two to
+Fault Description 2, up to Fault Description 15.  The upper two MSB should be zero
 after a successful monitoring operation.
 
 Each two bits correspond to a fault severity level: 0, no fault; 1, notice; 2, 

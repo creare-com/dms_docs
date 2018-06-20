@@ -663,7 +663,10 @@ endpoint 1.  The DMS will stream packets of the form described in <a class="refe
 </tr>
 </tbody>
 </table>
-<p>The header consists of two parts.  The upper 16 bits holds the value 0x7819, which may be used to scan for the start
+<p>This picture illustrates the mapping of bits within the 8-bit bytes of
+the stream data to the corresponding bits within the equivalent stream of 12-bit pixels.</p>
+<a class="reference internal image-reference" href="_images/Mapping_of_Stream_Data_Bytes_to_Pixels.png"><img alt="_images/Mapping_of_Stream_Data_Bytes_to_Pixels.png" src="_images/Mapping_of_Stream_Data_Bytes_to_Pixels.png" style="width: 407px;" /></a>
+<p>The header consists of two parts.  The upper 16 bits holds the value 0x781C, which may be used to scan for the start
 of a packet if synchronization is lost.  The lower 16 bits contain trigger status.  Bit 0 is the pump trigger, while
 bit 1 is the plate trigger.  Bits 2 through 15 are reserved.</p>
 </div>

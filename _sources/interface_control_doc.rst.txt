@@ -335,7 +335,13 @@ endpoint 1.  The DMS will stream packets of the form described in :numref:`Strea
 	Header (u32),	4
 	Packed Samples (u32),	"768 (512 pixels, 12 bits per pixel, packed into 192 32-bit words)"
 
-The header consists of two parts.  The upper 16 bits holds the value 0x7819, which may be used to scan for the start
+This picture illustrates the mapping of bits within the 8-bit bytes of
+the stream data to the corresponding bits within the equivalent stream of 12-bit pixels.
+
+.. image:: images/Mapping_of_Stream_Data_Bytes_to_Pixels.png
+   :width: 407
+
+The header consists of two parts.  The upper 16 bits holds the value 0x781C, which may be used to scan for the start
 of a packet if synchronization is lost.  The lower 16 bits contain trigger status.  Bit 0 is the pump trigger, while
 bit 1 is the plate trigger.  Bits 2 through 15 are reserved.
 

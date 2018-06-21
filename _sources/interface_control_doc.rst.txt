@@ -20,6 +20,7 @@ Revision Log
 	"2017/04/04",	"WHF",	"Added FIRMWARE_GET_CRC32 command description."
 	"2017/03/22", 	"WHF",	"Added GET_WELL_FAULTS command description."
 	"2017/3/3", 	"MCR",	"Added this revision log."
+	"2018-06-21",   "WHF",  "Document pixel encoding in bulk USB stream."
 
 Introduction
 ============
@@ -341,6 +342,11 @@ the stream data to the corresponding bits within the equivalent stream of 12-bit
 .. image:: images/Mapping_of_Stream_Data_Bytes_to_Pixels.png
    :width: 407
 
+However, to implement in this way would be naïve.  Modern processors are much more efficient with 32-bit word sizes, and so we implement on that block size.  The resulting mapping is straightforward.
+
+.. image:: images/Mapping_of_Stream_Words_to_Pixels.png
+   :width: 1022
+   
 The header consists of two parts.  The upper 16 bits holds the value 0x781C, which may be used to scan for the start
 of a packet if synchronization is lost.  The lower 16 bits contain trigger status.  Bit 0 is the pump trigger, while
 bit 1 is the plate trigger.  Bits 2 through 15 are reserved.

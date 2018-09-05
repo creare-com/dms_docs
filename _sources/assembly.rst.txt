@@ -1,0 +1,415 @@
+========
+Assembly
+========
+
+Introduction
+============
+This document describes the procedure for assembly of the three subunits; `Optics Assembly`_, `Detector Assembly`_, and `Control Assembly`_ that will become one unit of the DMS ready for installation. Objective is to build a single item ready as a simple retro-fit to fluid dispensers already in field use.
+
+
+Optics Assembly
+===============
+For this sub-assembly, you will need the items as listed in :numref:`Optics Assembly Parts and Equipment` and the associated referenced tools or supplies. In general, the items are listed in the order they will be assembled. More complete details on each item, such as part number, vendor etc., is located in the master BOM maintained here `7818-Droplet SVN\\trunk\\Documents\\7819 DMS Master BOM.xls`, and it can be :download:`downloaded here <7819 DMS Master BOM.xls>` (for **viewing** only).
+
+.. csv-table:: Optics Assembly Parts and Equipment
+	:header: "Quantity", "Description", "Tools and Supplies"
+	:widths: 2, 10, 8
+	:name: Optics Assembly Parts and Equipment
+
+	1, Optics Spine,
+	1, 1/2" Square Aluminum Mirror, Loctite 430 Instant Adhesive
+	4, Dowel Pin .0625 x .375, "Tweezers and Loctite 430"
+	1, X-Y-Z Mount,
+	1, Optics Sub-assembly Mount,
+	2, 1/8 x 1/4 Alloy Dowel Pin, Loctite 430
+	1, Collimating Mirror, 5-minute epoxy
+	1, Housing Window, 5-minute epoxy
+	1, Optics Housing Cover,
+	2, Flat Head Cap Screws .112-40 x .5625, 1/16 Hex Driver
+	1, X-Y-Z Adaptor,
+	4, Tension Springs, "Tweezers and Long-Nose Pliers"
+	8, Socket Head Set Screws .086-56 x .375,
+	2, Socket Head Set Screw .190-32 x.375 Oval Point, 3/32 Hex Driver
+	4, Socket Head Set Screw .190-32 x.375 Cone Point, 3/32 Hex Driver
+	1, Micro VLM Laser Diode,
+	1, Socket Head Cap Screw .138-32 x.625, 7/64 Hex Driver
+	1, Hex Nut .138-32 18-8 SS,
+	1, Optics Housing Base,
+	1, Control Board to Laser Cable, small screwdriver
+	6, M3.5 x 10 Thread Forming screws, Phillips Screwdriver
+
+.. figure:: images/supplies.png
+		:scale: 100 %
+		:alt: Supplies
+		:name: supplies
+
+		Optics Assembly Supplies
+
+Glue Parts
+----------
+
+Before beginning the full assembly, a few items need to be glued using either Loctite 430 or 5-minute epoxy. Set up a clean area and wear protective gloves as necessary.
+
+#. Glue the 1/2" square aluminum mirror to the pocket inside the Optic Spine using Loctite 430 Instant Adhesive, or other appropriate cyanoacrylate. Apply 	a small drop of the glue, then slide the mirror into place. Make sure the mirror rest under the back ridges as shown in :numref:`square-mirror`.
+
+	.. figure:: images/Square-Mirror.png
+		:scale: 100 %
+		:alt: Glue Square Mirror
+		:name: square-mirror
+
+		Glue the 1/2" Square Mirror to the Optic Spine
+
+#. Glue the .0625 x .375 Dowel Pins in the pocket on the Optic Spine and in the pocket on the X-Y-Z Mount as shown in :numref:`dowel-pins`. Apply a small	drop of Loctite 430 and use tweezers to place and separate the Dowel Pins. It is important not to allow glue to get on top of the Pins.
+
+	.. figure:: images/dowel-pins.png
+		:scale: 100 %
+		:alt: Dowel Pins
+		:name: dowel-pins
+
+		Glue the Dowel Pins to Optic Spine and X-Y-Z Mount
+
+#. Glue the 1/8 x 1/4 Alloy Dowel Pin into the holes on the Optics Sub-Assembly Mount. Place a small dab of glue in each hole and insert pin to dry. Keep the area outside of the hole clean and free from glue. :numref:`mount`.
+
+	.. figure:: images/mount.png
+		:scale: 100 %
+		:alt: Dowel Pins
+		:name: mount
+
+		Glue the Dowel Pins into the Optics Sub-Assembly Mount
+
+#. Use the 5-minute epoxy as directed to glue the Collimating Mirror to the Optic Spine. Align the mirror in the slot, 	with the mirror side facing the 1/2" square mirror. Dab a bit of glue on the corners. Make sure glue doesn't run or leek to smudge the mirror. Set aside unbothered and allow for the glue to dry. :numref:`coll-mirror`.
+
+	.. figure:: images/coll-mirror.png
+		:scale: 100 %
+		:alt: Collimating Mirror
+		:name: coll-mirror
+
+		Glue the Collimating Mirror to the Optic Spine
+
+#. Use the 5-minute epoxy to glue the Housing Window onto the open slot on the outside of the Optics Housing Base. Put a small dab of glue in each corner, then gently	place Housing Window onto slot. :numref:`housing-window`.
+
+	.. figure:: images/housing-window.png
+		:scale: 100 %
+		:alt: Housing Window
+		:align: left
+		:name: housing-window
+
+		Glue the Housing Window onto the Optics Housing Base
+
+Assemble Parts
+--------------
+
+Make sure all glue is dry and glued items are secure and properly placed before beginning this full assembly of the Optics.
+
+#. Insert the 2 .112-40 .5625 Flat Head Screws into the two holes of the X-Y-Z Mount as shown in :numref:`XYZ-mount`. They will remain free floating during assembly of the X-Y-Z Mount to the X-Y-Z Adaptor.
+
+	.. figure:: images/mount2.png
+		:scale: 100 %
+		:alt: XYZ-mount
+		:align: left
+		:name: XYZ-mount
+
+		Insert the 4-40 Flat Head Screws on the X-Y-Z Mount
+
+#. Place the X-Y-Z Adaptor over the flat head screws, lining up the holes as shown in :numref:`XYZ`.
+
+	.. figure:: images/XYZ.png
+		:scale: 100 %
+		:alt: XYZ
+		:align: center
+		:name: XYZ
+
+		Align the X-Y-Z Adaptor to the X-Y-Z Mount
+
+#. Assembly the X-Y-Z Adaptor and X-Y-Z Mount together using 2 of the Tension Springs and 4 of the .086-56 x .375 Socket Head Set Screws. Using tweezers drop the Tension Spring through the hole using the Socket Head Screw to hold up the spring. Support the Tension Spring with your finger then flip the pieces over. Use needle nose pliers or other support tools to slide the other Socket Head Screw through the other loop of the spring, securing the spring in place. Repeat with the other hole. :numref:`Springs`
+
+	.. figure:: images/Springs.png
+		:scale: 100 %
+		:alt: Springs Assembly
+		:align: center
+		:name: Springs
+
+		Assembly the Adaptor and Mount using the Tensions Springs and Set Screws
+
+#. Place the now assembled X-Y-Z Mount and Adaptor on the Optic Spine as shown in :numref:`Springs3`, lining up the holes that correspond on the Optic Spine. Repeat the steps with the Set Screws and Tensions Springs to assemble the parts together. Note: it is easiest to start by dropping the 1st Spring through the hole on the inside of the Optic Spine as shown in :numref:`Springs2`
+
+	.. figure:: images/Springs3.png
+		:scale: 100 %
+		:alt: Springs Assembly
+		:align: center
+		:name: Springs3
+
+		Align the holes on the Mount-Adaptor assembly and the Optic Spine
+
+	.. figure:: images/Springs2.png
+		:scale: 100 %
+		:alt: Springs Assembly
+		:align: center
+		:name: Springs2
+
+		Dropping the first Spring through inside the Optic Spine can make assembly easier
+
+#. Insert the Cone and Oval Point Set Screws in the threaded holes on the X-Y-Z Mount as shown in :numref:`Cone-Oval`
+
+	.. figure:: images/Cone-Oval.png
+		:scale: 100 %
+		:alt: Set Screws
+		:align: center
+		:name: Cone-Oval
+
+		Insert the Cone and Oval Point Set Screws as indicated
+
+#. Adjust the Cone and Oval Point Set Screws so that the X-Y-Z Mount and Adaptor plate are parallel to each other and spaced about 2.5 mm apart and the Mount-Adaptor assembly is parallel and about 3 mm spaced from the Optic Spine as in :numref:`tension`. This helps set the unit up for the :doc:`calibration` procedure later.
+
+	.. figure:: images/tension.png
+		:scale: 100 %
+		:alt: Tension Springs
+		:align: center
+		:name: tension
+
+		Align the Mount, Adaptor Plate and the Optic Spine
+
+
+#. Insert the laser in the slot and insert the .138-32 x.625 Socket Head Cap Screw and .138-32 Hex Nut into the appropriate slots. Don't worry about the laser alignment,that will be addressed during the :doc:`calibration` process. :numref:`laser`
+
+	.. figure:: images/laser.png
+		:scale: 100 %
+		:alt: Insert Laser
+		:align: center
+		:name: laser
+
+		Insert the Laser to the Optic Spine
+
+#. Insert the two screws that are in the X-Y-Z Mount into the two holes in the Optics Housing Base. :numref:`laser`
+
+	.. figure:: images/optics-base.png
+		:scale: 100 %
+		:alt: Optics Base
+		:align: center
+		:name: optics-base
+
+		Assemble to Sub-assembly Mount Part 1
+
+#. Assemble the X-Y-Z Mount and Optics Housing base to the Sub-assembly Mount. Tighten the screws using the through holes. Reference :numref:`sub-assembly-mount`
+
+	.. figure:: images/sub-assemb.png
+		:scale: 100 %
+		:alt: Sub Assembly Mount
+		:align: center
+		:name: sub-assembly-mount
+
+		Assemble to Sub-Assembly Mount Part 2
+
+#. Attach the `laser power cable`_ to the laser and align the cable with the depression in the Optics Housing Base. :numref:`laser-cable`. The laser leads may need to be trimmed down before attaching.
+
+	.. figure:: images/laser-cable.png
+		:scale: 100 %
+		:alt: Laser Power Cable
+		:align: center
+		:name: laser-cable
+
+		Laser power cable placement
+
+#. Put the Optics Housing Cover on the Optics Housing base, keeping the Laser Power Cable in the depressions. Attach the two parts with the 6 M3.5 x 10 Thread Forming screws in each of the pre-formed holes. :numref:`optics-housing`
+
+	.. figure:: images/optics-housing.png
+			:scale: 100 %
+			:alt: Optics Housing
+			:align: center
+			:name: optics-housing
+
+			Optics Housing Assembly
+
+The Optics Assembly should now be complete. Laser alignment will occur in the calibration :doc:`calibration` section of this document.
+
+	.. figure:: images/Optics-Assembly.png
+			:scale: 100 %
+			:alt: Optics Assembly
+			:align: center
+			:name: Optics-Assembly
+
+			Finished Optics Housing Assembly
+
+.. _detector-assembly:
+
+Detector Assembly
+=================
+
+For this sub-assembly, you will need the items as listed in :numref:`Detector Assembly Parts and Equipment` and the associated referenced tools or supplies. In general, the items are listed in the order they will be assembled. More complete details on each item, such as part number, vendor etc., is located in the master BOM maintained here `7818-Droplet SVN\\trunk\\Documents\\7819 DMS Master BOM.xls`, and it can be :download:`downloaded here <7819 DMS Master BOM.xls>` (for **viewing** only).
+
+.. csv-table:: Detector Assembly Parts and Equipment
+	:header: "Quantity", "Description", "Tools and Supplies"
+	:widths: 2, 10, 8
+	:name: Detector Assembly Parts and Equipment
+
+	1, Sensor Enclosure,
+	1, Sensor Mount Window, 5-minute epoxy
+	1, #115 Rosco Rolux Filter, Filter Cutter
+	1, #27 Medium Red Filter, Filter Cutter
+	1, 0.9 OD Neutral Density Filter, Filter Cutter
+	1, Sensor Array / Board
+	1, Cable: Control board to Sensor board
+	4, Self Threading Screw 0-42 1/8", T5 Torx Driver
+	7, Self Threading Screw 2-28 1/4", T6 Torx Driver
+	2, SHCS .112-40 x .25, 3/32 Hex Driver
+
+.. figure:: images/sensor-supplies.png
+		:scale: 100 %
+		:alt: Sensor Assembly Supplies
+		:align: center
+		:name: sensor-supplies
+
+		Sensor Assembly Supplies
+
+
+#. Using the 5-minute epoxy as directed, dab a little bit into each corner of the pocket on the front of the Sensor Enclosure. Place the Sensor Mount Window in the pocket and set aside undisturbed to dry. :numref:`sensor-window`
+
+	.. figure:: images/sensor-window.png
+			:scale: 100 %
+			:alt: Sensor Window
+			:align: center
+			:name: sensor-window
+
+			Glue the Sensor Window to the front of the Sensor Enclosure
+
+#. The Sensor enclosure will require three additional filters that will need to be cut. It is best to cut a bunch at one time. Using the Die Filter Cutter and a press, stamp out at least one each of the three different types of filters: #115 Filter, #27 Filter and 0.9 OD Filter. :numref:`filters`
+
+	.. figure:: images/filters.png
+			:scale: 100 %
+			:alt: Cut Filters
+			:align: center
+			:name: filters
+
+			Cut the Filters using the Die and a press
+
+#. On an ESD protected surface, attach the `Sensor Cable`_ to the Sensor Array Board. :numref:`sensor-cable`
+
+	.. figure:: images/sensor-cable.png
+			:scale: 100 %
+			:alt: Attach Sensor Cable
+			:align: center
+			:name: sensor-cable
+
+			Attach the Sensor Cable to the Board
+
+#. Place the 3 cut filters into the Sensor Enclosure. It is important the Frosty filter is closest to the sensor, in other words, the last filter placed. :numref:`place-filters`
+
+	.. figure:: images/place-filters.png
+			:scale: 100 %
+			:alt: Place Filters
+			:align: center
+			:name: place-filters
+
+			Place the three filters in the Sensor Enclosure
+
+#. Lay the Sensor Array Board in the Sensor Enclosure, matching up the four pre-formed holes to the board. Attach the board with the 0-1/8" Self threading Screws. Wind the cable wires into a nice 'S' shape and press the cable down into the groove. :numref:`place-board`
+
+	.. figure:: images/board.png
+			:scale: 100 %
+			:alt: Place Sensor Board
+			:align: center
+			:name: place-board
+
+			Attach the Sensor Array Board to the Sensor Enclosure
+
+#. Attach the Sensor Enclosure Cover to the Sensor Enclosure using the 2-1/4" Self Threading Screws. :numref:`enclosure`
+
+	.. figure:: images/enclosure.png
+			:scale: 100 %
+			:alt: Attach Sensor Cover
+			:align: center
+			:name: enclosure
+
+			Attach the Sensor Cover to the Sensor Enclosure
+
+#. Attach the Sensor Assembly to the Optics Assembly using the two 4-40 x .25 Socket Head Screws. Attach to the Sub-assembly Mount in the two threaded holes as shown in :numref:`sensor-attach`
+
+.. figure:: images/sensor-attach.png
+			:scale: 100 %
+			:alt: Attach Sensor to Optics
+			:align: center
+			:name: sensor-attach
+
+			Attach the Sensor Assembly to the Optics Assembly
+
+The Sensor Assembly is now complete.
+
+.. figure:: images/sensor-assembly.png
+			:scale: 100 %
+			:alt: Complete Sensor Assembly
+			:align: center
+			:name: sensor-assembly
+
+			Complete Sensor Assembly with Optics Assembly
+
+
+Control Assembly
+================
+
+For this sub-assembly, you will need the items as listed in :numref:`Control Assembly Parts and Equipment` and the associated referenced tools or supplies. In general, the items are listed in the order they will be assembled. More complete details on each item, such as part number, vendor etc., is located in the master BOM maintained here `7818-Droplet SVN\\trunk\\Documents\\7819 DMS Master BOM.xls`, and it can be :download:`downloaded here <7819 DMS Master BOM.xls>` (for **viewing** only).
+
+.. csv-table:: Control Assembly Parts and Equipment
+	:header: "Quantity", "Description", "Tools and Supplies"
+	:widths: 2, 10, 8
+	:name: Control Assembly Parts and Equipment
+
+	1, Control Board Housing
+	1, Control Board
+	4, Round Head Screws 6-3/8", Phillips Head Driver
+	1, Control Board Cover
+	7, Round Head Screws 6-5/8", Phillips Head Driver
+
+#. Place the Control Board in the Control Board Housing, lining up the pre-formed holes and the port for the ethernet cable. Attach the Control Board using the 6-3/8" screws. :numref:`control1`
+
+	.. figure:: images/control1.png
+			:scale: 100 %
+			:alt: Control Board Housing
+			:align: center
+			:name: control1
+
+			Control Board Housing
+
+#. Place the Control Board Cover on the Housing, lining up the pre-formed holes for the screws and for DB15 port. Attach using the 6-5/8" screws. :numref:`control1`
+
+.. figure:: images/control2.png
+			:scale: 100 %
+			:alt: Control Board Assembly
+			:align: center
+			:name: control2
+
+			Control Board Assembly
+
+
+Cables
+======
+
+This section informs of the construction of the two cables used as part of the Sensor and Optics assembly. The entire installation of the DMS requires an additional 2 cables to power the control board and connect to a computer. Those two are reviewed further in the :ref:`installation` section of this document.
+
+.. _Laser Power Cable:
+
+**Control Board to Laser Cable**
+
+Cut the PS/2 MDIN-6 Male to Male Cable to 20" in length and solder to a 3.5MM 2pos Terminal Block as indicated in the schematic. Then attach the 5V and Ground cable to the two lead wires on the laser. :numref:`laser-cable2` The original cable schematic lives here: `\\Olympus\Departments\Electronics_Design\PROJECTS\7819-Droplet-II\Released_Circuits\7819-01xx_Cables\7819-0102_Laser-Power\Rev-A`
+
+.. figure:: images/laser-cable2.png
+			:scale: 100 %
+			:alt: Laser Power Cable
+			:align: center
+			:name: laser-cable2
+
+			Laser Power Cable
+
+
+.. _Sensor Cable:
+
+**Control Board to Sensor Board Cable**
+
+Follow the schematic located here: `\\Olympus\Departments\Electronics_Design\PROJECTS\7819-Droplet-II\Released_Circuits\7819-01xx_Cables\7819-0103_Sensor\Rev-A` to create the Control Board to Sensor Board Cable. :numref:`sensor-cable2`
+
+.. figure:: images/sensor-cable2.png
+			:scale: 100 %
+			:alt: Sensor Cable
+			:align: center
+			:name: sensor-cable2
+
+			Control Board to Sensor Board Cable

@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-7819 Droplet II
-===============
+DMS Software Specification
+==========================
 	
 Copyright
 ---------
@@ -19,12 +19,8 @@ Contents
 	:numbered:
 	:name: mastertoc
 
-	about_the_docs
 	functional_spec
-	hardware
 	firmware_spec
 	interface_control_doc
 	interface_spec
 	development_interface
-	assembly
-	calibration

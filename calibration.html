@@ -1,0 +1,349 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>9. Calibration &#8212; 7819 DMS 1.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="8. Assembly" href="assembly.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="calibration">
+<h1>9. Calibration<a class="headerlink" href="#calibration" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>9.1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This section will review how to align the laser with the sensor and how to calibrate the system, prior to it’s use for tracking dispenses.</p>
+</div>
+<div class="section" id="alignment">
+<span id="id1"></span><h2>9.2. Alignment<a class="headerlink" href="#alignment" title="Permalink to this headline">¶</a></h2>
+<p>Alignment of the DMS can occur on a Multiflo unit or as a stand alone procedure. However it will require the DMS be attached to the cassette holder used on a typical Multiflo machine. Should these units be planned for retro-fit in the field on an existing unit, it is expected they will be aligned prior to field installation. For this reason, a stand alone unit designed for holding the DMS assembly during alignment is favored.</p>
+<p>To complete the alignment for the DMS assembly, you will need the additional items as listed in <a class="reference internal" href="#dms-alignment-parts-and-equipment"><span class="std std-numref">Table 9.1</span></a>.</p>
+<table border="1" class="colwidths-given docutils" id="dms-alignment-parts-and-equipment">
+<caption><span class="caption-number">Table 9.1 </span><span class="caption-text">DMS Alignment Parts and Equipment</span><a class="headerlink" href="#dms-alignment-parts-and-equipment" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="56%" />
+<col width="44%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Items</th>
+<th class="head">Notes</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>DMS Assembly</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>Control Board Assembly</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>USB Cable</td>
+<td>to power the control board and communicate with the DMS.Viewer.exe</td>
+</tr>
+<tr class="row-odd"><td>DMS_Viewer.exe</td>
+<td>located here: C:UsersamvDesktopDroplet DocstrunkWindowsDMS_Viewerbin</td>
+</tr>
+<tr class="row-even"><td>Laptop Computer</td>
+<td>to run the DMS_Viewer.exe</td>
+</tr>
+<tr class="row-odd"><td>3/32 Hex Driver</td>
+<td>to adjust the Cone and Oval set screws and attach the DMS assembly to alignment station</td>
+</tr>
+<tr class="row-even"><td>7/64 Hex Driver</td>
+<td>to adjust the laser</td>
+</tr>
+<tr class="row-odd"><td>Alignment Stand</td>
+<td>optional and recommended</td>
+</tr>
+<tr class="row-even"><td>Calibration Cassette</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>Real Dispense Cassette</td>
+<td>any volume is fine</td>
+</tr>
+</tbody>
+</table>
+<div class="figure" id="set-up">
+<a class="reference internal image-reference" href="_images/set-up.png"><img alt="Alignment Set up" src="_images/set-up.png" style="width: 637.0px; height: 439.0px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 9.1 </span><span class="caption-text">Alignment Set-Up</span></p>
+</div>
+<div class="section" id="alignment-stand">
+<h3>9.2.1. Alignment Stand<a class="headerlink" href="#alignment-stand" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">The current alignment stand is a simple optics breadboard with mounts. Note the one Creare designed and manufactured part used to attach the cassette holder. Drawing of this part is located here: <cite>\OLYMPUSProjects7819-Droplet-IITechnical WorkDesignAMV</cite>. <a class="reference internal" href="#stand"><span class="std std-numref">Fig. 9.2</span></a></p>
+<blockquote>
+<div><div class="figure" id="stand">
+<a class="reference internal image-reference" href="_images/a-stand.png"><img alt="Alignment stand" src="_images/a-stand.png" style="width: 446.0px; height: 418.0px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 9.2 </span><span class="caption-text">Alignment Stand</span></p>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">If using the Alignment Stand, attach the cassette holder onto the Alignment Stand.</p>
+<blockquote>
+<div><div class="figure" id="stand2">
+<a class="reference internal image-reference" href="_images/a-stand2.png"><img alt="Alignment stand" src="_images/a-stand2.png" style="width: 455.0px; height: 328.0px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 9.3 </span><span class="caption-text">Alignment Stand with Cassette Holder</span></p>
+</div>
+</div></blockquote>
+</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="align-the-laser">
+<h3>9.2.2. Align the Laser<a class="headerlink" href="#align-the-laser" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Attach the DSM Assembly to the cassette holder as shown in the <span class="xref std std-doc">installation</span> documentation.</p>
+</li>
+<li><p class="first">Plug the laser power cable, Sensor Cable and USB Cable into the Control Board. Once all the Cables are plugged in and the USB cable is attached to the computer, you should see the laser turn on. If the laser is not powered on check connections. <a class="reference internal" href="#hookups"><span class="std std-numref">Fig. 9.4</span></a></p>
+<blockquote>
+<div><div class="figure" id="hookups">
+<a class="reference internal image-reference" href="_images/cable-hookups.png"><img alt="Cable to Control Board Hook-ups" src="_images/cable-hookups.png" style="width: 433.0px; height: 444.0px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 9.4 </span><span class="caption-text">Cable to Control Board Hook-ups</span></p>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Run the DMS_Viewer.exe, currently located in the Droplet SVN repository \trunkWindowsDMS_Viewerbin. If the laser is not hitting the sensor, there may not yet be any feedback from the Viewer. <a class="reference internal" href="#viewer"><span class="std std-numref">Fig. 9.5</span></a></p>
+<blockquote>
+<div><div class="figure" id="viewer">
+<a class="reference internal image-reference" href="_images/viewer-exe.png"><img alt="DMS Viewer" src="_images/viewer-exe.png" style="width: 580.0px; height: 312.0px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 9.5 </span><span class="caption-text">Link to DMS Viewer.exe</span></p>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Take off the Optics Housing Cover in order to access the Laser and Cone/Oval point set screws. The XYZ Mount and Adaptor should have been pre-aligned as in <a class="reference internal" href="assembly.html#tension"><span class="std std-numref">Fig. 8.13</span></a>. If not, return the the Optics Assembly section and start by pre-aligning the Mount and Adaptor, just as in <a class="reference internal" href="assembly.html#tension"><span class="std std-numref">Fig. 8.13</span></a>.</p>
+</li>
+</ol>
+<p>For the remainder of this section, refer to <a class="reference internal" href="#xyz-guide"><span class="std std-numref">Fig. 9.6</span></a> as a guide to clarify which screws to adjust during this alignment process. Not all screws will need to be adjusted.</p>
+<blockquote>
+<div><div class="figure" id="xyz-guide">
+<a class="reference internal image-reference" href="_images/xyz-guide.png"><img alt="XYZ Guide" src="_images/xyz-guide.png" style="width: 640.0px; height: 517.0px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 9.6 </span><span class="caption-text">Set Screw Reference</span></p>
+</div>
+</div></blockquote>
+<ol class="arabic">
+<li><p class="first">Un-tighten the screw holding the laser in place and by hand, move the laser until the beam is parallel to a horizontal surface of the sensor. It’s okay if it doesn’t hit the sensor yet. Once parallel, tighten the laser into place. <a class="reference internal" href="#adjust-laser"><span class="std std-numref">Fig. 9.7</span></a></p>
+<blockquote>
+<div><div class="figure" id="adjust-laser">
+<a class="reference internal image-reference" href="_images/adjust-laser.png"><img alt="Adjust Laser" src="_images/adjust-laser.png" style="width: 769.0px; height: 538.0px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 9.7 </span><span class="caption-text">Adjust Laser until it is parallel to a horizontal surface on the Sensor Assembly</span></p>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Using the <em>Top Right</em> Set Screw, turn to adjust laser height until it reaches maximum intensity on the sensor. Use the DMS Viewer as a guide.  <a class="reference internal" href="#maximum"><span class="std std-numref">Fig. 9.8</span></a></p>
+<blockquote>
+<div><div class="figure" id="maximum">
+<a class="reference internal image-reference" href="_images/maximize.png"><img alt="Maximum Intensity" src="_images/maximize.png" style="width: 747.0px; height: 517.0px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 9.8 </span><span class="caption-text">Adjust Top Right Set Screw until maximum intensity is observed on the DMS Viewer</span></p>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Once highest peak is achieved, tweak the same, <em>Top Right</em> Set Screw back and forth to make sure it rises and falls in unison. <a class="reference internal" href="#leveling"><span class="std std-numref">Fig. 9.9</span></a></p>
+<blockquote>
+<div><div class="figure" id="leveling">
+<a class="reference internal image-reference" href="_images/leveling.png"><img alt="Leveling" src="_images/leveling.png" style="width: 935.0px; height: 602.0px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 9.9 </span><span class="caption-text">Does laser rise and fall in unison? If not, complete next step</span></p>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">If levels do not rise and fall in unison, adjust the <em>Bottom Left</em> Screw in the bottom plate, the test again with the <em>Top Right</em> screw. Adjust these two screws as needed until observing the levels rise and fall in unison. Then leave adjustment set to the highest peak.</p>
+</li>
+<li><p class="first">Insert the Calibration Cassette. You should see all eight pins in the viewer <a class="reference internal" href="#cal-cassette"><span class="std std-numref">Fig. 9.10</span></a>. If not, adjust sensor height.</p>
+<blockquote>
+<div><div class="figure" id="cal-cassette">
+<a class="reference internal image-reference" href="_images/Cal-Cassette.png"><img alt="Calibration Cassette" src="_images/Cal-Cassette.png" style="width: 859.0px; height: 625.0px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 9.10 </span><span class="caption-text">View all 8-pins of the Calibration Cassette in the Viewer</span></p>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Adjust the <em>Top Left</em> screw until laser is centered on pins per the DMS viewer. It is centered when the two end plateaus are both wider than any plateau in between the pins. <a class="reference internal" href="#straighten"><span class="std std-numref">Fig. 9.11</span></a></p>
+<blockquote>
+<div><div class="figure" id="straighten">
+<a class="reference internal image-reference" href="_images/straighten.png"><img alt="Straighten" src="_images/straighten.png" style="width: 792.0px; height: 496.0px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 9.11 </span><span class="caption-text">Adjust until image is as above</span></p>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Remove Calibration Cassette and replace with a Dispense Cassette. Use a business card or other card stock to barely grace dispense tips. Laser should be just under Dispense tips with no shadows for any tips 1-8. If laser is too low, adjust the <em>Top Right</em> Set Screw to adjust height. If shadows appear, adjust the XYZ using the <em>Top Right</em> Set Screw independently and all 3 of the <em>Bottom Plate</em> Set Screws in Unison. <a class="reference internal" href="#laser-height"><span class="std std-numref">Fig. 9.12</span></a></p>
+<blockquote>
+<div><div class="figure" id="laser-height">
+<a class="reference internal image-reference" href="_images/laser-height.png"><img alt="Laser Height" src="_images/laser-height.png" style="width: 756.0px; height: 654.0px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 9.12 </span><span class="caption-text">Adjust the noted screws until the laser just graces the bottom of the nozzles without creating a shadow</span></p>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Once the above step looks really good, adjust the height of the sensor to reoptimize signal. Loosen the two screws on the side of the Sensor Assembly and slide unit up or down while watching the DMS Viewer. Once optimized at it’s highest uniform state, re-tighten the screws to secure the Sensor Assembly in place.</p>
+</li>
+<li><p class="first">Verify the perfection of alignment by adjusting the top Right Set Screw to observe the signal moves up and down in unison. Leave the signal at it’s highest state.</p>
+</li>
+<li><p class="first">Re-attach the Optics Housing Cover and the unit should be considered aligned! Good Job!!</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>9.3. Calibration<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>This section describes the process for calibrating the DMS system. The system must first have been aligned before completing the calibration process.</p>
+<p>To complete the calibration for the DMS assembly, you will need the additional items as listed in <a class="reference internal" href="#dms-calibration-parts-and-equipment"><span class="std std-numref">Table 9.2</span></a>.</p>
+<table border="1" class="colwidths-given docutils" id="dms-calibration-parts-and-equipment">
+<caption><span class="caption-number">Table 9.2 </span><span class="caption-text">DMS Calibration Parts and Equipment</span><a class="headerlink" href="#dms-calibration-parts-and-equipment" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="56%" />
+<col width="44%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Items</th>
+<th class="head">Notes</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Fully Assembled, Aligned, and Installed DMS</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>Matlab license</td>
+<td>for script dmsi.m located in the Droplet SVN trunk</td>
+</tr>
+<tr class="row-even"><td>Laptop Computer</td>
+<td>to run Matlab</td>
+</tr>
+<tr class="row-odd"><td>USB Cable</td>
+<td>for Control board to communicate with the computer</td>
+</tr>
+<tr class="row-even"><td>Calibration Cassette or pins</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>Card stock - such as a business card</td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic">
+<li><p class="first">Connect the DMS to the control board and computer. Note that the laser is powered on.</p>
+</li>
+<li><p class="first">Run <code class="docutils literal notranslate"><span class="pre">dmsi.m</span></code> located in trunk–&gt; Matlab of the Droplet SVN Repository.</p>
+</li>
+<li><p class="first">In the command window enter <code class="docutils literal notranslate"><span class="pre">dms=dmsi</span></code></p>
+</li>
+<li><p class="first">Calibration requires three separate commands, each with three slightly different configurations regarding the laser.</p>
+<blockquote>
+<div><ul class="simple">
+<li>Use the stock card and block the sensor from receiving any light from the laser. Enter in the command window <code class="docutils literal notranslate"><span class="pre">dms.calibrate(1)</span></code></li>
+<li>Remove the stock card and allow light to hit laser. Path from laser to sensor should be clear of any nozzle or calibration pins. Enter in the command window <code class="docutils literal notranslate"><span class="pre">dms.calibrate(2)</span></code>.</li>
+<li>Insert the Calibration Cassette or pins. Enter in the command window <code class="docutils literal notranslate"><span class="pre">dms.calibrate(3)</span></code>.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">To view the plot of the completed calibration enter <code class="docutils literal notranslate"><span class="pre">dms.plot_calibration</span></code>, two figures will appear on the screen, similar to <a class="reference internal" href="#figure1"><span class="std std-numref">Fig. 9.13</span></a> and <a class="reference internal" href="#figure2"><span class="std std-numref">Fig. 9.14</span></a>.</p>
+<blockquote>
+<div><div class="figure" id="figure1">
+<a class="reference internal image-reference" href="_images/figure1.png"><img alt="Calibration Plot" src="_images/figure1.png" style="width: 1199.0px; height: 623.0px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 9.13 </span><span class="caption-text">Each peak should be centered on the line. Any offset is not a good calibration and the DMS may need to be realigned.</span></p>
+</div>
+<div class="figure" id="figure2">
+<a class="reference internal image-reference" href="_images/figure2.png"><img alt="Calibration Plot" src="_images/figure2.png" style="width: 1143.0px; height: 617.0px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 9.14 </span><span class="caption-text">General plot of laser intensity</span></p>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">If the calibration looks good, enter <code class="docutils literal notranslate"><span class="pre">dms.store_calibration</span></code>, to store the calibration.</p>
+</li>
+</ol>
+<p>This calibration is now complete and the DMS is ready to track dispenses.</p>
+</div>
+<div class="section" id="troubleshooting">
+<h2>9.4. Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/Creare_DMS.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">9. Calibration</a><ul>
+<li><a class="reference internal" href="#introduction">9.1. Introduction</a></li>
+<li><a class="reference internal" href="#alignment">9.2. Alignment</a><ul>
+<li><a class="reference internal" href="#alignment-stand">9.2.1. Alignment Stand</a></li>
+<li><a class="reference internal" href="#align-the-laser">9.2.2. Align the Laser</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id2">9.3. Calibration</a></li>
+<li><a class="reference internal" href="#troubleshooting">9.4. Troubleshooting</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="assembly.html" title="previous chapter">8. Assembly</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/calibration.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Creare.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/calibration.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

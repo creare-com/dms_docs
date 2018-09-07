@@ -1,40 +1,29 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>5. Development Interface &#8212; 7819 DMS 1.0.1 documentation</title>
-    
+    <title>7. Development Interface &#8212; 7819 DMS 1.0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '1.0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="4. Interface Specification" href="interface_spec.html" />
+    <link rel="next" title="8. Assembly" href="assembly.html" />
+    <link rel="prev" title="6. Interface Specification" href="interface_spec.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body role="document">
+  </head><body>
   
 
     <div class="document">
@@ -43,36 +32,36 @@
           <div class="body" role="main">
             
   <div class="section" id="development-interface">
-<span id="id1"></span><h1>5. Development Interface<a class="headerlink" href="#development-interface" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>7. Development Interface<a class="headerlink" href="#development-interface" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="overview">
-<h2>5.1. Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2>7.1. Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This section documents the DMS interface developed at Creare and known as DMSI (Dispense Monitor System Interface). This interface is written in Matlab and is designed to efficiently collect, display, and store comprehensive fault detection and debugging data from the DMS during our development efforts. DMSI may be used long term by BioTek for internal validation testing, but we do not expect to deploy this interface to end users. This documentation is not exhaustive, and is merely intended to get a user up and going with the basic functions. Undocumented features of the interface may be explored by referring to the code itself.</p>
 </div>
 <div class="section" id="installation">
-<h2>5.2. Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<h2>7.2. Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <p>Matlab software is required to run this interface. The required code files are:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">dmsi.m</span></code></li>
-<li><code class="docutils literal"><span class="pre">crc32.m</span></code></li>
-<li><code class="docutils literal"><span class="pre">WUsbToFile.exe</span></code></li>
-<li><code class="docutils literal"><span class="pre">DMS_Viewer.exe</span></code></li>
-<li><code class="docutils literal"><span class="pre">DMS_PerfMon.exe</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">dmsi.m</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">crc32.m</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">WUsbToFile.exe</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">DMS_Viewer.exe</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">DMS_PerfMon.exe</span></code></li>
 </ul>
 <p>Within Matlab, set the working directory to the folder that contains these files.</p>
 </div>
 <div class="section" id="connecting-to-the-dms">
-<h2>5.3. Connecting to the DMS<a class="headerlink" href="#connecting-to-the-dms" title="Permalink to this headline">¶</a></h2>
-<p>To connect to a DMS, power it by conecting it to its host dispenser, connect it to a USB port on your computer, and start Matlab. Then instantiate an instance of <code class="docutils literal"><span class="pre">dmsi.m</span></code> in the variable <code class="docutils literal"><span class="pre">dms</span></code> by typing <code class="docutils literal"><span class="pre">dms</span> <span class="pre">=</span> <span class="pre">dmsi</span></code> at the Matlab command prompt. Subsequent commands are issued to the DMS in the format <code class="docutils literal"><span class="pre">dms.command</span></code>, or more generally:</p>
+<h2>7.3. Connecting to the DMS<a class="headerlink" href="#connecting-to-the-dms" title="Permalink to this headline">¶</a></h2>
+<p>To connect to a DMS, power it by conecting it to its host dispenser, connect it to a USB port on your computer, and start Matlab. Then instantiate an instance of <code class="docutils literal notranslate"><span class="pre">dmsi.m</span></code> in the variable <code class="docutils literal notranslate"><span class="pre">dms</span></code> by typing <code class="docutils literal notranslate"><span class="pre">dms</span> <span class="pre">=</span> <span class="pre">dmsi</span></code> at the Matlab command prompt. Subsequent commands are issued to the DMS in the format <code class="docutils literal notranslate"><span class="pre">dms.command</span></code>, or more generally:</p>
 <blockquote>
-<div><code class="docutils literal"><span class="pre">return_value</span> <span class="pre">=</span> <span class="pre">dms.command(argument)</span></code></div></blockquote>
-<p>The first command you should issue is <code class="docutils literal"><span class="pre">dms.get_status</span></code>. This will display a status like &#8216;READY&#8217; or &#8216;MONITOR&#8217; and a couple of error codes (that should generally be 0). Alternatively, you can type <code class="docutils literal"><span class="pre">status</span> <span class="pre">=</span> <span class="pre">dms.get_status</span></code> to store this information in the variable <code class="docutils literal"><span class="pre">status</span></code>. That variable can be accessed by double clicking on the variable in the Matlab workspace window.</p>
-<p>If the DMS status is not &#8216;READY&#8217;, you can always reset it with <code class="docutils literal"><span class="pre">dms.reset</span></code>.</p>
+<div><code class="docutils literal notranslate"><span class="pre">return_value</span> <span class="pre">=</span> <span class="pre">dms.command(argument)</span></code></div></blockquote>
+<p>The first command you should issue is <code class="docutils literal notranslate"><span class="pre">dms.get_status</span></code>. This will display a status like ‘READY’ or ‘MONITOR’ and a couple of error codes (that should generally be 0). Alternatively, you can type <code class="docutils literal notranslate"><span class="pre">status</span> <span class="pre">=</span> <span class="pre">dms.get_status</span></code> to store this information in the variable <code class="docutils literal notranslate"><span class="pre">status</span></code>. That variable can be accessed by double clicking on the variable in the Matlab workspace window.</p>
+<p>If the DMS status is not ‘READY’, you can always reset it with <code class="docutils literal notranslate"><span class="pre">dms.reset</span></code>.</p>
 </div>
 <div class="section" id="dms-calibration">
-<h2>5.4. DMS Calibration<a class="headerlink" href="#dms-calibration" title="Permalink to this headline">¶</a></h2>
-<p>To get a live sensor image for alignment of the optics, run <code class="docutils literal"><span class="pre">DMS_Viewer.exe</span></code> from Windows Explorer (not Matlab). When you are done, activate the Windows command window that opened automatically and press any key to exit the alignment mode.</p>
+<h2>7.4. DMS Calibration<a class="headerlink" href="#dms-calibration" title="Permalink to this headline">¶</a></h2>
+<p>To get a live sensor image for alignment of the optics, run <code class="docutils literal notranslate"><span class="pre">DMS_Viewer.exe</span></code> from Windows Explorer (not Matlab). When you are done, activate the Windows command window that opened automatically and press any key to exit the alignment mode.</p>
 <p>Then go back to Matlab. Typical workflow to calibrate a new DMS looks like this:</p>
-<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% instantiate DMSI object (if you haven&#39;t already)</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% instantiate DMSI object (if you haven&#39;t already)</span>
 <span class="n">dms</span> <span class="p">=</span> <span class="n">dmsi</span>
 
 <span class="c">% to ensure the DMS is not in an active mode</span>
@@ -97,10 +86,10 @@
 </div>
 </div>
 <div class="section" id="setting-configuration-parameters">
-<h2>5.5. Setting Configuration Parameters<a class="headerlink" href="#setting-configuration-parameters" title="Permalink to this headline">¶</a></h2>
+<h2>7.5. Setting Configuration Parameters<a class="headerlink" href="#setting-configuration-parameters" title="Permalink to this headline">¶</a></h2>
 <p>Before the DMS can monitor dispenses, a few configuration parameters must be set. The most important are the approximate stream diameter in mils (7 for the 1 uL cassette, and 14 for the 5 or 10 uL cassette) and the number of dispenses in the protocol. The latter refers to the number of wells that will be dispensed by each channel, i.e. 12, 48, or 192 for 96, 384, and 1536 well plates respectively.</p>
 <p>To manually identify a DMS and set its parameters similar to the way the LHC will do in production:</p>
-<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% instantiate DMSI object (if you haven&#39;t already)</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% instantiate DMSI object (if you haven&#39;t already)</span>
 <span class="n">dms</span> <span class="p">=</span> <span class="n">dmsi</span>
 
 <span class="c">% verify the ID and staus of the connected DMS</span>
@@ -122,9 +111,9 @@
 </div>
 </div>
 <div class="section" id="dispense-monitoring">
-<h2>5.6. Dispense Monitoring<a class="headerlink" href="#dispense-monitoring" title="Permalink to this headline">¶</a></h2>
+<h2>7.6. Dispense Monitoring<a class="headerlink" href="#dispense-monitoring" title="Permalink to this headline">¶</a></h2>
 <p>To manually monitor a dispense and collect fault data similar to the way the LHC will do in production, first set the appropriate configuration parameters as shown above, then:</p>
-<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% monitor a dispense</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% monitor a dispense</span>
 <span class="n">dms</span><span class="p">.</span><span class="n">monitor_dispense</span>
 
 <span class="c">% Run the dispenser.</span>
@@ -135,8 +124,8 @@
 <span class="n">faults</span> <span class="p">=</span> <span class="n">dms</span><span class="p">.</span><span class="n">return_well_faults</span>
 </pre></div>
 </div>
-<p>To use Creare&#8217;s higher level debugging functions to plot dispense data automatically:</p>
-<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% Set the configuration parameters as above. Then:</span>
+<p>To use Creare’s higher level debugging functions to plot dispense data automatically:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Set the configuration parameters as above. Then:</span>
 <span class="n">dms</span><span class="p">.</span><span class="n">monitor_dispense</span>
 <span class="c">% Run the dispenser. When it is done:</span>
 <span class="n">dms</span><span class="p">.</span><span class="n">plot_dispense</span>
@@ -164,8 +153,8 @@
 </div>
 </div>
 <div class="section" id="plotting-previously-acquired-data">
-<h2>5.7. Plotting Previously Acquired Data<a class="headerlink" href="#plotting-previously-acquired-data" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% To plot the data stored in a ``NNNN_*_DMS_data.mat`` file</span>
+<h2>7.7. Plotting Previously Acquired Data<a class="headerlink" href="#plotting-previously-acquired-data" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% To plot the data stored in a ``NNNN_*_DMS_data.mat`` file</span>
 <span class="c">% from a dispense collected with dms.track_dispenses:</span>
 <span class="n">dms</span><span class="p">.</span><span class="n">plot_dispense</span><span class="p">(</span><span class="s">&#39;file&#39;</span><span class="p">)</span>
 <span class="c">% Then select any file that IS post-pended with a 4 digit integer.</span>
@@ -179,22 +168,22 @@
 </div>
 </div>
 <div class="section" id="updating-firmware">
-<h2>5.8. Updating Firmware<a class="headerlink" href="#updating-firmware" title="Permalink to this headline">¶</a></h2>
-<p>To update the DMS firmware, simply run <code class="docutils literal"><span class="pre">dms.update_firmware</span></code> and then navigate to the appropriate &#8216;DMS.bin&#8217; file. Do not interrupt the update process. It should only take a few seconds. Occationally, this process will fail due to a race condition in the hardware and the firmware will not be updated. If this occurs, just run <code class="docutils literal"><span class="pre">dms.update_firmware</span></code> again.</p>
+<h2>7.8. Updating Firmware<a class="headerlink" href="#updating-firmware" title="Permalink to this headline">¶</a></h2>
+<p>To update the DMS firmware, simply run <code class="docutils literal notranslate"><span class="pre">dms.update_firmware</span></code> and then navigate to the appropriate ‘DMS.bin’ file. Do not interrupt the update process. It should only take a few seconds. Occationally, this process will fail due to a race condition in the hardware and the firmware will not be updated. If this occurs, just run <code class="docutils literal notranslate"><span class="pre">dms.update_firmware</span></code> again.</p>
 </div>
 <div class="section" id="performance-monitor">
-<h2>5.9. Performance Monitor<a class="headerlink" href="#performance-monitor" title="Permalink to this headline">¶</a></h2>
-<p>We developed a performance monitor, <code class="docutils literal"><span class="pre">DMS_PerfMon.exe</span></code>, for EMC certification testing. Usage is as follows:</p>
+<h2>7.9. Performance Monitor<a class="headerlink" href="#performance-monitor" title="Permalink to this headline">¶</a></h2>
+<p>We developed a performance monitor, <code class="docutils literal notranslate"><span class="pre">DMS_PerfMon.exe</span></code>, for EMC certification testing. Usage is as follows:</p>
 <ol class="arabic simple">
 <li>Power a calibrated DMS and let it warm up for a few minutes.</li>
 <li>Connect to a computer and run DMS_PerfMon.exe from Windows.</li>
 <li>Activate the command window that opens.</li>
-<li>With no cassette installed and nothing obstructing the laser, press the &#8216;c&#8217; key. This performs a laser background calibration and takes a few seconds.</li>
+<li>With no cassette installed and nothing obstructing the laser, press the ‘c’ key. This performs a laser background calibration and takes a few seconds.</li>
 <li>Wait until the display starts updating again.</li>
 <li>Install the calibration cassette.</li>
-<li>Press the &#8216;n&#8217; key to normalize the signals.</li>
+<li>Press the ‘n’ key to normalize the signals.</li>
 <li>Acceptable (short-term) noise for either set of signals is about 0.1 goal, 0.2 limit.</li>
-<li>It&#8217;s ok if the signals drift a little over time. Just re-calibrate and normalize. (This drift does not degrade DMS performance. In the application, a new laser background calibration is automatically performed immediately prior to each dispense.)</li>
+<li>It’s ok if the signals drift a little over time. Just re-calibrate and normalize. (This drift does not degrade DMS performance. In the application, a new laser background calibration is automatically performed immediately prior to each dispense.)</li>
 <li>All displayed data is logged.</li>
 </ol>
 </div>
@@ -211,16 +200,16 @@
             </a></p>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">5. Development Interface</a><ul>
-<li><a class="reference internal" href="#overview">5.1. Overview</a></li>
-<li><a class="reference internal" href="#installation">5.2. Installation</a></li>
-<li><a class="reference internal" href="#connecting-to-the-dms">5.3. Connecting to the DMS</a></li>
-<li><a class="reference internal" href="#dms-calibration">5.4. DMS Calibration</a></li>
-<li><a class="reference internal" href="#setting-configuration-parameters">5.5. Setting Configuration Parameters</a></li>
-<li><a class="reference internal" href="#dispense-monitoring">5.6. Dispense Monitoring</a></li>
-<li><a class="reference internal" href="#plotting-previously-acquired-data">5.7. Plotting Previously Acquired Data</a></li>
-<li><a class="reference internal" href="#updating-firmware">5.8. Updating Firmware</a></li>
-<li><a class="reference internal" href="#performance-monitor">5.9. Performance Monitor</a></li>
+<li><a class="reference internal" href="#">7. Development Interface</a><ul>
+<li><a class="reference internal" href="#overview">7.1. Overview</a></li>
+<li><a class="reference internal" href="#installation">7.2. Installation</a></li>
+<li><a class="reference internal" href="#connecting-to-the-dms">7.3. Connecting to the DMS</a></li>
+<li><a class="reference internal" href="#dms-calibration">7.4. DMS Calibration</a></li>
+<li><a class="reference internal" href="#setting-configuration-parameters">7.5. Setting Configuration Parameters</a></li>
+<li><a class="reference internal" href="#dispense-monitoring">7.6. Dispense Monitoring</a></li>
+<li><a class="reference internal" href="#plotting-previously-acquired-data">7.7. Plotting Previously Acquired Data</a></li>
+<li><a class="reference internal" href="#updating-firmware">7.8. Updating Firmware</a></li>
+<li><a class="reference internal" href="#performance-monitor">7.9. Performance Monitor</a></li>
 </ul>
 </li>
 </ul>
@@ -228,7 +217,8 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="interface_spec.html" title="previous chapter">4. Interface Specification</a></li>
+      <li>Previous: <a href="interface_spec.html" title="previous chapter">6. Interface Specification</a></li>
+      <li>Next: <a href="assembly.html" title="next chapter">8. Assembly</a></li>
   </ul></li>
 </ul>
 </div>
@@ -241,12 +231,14 @@
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -257,8 +249,8 @@
       &copy;2016, Creare.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
       <a href="_sources/development_interface.rst.txt"

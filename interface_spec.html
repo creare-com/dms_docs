@@ -1,29 +1,41 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>6. Interface Specification &#8212; 7819 DMS 1.0.1 documentation</title>
+    
+    <title>4. Interface Specification &#8212; 7819 DMS 1.0.1 documentation</title>
+    
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="7. Development Interface" href="development_interface.html" />
-    <link rel="prev" title="5. Interface Control Document" href="interface_control_doc.html" />
+    <link rel="next" title="5. Development Interface" href="development_interface.html" />
+    <link rel="prev" title="3. Interface Control Document" href="interface_control_doc.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head><body>
+  </head>
+  <body role="document">
   
 
     <div class="document">
@@ -32,15 +44,15 @@
           <div class="body" role="main">
             
   <div class="section" id="interface-specification">
-<span id="interface-spec"></span><h1>6. Interface Specification<a class="headerlink" href="#interface-specification" title="Permalink to this headline">¶</a></h1>
+<span id="interface-spec"></span><h1>4. Interface Specification<a class="headerlink" href="#interface-specification" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="copyright">
-<h2>6.1. Copyright<a class="headerlink" href="#copyright" title="Permalink to this headline">¶</a></h2>
+<h2>4.1. Copyright<a class="headerlink" href="#copyright" title="Permalink to this headline">¶</a></h2>
 <p>Copyright Creare LLC 2016.  This software specification is proprietary and should be considered confidential.  Reproduction or distribution prohibited without written permission from Creare.</p>
 </div>
 <div class="section" id="revision-log">
-<h2>6.2. Revision Log<a class="headerlink" href="#revision-log" title="Permalink to this headline">¶</a></h2>
+<h2>4.2. Revision Log<a class="headerlink" href="#revision-log" title="Permalink to this headline">¶</a></h2>
 <table border="1" class="colwidths-given docutils" id="interface-spec-revision-log">
-<caption><span class="caption-number">Table 6.1 </span><span class="caption-text">Revision Log</span><a class="headerlink" href="#interface-spec-revision-log" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 4.1 </span><span class="caption-text">Revision Log</span><a class="headerlink" href="#interface-spec-revision-log" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="10%" />
 <col width="10%" />
@@ -77,7 +89,7 @@
 </table>
 </div>
 <div class="section" id="overview">
-<h2>6.3. Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2>4.3. Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This document describes the software interface that interacts with the DMS firmware.  The host software invokes the commands enumerated in the <a class="reference internal" href="interface_control_doc.html#icd"><span class="std std-ref">Interface Control Document</span></a> (which call the DMS to execute the functions defined in the <a class="reference internal" href="firmware_spec.html#firmware-spec"><span class="std std-ref">Firmware Specification</span></a>) and then handles any results returned. There are two primary components of this interface:</p>
 <ol class="arabic simple">
 <li>A <a class="reference internal" href="#is-configuration-gui"><span class="std std-ref">GUI</span></a> which allows comprehensive interaction with the DMS for purposes of alignment, calibration, and debugging. This GUI will only be accessed by trained technicians, not by the end-user.</li>
@@ -85,17 +97,17 @@
 </ol>
 </div>
 <div class="section" id="host">
-<h2>6.4. Host<a class="headerlink" href="#host" title="Permalink to this headline">¶</a></h2>
+<h2>4.4. Host<a class="headerlink" href="#host" title="Permalink to this headline">¶</a></h2>
 <p>For product roll-out, the DMS will be controlled by a PC (Windows 7 or later) over a <a class="reference internal" href="interface_control_doc.html#icd-usb-interface"><span class="std std-ref">USB Interface</span></a>. In the future, different devices may interact with the DMS and act as its host, such as the dispenser itself, which runs Windows CE.  The expectation is that the same USB interface will be used in all cases.</p>
 </div>
 <div class="section" id="configuration-gui">
-<span id="is-configuration-gui"></span><h2>6.5. Configuration GUI<a class="headerlink" href="#configuration-gui" title="Permalink to this headline">¶</a></h2>
+<span id="is-configuration-gui"></span><h2>4.5. Configuration GUI<a class="headerlink" href="#configuration-gui" title="Permalink to this headline">¶</a></h2>
 <p>A GUI is required to invoke the firmware commands enumerated in the <a class="reference internal" href="interface_control_doc.html#icd"><span class="std std-ref">Interface Control Document</span></a> and display the results. This GUI will be activated from within the BioTek host’s user interface.  It will be used only by technicians trained to align, calibrate, and debug the device. It will not be available to end-users.</p>
 <div class="section" id="gui-paramters">
-<span id="is-gui-paramters"></span><h3>6.5.1. GUI Paramters<a class="headerlink" href="#gui-paramters" title="Permalink to this headline">¶</a></h3>
-<p>Parameters stored in the GUI are tabulated in <a class="reference internal" href="#is-gui-parameters-table"><span class="std std-numref">Table 6.2</span></a>:</p>
+<span id="is-gui-paramters"></span><h3>4.5.1. GUI Paramters<a class="headerlink" href="#gui-paramters" title="Permalink to this headline">¶</a></h3>
+<p>Parameters stored in the GUI are tabulated in <a class="reference internal" href="#is-gui-parameters-table"><span class="std std-numref">Table 4.2</span></a>:</p>
 <table border="1" class="colwidths-given docutils" id="is-gui-parameters-table">
-<caption><span class="caption-number">Table 6.2 </span><span class="caption-text">GUI Parameters</span><a class="headerlink" href="#is-gui-parameters-table" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 4.2 </span><span class="caption-text">GUI Parameters</span><a class="headerlink" href="#is-gui-parameters-table" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="25%" />
 <col width="75%" />
@@ -106,42 +118,42 @@
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">dms_id</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">dms_id</span></code></td>
 <td>The ID of the currently connected DMS (See <a class="reference internal" href="interface_control_doc.html#icd-id"><span class="std std-ref">ID</span></a>).</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">file_string</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">file_string</span></code></td>
 <td>A string that is inserted into all saved filenames for identification purposes. Default is an empty string.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">save_path</span></code></td>
-<td>Path where all files are saved. Default is a <code class="docutils literal notranslate"><span class="pre">data</span></code> folder in the DMS GUI software base path.</td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">save_path</span></code></td>
+<td>Path where all files are saved. Default is a <code class="docutils literal"><span class="pre">data</span></code> folder in the DMS GUI software base path.</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="section" id="gui-functions">
-<span id="is-gui-functions"></span><h3>6.5.2. GUI Functions<a class="headerlink" href="#gui-functions" title="Permalink to this headline">¶</a></h3>
+<span id="is-gui-functions"></span><h3>4.5.2. GUI Functions<a class="headerlink" href="#gui-functions" title="Permalink to this headline">¶</a></h3>
 <p>The GUI should have buttons to perform the following operations. (See <a class="reference internal" href="interface_control_doc.html#supported-commands-summary"><span class="std std-ref">Supported Commands Summary</span></a>.)</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li><strong>Connect to DMS.</strong> List all DMS systems physically connected to the host and allow the user to select one to activate. Assign the result to <code class="docutils literal notranslate"><span class="pre">dms_id</span></code> (See <a class="reference internal" href="#is-gui-parameters-table"><span class="std std-numref">Table 6.2</span></a> above.) Display the ID of the active DMS at all times, and send commands only to this unit. (See <code class="docutils literal notranslate"><span class="pre">ID</span></code> command.)</li>
-<li><strong>Edit dispense parameters.</strong> Display an editable list of the <a class="reference internal" href="interface_control_doc.html#configuration-data"><span class="std std-numref">Table 5.8</span></a>  <a class="reference internal" href="interface_control_doc.html#configuration-data"><span class="std std-ref">Configuration Data</span></a> in a pop-up window. Provide confirmation and cancel buttons. (See <code class="docutils literal notranslate"><span class="pre">CONFIG-GET</span></code> and <code class="docutils literal notranslate"><span class="pre">CONFIG-SET</span></code> commands.)</li>
-<li><strong>Edit file strings.</strong> Allow user to edit <code class="docutils literal notranslate"><span class="pre">file_string</span></code> and <code class="docutils literal notranslate"><span class="pre">save_path</span></code>. It would be nice if there was a ‘browse’ button for the <code class="docutils literal notranslate"><span class="pre">file_path</span></code>. (See <a class="reference internal" href="#is-gui-parameters-table"><span class="std std-numref">Table 6.2</span></a> above.)</li>
-<li><strong>View background.</strong>  Invoke <code class="docutils literal notranslate"><span class="pre">GET_CALIBRATION</span></code> and display <code class="docutils literal notranslate"><span class="pre">Background</span></code> as a bar plot. For display, the data should be normalized at the ADC full scale and the y-limit fixed at 1. If <code class="docutils literal notranslate"><span class="pre">cal_bin_edges</span></code> is defined, indicate these values on the bar plot by overlaying bold vertical lines at the appropriate pixel locations. (See <a class="reference internal" href="interface_control_doc.html#icd-get-calibration"><span class="std std-ref">Get Calibration</span></a>.)</li>
-<li><strong>View calibration parameters.</strong> Invoke <code class="docutils literal notranslate"><span class="pre">GET_CALIBRATION</span></code> and display the <a class="reference internal" href="interface_control_doc.html#calibration-data"><span class="std std-numref">Table 5.10</span></a> <a class="reference internal" href="interface_control_doc.html#calibration-data"><span class="std std-ref">Calibration Data</span></a> (except <code class="docutils literal notranslate"><span class="pre">cal_background</span></code> and <code class="docutils literal notranslate"><span class="pre">cal_image</span></code>) in a text format in a pop-up window. Also display <code class="docutils literal notranslate"><span class="pre">cal_image</span></code> as a bar plot. For display, the data should be normalized at the ADC full scale and the y-limit fixed at 1. If <code class="docutils literal notranslate"><span class="pre">cal_bin_edges</span></code> is defined, indicate these values on the bar plot by overlaying bold vertical lines at the appropriate pixel locations. (See <a class="reference internal" href="interface_control_doc.html#icd-get-calibration"><span class="std std-ref">Get Calibration</span></a>.)</li>
-<li><strong>Initiate alignment mode.</strong> Show a live bar-graph of the raw detector signal using the <code class="docutils literal notranslate"><span class="pre">STREAM</span></code> function. Overlay a line plot of <code class="docutils literal notranslate"><span class="pre">cal_background</span></code> on top of this dynamic bar plot (see <a class="reference internal" href="interface_control_doc.html#icd-get-calibration"><span class="std std-ref">Get Calibration</span></a>.) For display, the data should be normalized at the ADC full scale and the y-limit fixed at 1. Provide a button or keystroke to exit this mode.</li>
-<li><strong>Update dark level.</strong> Prompt the user to cover the sensor. After the user confirms, invoke <code class="docutils literal notranslate"><span class="pre">CALIBRATE(1)</span></code>. Report both the original and the resulting <code class="docutils literal notranslate"><span class="pre">Dark_Level</span></code> (<a class="reference internal" href="interface_control_doc.html#calibration-data"><span class="std std-ref">Calibration Data</span></a>) in an informational pop-up window.</li>
-<li><strong>Collect new background.</strong> Prompt the user to confirm that they want to overwrite the current background. Prompt the user to confirm that the laser is aligned, no dispense cartridge is in place, and the optical path is clear.  Then run the <code class="docutils literal notranslate"><span class="pre">CALIBRATE(2)</span></code>. Display the resulting background using the function defined in item 4 above.</li>
-<li><strong>Calibrate.</strong> Prompt the user to install the calibration cassette. Then run <code class="docutils literal notranslate"><span class="pre">CALIBRATE(3)</span></code>.  Display the resulting calibration using the function defined in item 5 above. Upon user confirmation, run <code class="docutils literal notranslate"><span class="pre">STORE_CALIBRATION</span></code>.</li>
-<li><strong>Record raw data.</strong> Prompt user for a record <code class="docutils literal notranslate"><span class="pre">duration</span></code> in seconds (default 10). When user clicks go, run <code class="docutils literal notranslate"><span class="pre">STREAM</span></code> for <code class="docutils literal notranslate"><span class="pre">duration</span></code> seconds. Write the returned data to an ASCII file as a <code class="docutils literal notranslate"><span class="pre">duration</span> <span class="pre">X</span> <span class="pre">386</span></code> array (384 integer pixel values at 12 bit  + 2 binary trigger input values).  The file name should be <code class="docutils literal notranslate"><span class="pre">[save_path]\[file_string]_DMS_raw_0000.dat</span></code>. Increment the integer until either <code class="docutils literal notranslate"><span class="pre">save_path</span></code> or <code class="docutils literal notranslate"><span class="pre">file_string</span></code> changes.  When complete, show the saved file name with full path in an informational popup.</li>
-<li><strong>Monitor dispense.</strong> Poll <code class="docutils literal notranslate"><span class="pre">STATUS</span></code> to confirm <code class="docutils literal notranslate"><span class="pre">State</span></code> is <code class="docutils literal notranslate"><span class="pre">READY</span></code>. If it is not, issue an error in a popup window and report <code class="docutils literal notranslate"><span class="pre">State</span></code>. Otherwise, invoke <code class="docutils literal notranslate"><span class="pre">MONITOR_DISPENSE</span></code>.  Wait until dispense is complete. Poll <code class="docutils literal notranslate"><span class="pre">STATUS</span></code> until <code class="docutils literal notranslate"><span class="pre">State</span></code> is READY (timeout after 15 s). If <code class="docutils literal notranslate"><span class="pre">Last_Reported_Error</span></code> is not zero, report the error in a popup window. Invoke <code class="docutils literal notranslate"><span class="pre">GET_DISPENSE_DATA</span></code>. Save the resulting <a class="reference internal" href="firmware_spec.html#dispense-data"><span class="std std-numref">Table 4.6</span></a> <a class="reference internal" href="firmware_spec.html#dispense-data"><span class="std std-ref">Dispense Data</span></a> to <code class="docutils literal notranslate"><span class="pre">[save_path]\[file_string]_DMS_data_0000.dat</span></code> on the host in some sensible format. Increment the integer index in the filename until either <code class="docutils literal notranslate"><span class="pre">save_path</span></code> or <code class="docutils literal notranslate"><span class="pre">file_string</span></code> changes.</li>
-<li><strong>Set reference dispense.</strong> Invoke <code class="docutils literal notranslate"><span class="pre">SET_REFERENCE_DISPENSE</span></code>. Poll <code class="docutils literal notranslate"><span class="pre">STATUS</span></code>. If <code class="docutils literal notranslate"><span class="pre">Last_Reported_Error</span></code> is <code class="docutils literal notranslate"><span class="pre">DMS_ERR_NO_RECENT_HISTORY</span></code>, show a popup error message and exit.  Otherwise, if <code class="docutils literal notranslate"><span class="pre">Ref_Mode</span></code> (<a class="reference internal" href="interface_control_doc.html#calibration-data"><span class="std std-ref">Calibration Data</span></a>) is not <code class="docutils literal notranslate"><span class="pre">'user'</span></code>, prompt to set this value, with confirm and cancel buttons. Upon user confirmation, apply this value using <code class="docutils literal notranslate"><span class="pre">CONFIG-GET</span></code> and <code class="docutils literal notranslate"><span class="pre">CONFIG-SET</span></code>. (See <a class="reference internal" href="firmware_spec.html#fault-detection"><span class="std std-ref">Fault Detection</span></a>.)</li>
-<li><strong>Set reference mode.</strong> Provide a listbox for the user to select one of the valid values of <code class="docutils literal notranslate"><span class="pre">Ref_Mode</span></code> (<a class="reference internal" href="interface_control_doc.html#calibration-data"><span class="std std-ref">Calibration Data</span></a>) as defined in <a class="reference internal" href="firmware_spec.html#configuration-parameters"><span class="std std-numref">Table 4.2</span></a> <a class="reference internal" href="firmware_spec.html#configuration-parameters"><span class="std std-ref">Configuration Parameters</span></a>. Upon user confirmation, apply this value using <code class="docutils literal notranslate"><span class="pre">CONFIG_GET</span></code> and <code class="docutils literal notranslate"><span class="pre">CONFIG_SET</span></code> (<a class="reference internal" href="interface_control_doc.html#supported-commands-summary"><span class="std std-ref">Supported Commands Summary</span></a>).</li>
-<li><strong>Update Firmware.</strong> Prompt user to select a valid <code class="docutils literal notranslate"><span class="pre">DMS.bin</span></code> firmware file. Invoke <code class="docutils literal notranslate"><span class="pre">FIRMWARE_BLOCK</span></code> multiple times to upload this file to the DMS. Invoke <code class="docutils literal notranslate"><span class="pre">FIRMWARE_GET_CRC32</span></code> to get the checksum. Compute the CRC32 of the local file. If the checksums are equal, invoke <code class="docutils literal notranslate"><span class="pre">FIRMWARE_PROGRAM</span></code> to install the uploaded binary to non-volatile memory.</li>
+<li><strong>Connect to DMS.</strong> List all DMS systems physically connected to the host and allow the user to select one to activate. Assign the result to <code class="docutils literal"><span class="pre">dms_id</span></code> (See <a class="reference internal" href="#is-gui-parameters-table"><span class="std std-numref">Table 4.2</span></a> above.) Display the ID of the active DMS at all times, and send commands only to this unit. (See <code class="docutils literal"><span class="pre">ID</span></code> command.)</li>
+<li><strong>Edit dispense parameters.</strong> Display an editable list of the <a class="reference internal" href="interface_control_doc.html#configuration-data"><span class="std std-numref">Table 3.8</span></a>  <a class="reference internal" href="interface_control_doc.html#configuration-data"><span class="std std-ref">Configuration Data</span></a> in a pop-up window. Provide confirmation and cancel buttons. (See <code class="docutils literal"><span class="pre">CONFIG-GET</span></code> and <code class="docutils literal"><span class="pre">CONFIG-SET</span></code> commands.)</li>
+<li><strong>Edit file strings.</strong> Allow user to edit <code class="docutils literal"><span class="pre">file_string</span></code> and <code class="docutils literal"><span class="pre">save_path</span></code>. It would be nice if there was a ‘browse’ button for the <code class="docutils literal"><span class="pre">file_path</span></code>. (See <a class="reference internal" href="#is-gui-parameters-table"><span class="std std-numref">Table 4.2</span></a> above.)</li>
+<li><strong>View background.</strong>  Invoke <code class="docutils literal"><span class="pre">GET_CALIBRATION</span></code> and display <code class="docutils literal"><span class="pre">Background</span></code> as a bar plot. For display, the data should be normalized at the ADC full scale and the y-limit fixed at 1. If <code class="docutils literal"><span class="pre">cal_bin_edges</span></code> is defined, indicate these values on the bar plot by overlaying bold vertical lines at the appropriate pixel locations. (See <a class="reference internal" href="interface_control_doc.html#icd-get-calibration"><span class="std std-ref">Get Calibration</span></a>.)</li>
+<li><strong>View calibration parameters.</strong> Invoke <code class="docutils literal"><span class="pre">GET_CALIBRATION</span></code> and display the <a class="reference internal" href="interface_control_doc.html#calibration-data"><span class="std std-numref">Table 3.10</span></a> <a class="reference internal" href="interface_control_doc.html#calibration-data"><span class="std std-ref">Calibration Data</span></a> (except <code class="docutils literal"><span class="pre">cal_background</span></code> and <code class="docutils literal"><span class="pre">cal_image</span></code>) in a text format in a pop-up window. Also display <code class="docutils literal"><span class="pre">cal_image</span></code> as a bar plot. For display, the data should be normalized at the ADC full scale and the y-limit fixed at 1. If <code class="docutils literal"><span class="pre">cal_bin_edges</span></code> is defined, indicate these values on the bar plot by overlaying bold vertical lines at the appropriate pixel locations. (See <a class="reference internal" href="interface_control_doc.html#icd-get-calibration"><span class="std std-ref">Get Calibration</span></a>.)</li>
+<li><strong>Initiate alignment mode.</strong> Show a live bar-graph of the raw detector signal using the <code class="docutils literal"><span class="pre">STREAM</span></code> function. Overlay a line plot of <code class="docutils literal"><span class="pre">cal_background</span></code> on top of this dynamic bar plot (see <a class="reference internal" href="interface_control_doc.html#icd-get-calibration"><span class="std std-ref">Get Calibration</span></a>.) For display, the data should be normalized at the ADC full scale and the y-limit fixed at 1. Provide a button or keystroke to exit this mode.</li>
+<li><strong>Update dark level.</strong> Prompt the user to cover the sensor. After the user confirms, invoke <code class="docutils literal"><span class="pre">CALIBRATE(1)</span></code>. Report both the original and the resulting <code class="docutils literal"><span class="pre">Dark_Level</span></code> (<a class="reference internal" href="interface_control_doc.html#calibration-data"><span class="std std-ref">Calibration Data</span></a>) in an informational pop-up window.</li>
+<li><strong>Collect new background.</strong> Prompt the user to confirm that they want to overwrite the current background. Prompt the user to confirm that the laser is aligned, no dispense cartridge is in place, and the optical path is clear.  Then run the <code class="docutils literal"><span class="pre">CALIBRATE(2)</span></code>. Display the resulting background using the function defined in item 4 above.</li>
+<li><strong>Calibrate.</strong> Prompt the user to install the calibration cassette. Then run <code class="docutils literal"><span class="pre">CALIBRATE(3)</span></code>.  Display the resulting calibration using the function defined in item 5 above. Upon user confirmation, run <code class="docutils literal"><span class="pre">STORE_CALIBRATION</span></code>.</li>
+<li><strong>Record raw data.</strong> Prompt user for a record <code class="docutils literal"><span class="pre">duration</span></code> in seconds (default 10). When user clicks go, run <code class="docutils literal"><span class="pre">STREAM</span></code> for <code class="docutils literal"><span class="pre">duration</span></code> seconds. Write the returned data to an ASCII file as a <code class="docutils literal"><span class="pre">duration</span> <span class="pre">X</span> <span class="pre">386</span></code> array (384 integer pixel values at 12 bit  + 2 binary trigger input values).  The file name should be <code class="docutils literal"><span class="pre">[save_path]\[file_string]_DMS_raw_0000.dat</span></code>. Increment the integer until either <code class="docutils literal"><span class="pre">save_path</span></code> or <code class="docutils literal"><span class="pre">file_string</span></code> changes.  When complete, show the saved file name with full path in an informational popup.</li>
+<li><strong>Monitor dispense.</strong> Poll <code class="docutils literal"><span class="pre">STATUS</span></code> to confirm <code class="docutils literal"><span class="pre">State</span></code> is <code class="docutils literal"><span class="pre">READY</span></code>. If it is not, issue an error in a popup window and report <code class="docutils literal"><span class="pre">State</span></code>. Otherwise, invoke <code class="docutils literal"><span class="pre">MONITOR_DISPENSE</span></code>.  Wait until dispense is complete. Poll <code class="docutils literal"><span class="pre">STATUS</span></code> until <code class="docutils literal"><span class="pre">State</span></code> is READY (timeout after 15 s). If <code class="docutils literal"><span class="pre">Last_Reported_Error</span></code> is not zero, report the error in a popup window. Invoke <code class="docutils literal"><span class="pre">GET_DISPENSE_DATA</span></code>. Save the resulting <a class="reference internal" href="firmware_spec.html#dispense-data"><span class="std std-numref">Table 2.6</span></a> <a class="reference internal" href="firmware_spec.html#dispense-data"><span class="std std-ref">Dispense Data</span></a> to <code class="docutils literal"><span class="pre">[save_path]\[file_string]_DMS_data_0000.dat</span></code> on the host in some sensible format. Increment the integer index in the filename until either <code class="docutils literal"><span class="pre">save_path</span></code> or <code class="docutils literal"><span class="pre">file_string</span></code> changes.</li>
+<li><strong>Set reference dispense.</strong> Invoke <code class="docutils literal"><span class="pre">SET_REFERENCE_DISPENSE</span></code>. Poll <code class="docutils literal"><span class="pre">STATUS</span></code>. If <code class="docutils literal"><span class="pre">Last_Reported_Error</span></code> is <code class="docutils literal"><span class="pre">DMS_ERR_NO_RECENT_HISTORY</span></code>, show a popup error message and exit.  Otherwise, if <code class="docutils literal"><span class="pre">Ref_Mode</span></code> (<a class="reference internal" href="interface_control_doc.html#calibration-data"><span class="std std-ref">Calibration Data</span></a>) is not <code class="docutils literal"><span class="pre">'user'</span></code>, prompt to set this value, with confirm and cancel buttons. Upon user confirmation, apply this value using <code class="docutils literal"><span class="pre">CONFIG-GET</span></code> and <code class="docutils literal"><span class="pre">CONFIG-SET</span></code>. (See <a class="reference internal" href="firmware_spec.html#fault-detection"><span class="std std-ref">Fault Detection</span></a>.)</li>
+<li><strong>Set reference mode.</strong> Provide a listbox for the user to select one of the valid values of <code class="docutils literal"><span class="pre">Ref_Mode</span></code> (<a class="reference internal" href="interface_control_doc.html#calibration-data"><span class="std std-ref">Calibration Data</span></a>) as defined in <a class="reference internal" href="firmware_spec.html#configuration-parameters"><span class="std std-numref">Table 2.2</span></a> <a class="reference internal" href="firmware_spec.html#configuration-parameters"><span class="std std-ref">Configuration Parameters</span></a>. Upon user confirmation, apply this value using <code class="docutils literal"><span class="pre">CONFIG_GET</span></code> and <code class="docutils literal"><span class="pre">CONFIG_SET</span></code> (<a class="reference internal" href="interface_control_doc.html#supported-commands-summary"><span class="std std-ref">Supported Commands Summary</span></a>).</li>
+<li><strong>Update Firmware.</strong> Prompt user to select a valid <code class="docutils literal"><span class="pre">DMS.bin</span></code> firmware file. Invoke <code class="docutils literal"><span class="pre">FIRMWARE_BLOCK</span></code> multiple times to upload this file to the DMS. Invoke <code class="docutils literal"><span class="pre">FIRMWARE_GET_CRC32</span></code> to get the checksum. Compute the CRC32 of the local file. If the checksums are equal, invoke <code class="docutils literal"><span class="pre">FIRMWARE_PROGRAM</span></code> to install the uploaded binary to non-volatile memory.</li>
 </ol>
 </div></blockquote>
 </div>
 <div class="section" id="gui-layout">
-<span id="is-gui-layout"></span><h3>6.5.3. GUI Layout<a class="headerlink" href="#gui-layout" title="Permalink to this headline">¶</a></h3>
+<span id="is-gui-layout"></span><h3>4.5.3. GUI Layout<a class="headerlink" href="#gui-layout" title="Permalink to this headline">¶</a></h3>
 <p>The layout of the configuration GUI     should be designed around the following typical workflow:</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -178,24 +190,24 @@
 </div>
 </div>
 <div class="section" id="biotek-application-interface">
-<span id="is-biotek-interface"></span><h2>6.6. BioTek Application Interface<a class="headerlink" href="#biotek-application-interface" title="Permalink to this headline">¶</a></h2>
+<span id="is-biotek-interface"></span><h2>4.6. BioTek Application Interface<a class="headerlink" href="#biotek-application-interface" title="Permalink to this headline">¶</a></h2>
 <p>In addition to being able to launch the GUI described above, the BioTek LHC should also be able to talk automatically to the DMS to do the following during normal operation:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>When initiating a dispense, activate the specific DMS associated with the active dispenser given its known <code class="docutils literal notranslate"><span class="pre">ID</span></code>.</li>
-<li>Automatically set the <a class="reference internal" href="interface_control_doc.html#configuration-data"><span class="std std-ref">Configuration Data</span></a> with correct values for the current dispense using <code class="docutils literal notranslate"><span class="pre">CONFIG-GET</span></code> and <code class="docutils literal notranslate"><span class="pre">CONFIG-SET</span></code>.</li>
-<li>Run <code class="docutils literal notranslate"><span class="pre">MONITOR_DISPENSE</span></code> at least 500 ms prior to each dispense.</li>
-<li>Poll <code class="docutils literal notranslate"><span class="pre">GET_STATUS</span></code> until the DMS mode returns to <code class="docutils literal notranslate"><span class="pre">READY</span></code>. Take appropriate action if there is an error code.</li>
-<li>Retrieve fault data (<code class="docutils literal notranslate"><span class="pre">GET_WELL_FAULTS</span></code>) after each dispense and make this data available and actionable.</li>
-<li>Give the user the ability to run <code class="docutils literal notranslate"><span class="pre">SET_REFERENCE_DISPENSE</span></code> at any time.</li>
-<li>Give the user the option to set the <code class="docutils literal notranslate"><span class="pre">Ref_Mode</span></code> (<a class="reference internal" href="interface_control_doc.html#calibration-data"><span class="std std-ref">Calibration Data</span></a>) or run <code class="docutils literal notranslate"><span class="pre">CLEAR_HISTORY</span></code> (<a class="reference internal" href="interface_control_doc.html#supported-commands-summary"><span class="std std-ref">Supported Commands Summary</span></a>) at any time.</li>
-<li>Automatically run <code class="docutils literal notranslate"><span class="pre">CLEAR_HISTORY</span></code> any time the <a class="reference internal" href="interface_control_doc.html#configuration-data"><span class="std std-ref">Configuration Data</span></a> changes (i.e. new cassette or dispense parameters.)</li>
+<li>When initiating a dispense, activate the specific DMS associated with the active dispenser given its known <code class="docutils literal"><span class="pre">ID</span></code>.</li>
+<li>Automatically set the <a class="reference internal" href="interface_control_doc.html#configuration-data"><span class="std std-ref">Configuration Data</span></a> with correct values for the current dispense using <code class="docutils literal"><span class="pre">CONFIG-GET</span></code> and <code class="docutils literal"><span class="pre">CONFIG-SET</span></code>.</li>
+<li>Run <code class="docutils literal"><span class="pre">MONITOR_DISPENSE</span></code> at least 500 ms prior to each dispense.</li>
+<li>Poll <code class="docutils literal"><span class="pre">GET_STATUS</span></code> until the DMS mode returns to <code class="docutils literal"><span class="pre">READY</span></code>. Take appropriate action if there is an error code.</li>
+<li>Retrieve fault data (<code class="docutils literal"><span class="pre">GET_WELL_FAULTS</span></code>) after each dispense and make this data available and actionable.</li>
+<li>Give the user the ability to run <code class="docutils literal"><span class="pre">SET_REFERENCE_DISPENSE</span></code> at any time.</li>
+<li>Give the user the option to set the <code class="docutils literal"><span class="pre">Ref_Mode</span></code> (<a class="reference internal" href="interface_control_doc.html#calibration-data"><span class="std std-ref">Calibration Data</span></a>) or run <code class="docutils literal"><span class="pre">CLEAR_HISTORY</span></code> (<a class="reference internal" href="interface_control_doc.html#supported-commands-summary"><span class="std std-ref">Supported Commands Summary</span></a>) at any time.</li>
+<li>Automatically run <code class="docutils literal"><span class="pre">CLEAR_HISTORY</span></code> any time the <a class="reference internal" href="interface_control_doc.html#configuration-data"><span class="std std-ref">Configuration Data</span></a> changes (i.e. new cassette or dispense parameters.)</li>
 </ol>
 </div></blockquote>
 </div>
 <div class="section" id="development-interface">
-<span id="is-development-interface"></span><h2>6.7. Development Interface<a class="headerlink" href="#development-interface" title="Permalink to this headline">¶</a></h2>
-<p>Creare has created a development interface in Matlab. It is documented in <a class="reference internal" href="development_interface.html#development-interface"><span class="std std-numref">Section 7</span></a>.</p>
+<span id="is-development-interface"></span><h2>4.7. Development Interface<a class="headerlink" href="#development-interface" title="Permalink to this headline">¶</a></h2>
+<p>Creare has created a development interface in Matlab. It is documented in <a class="reference internal" href="development_interface.html#development-interface"><span class="std std-numref">Section 5</span></a>.</p>
 </div>
 </div>
 
@@ -210,19 +222,19 @@
             </a></p>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">6. Interface Specification</a><ul>
-<li><a class="reference internal" href="#copyright">6.1. Copyright</a></li>
-<li><a class="reference internal" href="#revision-log">6.2. Revision Log</a></li>
-<li><a class="reference internal" href="#overview">6.3. Overview</a></li>
-<li><a class="reference internal" href="#host">6.4. Host</a></li>
-<li><a class="reference internal" href="#configuration-gui">6.5. Configuration GUI</a><ul>
-<li><a class="reference internal" href="#gui-paramters">6.5.1. GUI Paramters</a></li>
-<li><a class="reference internal" href="#gui-functions">6.5.2. GUI Functions</a></li>
-<li><a class="reference internal" href="#gui-layout">6.5.3. GUI Layout</a></li>
+<li><a class="reference internal" href="#">4. Interface Specification</a><ul>
+<li><a class="reference internal" href="#copyright">4.1. Copyright</a></li>
+<li><a class="reference internal" href="#revision-log">4.2. Revision Log</a></li>
+<li><a class="reference internal" href="#overview">4.3. Overview</a></li>
+<li><a class="reference internal" href="#host">4.4. Host</a></li>
+<li><a class="reference internal" href="#configuration-gui">4.5. Configuration GUI</a><ul>
+<li><a class="reference internal" href="#gui-paramters">4.5.1. GUI Paramters</a></li>
+<li><a class="reference internal" href="#gui-functions">4.5.2. GUI Functions</a></li>
+<li><a class="reference internal" href="#gui-layout">4.5.3. GUI Layout</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#biotek-application-interface">6.6. BioTek Application Interface</a></li>
-<li><a class="reference internal" href="#development-interface">6.7. Development Interface</a></li>
+<li><a class="reference internal" href="#biotek-application-interface">4.6. BioTek Application Interface</a></li>
+<li><a class="reference internal" href="#development-interface">4.7. Development Interface</a></li>
 </ul>
 </li>
 </ul>
@@ -230,8 +242,8 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="interface_control_doc.html" title="previous chapter">5. Interface Control Document</a></li>
-      <li>Next: <a href="development_interface.html" title="next chapter">7. Development Interface</a></li>
+      <li>Previous: <a href="interface_control_doc.html" title="previous chapter">3. Interface Control Document</a></li>
+      <li>Next: <a href="development_interface.html" title="next chapter">5. Development Interface</a></li>
   </ul></li>
 </ul>
 </div>
@@ -244,14 +256,12 @@
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -262,8 +272,8 @@
       &copy;2016, Creare.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |
       <a href="_sources/interface_spec.rst.txt"

@@ -1,29 +1,41 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>2. Functional Specification &#8212; 7819 DMS 1.0.1 documentation</title>
+    
+    <title>1. Functional Specification &#8212; 7819 DMS 1.0.1 documentation</title>
+    
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="3. Hardware" href="hardware.html" />
-    <link rel="prev" title="1. About the Documentation" href="about_the_docs.html" />
+    <link rel="next" title="2. Firmware Specification" href="firmware_spec.html" />
+    <link rel="prev" title="DMS Software Specification" href="index.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head><body>
+  </head>
+  <body role="document">
   
 
     <div class="document">
@@ -32,25 +44,25 @@
           <div class="body" role="main">
             
   <div class="section" id="functional-specification">
-<h1>2. Functional Specification<a class="headerlink" href="#functional-specification" title="Permalink to this headline">¶</a></h1>
+<h1>1. Functional Specification<a class="headerlink" href="#functional-specification" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="introduction">
-<h2>2.1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<h2>1.1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>The Dispense Monitor System (DMS) monitors the performance of a commercial 8 channel microliter fluid dispenser to detect dispense faults. The DMS consists of an optical head that collects a linear (1D), 1 kHz video of the shadows of eight dispense streams backlit by a collimated laser sheet. It receives configuration and timing information from the host dispenser, and returns fault detection information.</p>
 </div>
 <div class="section" id="interface">
-<h2>2.2. Interface<a class="headerlink" href="#interface" title="Permalink to this headline">¶</a></h2>
+<h2>1.2. Interface<a class="headerlink" href="#interface" title="Permalink to this headline">¶</a></h2>
 <p>The DMS communicates with a host computer by simple commands over a USB interface. The host sets configuration parameters such as fluid stream diameter and number of dispensed wells per plate, then sends a command to monitor a dispense. The DMS automatically monitors the next plate dispense that occurs and computes fault detection results. The host can then request those results prior to monitoring a new dispense.</p>
 </div>
 <div class="section" id="fault-detection">
-<h2>2.3. Fault Detection<a class="headerlink" href="#fault-detection" title="Permalink to this headline">¶</a></h2>
+<h2>1.3. Fault Detection<a class="headerlink" href="#fault-detection" title="Permalink to this headline">¶</a></h2>
 <p>The DMS is designed to detect deviations from <em>normal dispense dynamics</em> in individual fluid streams. Such deviations are likely the result of a clog, bubble, particulate contamination, depleted fluid reservoir, or other factor that will ultimately degrade dispense performance and perturb assay results. Such perturbations may include incorrect dispense volume, atypical fluid placement within the well, or other subtle factors like entrained air or atypical fluid mixing.</p>
 <p>The DMS essentially monitors the time-resolved diameter and lateral position of each fluid stream. It does not monitor the <em>velocity</em> of the fluid, so it cannot directly measure dispensed volume.  Thus, the DMS cannot quantify either absolute dispense volume or variation in relative dispense volume among wells on a plate. DMS data should never be interpreted in this way.</p>
-<p>A schematic of the fault detection process is shown in <a class="reference internal" href="#fs-fault-detection-schematic"><span class="std std-numref">Fig. 2.1</span></a>. First, the host computer sends several parameter values to the DMS, including the nominal stream diameter (cassette size), the numbers of wells to be dispensed (plate type), and the reference mode, then sends a command to monitor the next dispense. The DMS automatically monitors dispense dyanmics by collecting three time-domain <em>signals</em> related to stream diameter and lateral position, computing a series of nine scalar <em>features</em> from these signals for each well, and finally conducting 15 <em>fault tests</em> for each well by comparing the features to a pre-defined set of <em>fault thresholds</em>. The results of these 15 tests are reported to the host.</p>
+<p>A schematic of the fault detection process is shown in <a class="reference internal" href="#fs-fault-detection-schematic"><span class="std std-numref">Fig. 1.1</span></a>. First, the host computer sends several parameter values to the DMS, including the nominal stream diameter (cassette size), the numbers of wells to be dispensed (plate type), and the reference mode, then sends a command to monitor the next dispense. The DMS automatically monitors dispense dyanmics by collecting three time-domain <em>signals</em> related to stream diameter and lateral position, computing a series of nine scalar <em>features</em> from these signals for each well, and finally conducting 15 <em>fault tests</em> for each well by comparing the features to a pre-defined set of <em>fault thresholds</em>. The results of these 15 tests are reported to the host.</p>
 <div class="figure align-center" id="fs-fault-detection-schematic">
 <a class="reference internal image-reference" href="_images/fault_detection_schematic.png"><img alt="Fault Detection Schematic" src="_images/fault_detection_schematic.png" style="width: 687.5px; height: 412.0px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 2.1 </span><span class="caption-text">DMS Fault Detection Process Schematic.</span></p>
+<p class="caption"><span class="caption-number">Fig. 1.1 </span><span class="caption-text">DMS Fault Detection Process Schematic.</span></p>
 </div>
-<p>Each fault test corresponds to a well-defined physical effect as tabulated in <a class="reference internal" href="#fs-fault-detection-schematic"><span class="std std-numref">Fig. 2.1</span></a> above. The following definitions clarify the meaning of these fault descriptions:</p>
+<p>Each fault test corresponds to a well-defined physical effect as tabulated in <a class="reference internal" href="#fs-fault-detection-schematic"><span class="std std-numref">Fig. 1.1</span></a> above. The following definitions clarify the meaning of these fault descriptions:</p>
 <dl class="docutils">
 <dt><em>amplitude</em></dt>
 <dd>The total fraction of light blocked by the fluid stream for a particular channel, averaged over the duration of a well dispense. This metric effectively takes into account both the <em>diameter</em> and <em>nominal duration</em> of the dispense stream for a given well.</dd>
@@ -65,9 +77,9 @@
 <dt><em>between</em></dt>
 <dd>The time period between well dispenses when the pump is not running and no stream is expected to be present.</dd>
 </dl>
-<p>The result of each fault test is a <em>severity</em> in the range of 0-3 as tabulated in <a class="reference internal" href="#fs-fault-severity-levels-table"><span class="std std-numref">Table 2.1</span></a>. The severity levels are roughly quantified in terms of false positive ratio (FPR), or the probability that the fault indication might occur for a normal, good dispense.  A ‘notice’ might be expected to occur once in each 100 normal dispenses, and thus one or a few notices on a 96 well plate would probably not be cause for concern. However, if a notice occurs frequently on a particular channel, this may indicate a real issue that needs attention. An ‘alert’ is only likely to occur once in 10,000 normal dispenses, so even on a 1536 well plate, one alert is likely to be meaningful.</p>
+<p>The result of each fault test is a <em>severity</em> in the range of 0-3 as tabulated in <a class="reference internal" href="#fs-fault-severity-levels-table"><span class="std std-numref">Table 1.1</span></a>. The severity levels are roughly quantified in terms of false positive ratio (FPR), or the probability that the fault indication might occur for a normal, good dispense.  A &#8216;notice&#8217; might be expected to occur once in each 100 normal dispenses, and thus one or a few notices on a 96 well plate would probably not be cause for concern. However, if a notice occurs frequently on a particular channel, this may indicate a real issue that needs attention. An &#8216;alert&#8217; is only likely to occur once in 10,000 normal dispenses, so even on a 1536 well plate, one alert is likely to be meaningful.</p>
 <table border="1" class="colwidths-given docutils" id="fs-fault-severity-levels-table">
-<caption><span class="caption-number">Table 2.1 </span><span class="caption-text">Fault Severity Levels</span><a class="headerlink" href="#fs-fault-severity-levels-table" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 1.1 </span><span class="caption-text">Fault Severity Levels</span><a class="headerlink" href="#fs-fault-severity-levels-table" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="20%" />
 <col width="60%" />
@@ -82,7 +94,7 @@
 <tbody valign="top">
 <tr class="row-even"><td>0</td>
 <td>normal</td>
-<td>–</td>
+<td>&#8211;</td>
 </tr>
 <tr class="row-odd"><td>1</td>
 <td>notice</td>
@@ -100,8 +112,8 @@
 </table>
 </div>
 <div class="section" id="fault-thresholds">
-<h2>2.4. Fault Thresholds<a class="headerlink" href="#fault-thresholds" title="Permalink to this headline">¶</a></h2>
-<p>The fault tests tabulted in <a class="reference internal" href="#fs-fault-detection-schematic"><span class="std std-numref">Fig. 2.1</span></a> are designed to compare the dispense <em>features</em> to normative thresholds based on one of three sources:</p>
+<h2>1.4. Fault Thresholds<a class="headerlink" href="#fault-thresholds" title="Permalink to this headline">¶</a></h2>
+<p>The fault tests tabulted in <a class="reference internal" href="#fs-fault-detection-schematic"><span class="std std-numref">Fig. 1.1</span></a> are designed to compare the dispense <em>features</em> to normative thresholds based on one of three sources:</p>
 <ol class="arabic">
 <li><p class="first"><strong>A pre-defined absolute value.</strong>
 This allows the DMS to detect gross errors such as an incorrect cassette size. This type of comparison is only possible for values that are well-defined in advance of a dispense, such as nominal stream diameter.</p>
@@ -120,19 +132,19 @@ This allows the DMS to catch individual well dispenses or channels that look dif
 <p>We have conducted extensive testing to set the values of these fault thresholds for the BioTek 1 and 5 uL steel/sapphire tipped cassettes. We expect these values to remain constant and valid for all dispense protocols and fluids dispensed using these cassettes. It should be unnecessary for an end-user to change or even be aware of the value of these thresholds.</p>
 </div>
 <div class="section" id="reference-mode">
-<h2>2.5. Reference Mode<a class="headerlink" href="#reference-mode" title="Permalink to this headline">¶</a></h2>
-<p>The DMS can be operated in one of two <em>reference modes</em>, either ‘user’ or ‘history’. These determine which of the two possible references sourses listed in item 3 above are used. In ‘user’ mode, the user conducts an initial dispense, validates it (visual check, gravimetric, optical, etc.), then designates that dispense as the reference that all subsequent dispenses are compared to. This ensures that all new dispenses are compared to a known reference that does not drift with time.</p>
-<p>For simpler (and typically equally reliable) operation, the DMS can be operated in ‘history’ mode. In this mode, the DMS automatically maintains reference values based on the median of the last few dispenses (10 by default). This typically works quite well, and is transparent to the user. However, it is theoretically possible for a hypothetical slow drift in the dispense dynamics to go undetected. It is also important that the history be cleared anytime the cassette or dispense protocol is changed in any way.</p>
+<h2>1.5. Reference Mode<a class="headerlink" href="#reference-mode" title="Permalink to this headline">¶</a></h2>
+<p>The DMS can be operated in one of two <em>reference modes</em>, either &#8216;user&#8217; or &#8216;history&#8217;. These determine which of the two possible references sourses listed in item 3 above are used. In &#8216;user&#8217; mode, the user conducts an initial dispense, validates it (visual check, gravimetric, optical, etc.), then designates that dispense as the reference that all subsequent dispenses are compared to. This ensures that all new dispenses are compared to a known reference that does not drift with time.</p>
+<p>For simpler (and typically equally reliable) operation, the DMS can be operated in &#8216;history&#8217; mode. In this mode, the DMS automatically maintains reference values based on the median of the last few dispenses (10 by default). This typically works quite well, and is transparent to the user. However, it is theoretically possible for a hypothetical slow drift in the dispense dynamics to go undetected. It is also important that the history be cleared anytime the cassette or dispense protocol is changed in any way.</p>
 </div>
 <div class="section" id="subtleties">
-<h2>2.6. Subtleties<a class="headerlink" href="#subtleties" title="Permalink to this headline">¶</a></h2>
+<h2>1.6. Subtleties<a class="headerlink" href="#subtleties" title="Permalink to this headline">¶</a></h2>
 <p><strong>Dispense Rhythm.</strong> It should be noted that, particularly for small (1 uL aliquot) cassettes, dispense dynamics can be quite sensitive to dispense <em>rhythm</em>. If the dispenser is allowed to sit idle for a few minutes, the next dispense is likely to produce alerts. These will often resolve after a few plates are dispensed in quick succession. This effect may be due to small bubbles that form in the dispense lines, relaxation in the peristaltic pump tubing, or a change in the meniscus or attached droplet that forms at the nozzle tip due to deposits resulting from evaporation.</p>
 <p><strong>Cassette Type.</strong> The DMS has been developed with 1 and 5 uL steel/saphire tipped cassettes. Use with other styles of cassette may require new validation studies.</p>
 <p><strong>Laser Distance.</strong>  The DMS fault detection is somewhat sensitive to the distance of the laser sheet below the dispense tips. When the laser sheet is very near the tips, attached droplets that form on the tips have greater influence on the results. If a large attached droplet forms and persists between plate dispenses, it can even prevent the DMS from acquiring a clean background image immediately prior to the next dispense, causing a software error flag to be thrown. On the other hand, when the laser sheet is adjusted further from the tips, the apparent lateral displacement of angled streams is magnified, and surface tension effects can cause the stream diameter to be more variable.</p>
 <p>In order to accommodate minimum clearance between the dispense tips and the top of the well plate, the DMS development and validation studies have been conducted with the laser sheet grazing the dispense tips. If this causes problems for a particular user or protocol in the future, it is possible to consider adjusting the laser sheet distance. However, this would likely change the fault detection sensitivity, and may require new fault thresholds and validation studies.</p>
 </div>
 <div class="section" id="testing-results">
-<h2>2.7. Testing Results<a class="headerlink" href="#testing-results" title="Permalink to this headline">¶</a></h2>
+<h2>1.7. Testing Results<a class="headerlink" href="#testing-results" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This section is in progress and will be revised after new rounds of testing at Creare and BioTek are complete.</p>
@@ -144,23 +156,23 @@ This allows the DMS to catch individual well dispenses or channels that look dif
 <dt><em>True Fault</em></dt>
 <dd>The volume dispensed into a single well deviates from the median value within the plate by more than 3.9 times the specified CV. Assuming a Gaussian distribution, we expect fewer than 1 in 100,000 normal dispenses to exhibit such a deviation.</dd>
 </dl>
-<p>We then dispensed many wells using different cassettes and dispense volumes while monitoring with the DMS. We also quantified the true dispensed volume in each well with an absorbance plate reader. We used this data set in two ways: first, to characterize the normative DMS <em>feature</em> distributions among all good dispenses and establish fault thresholds based on <a class="reference internal" href="#fs-fault-severity-levels-table"><span class="std std-numref">Table 2.1</span></a>; and second, to quantify the <em>true fault</em> detection confidence that was achieved by applying those thresholds.</p>
-<p><strong>Feature Distributions.</strong> We compiled the <em>feature</em> distributions for all non-fault wells as shown in <a class="reference internal" href="#fs-feature-cdf-1ul-fig"><span class="std std-numref">Fig. 2.2</span></a>. Each of these plots shows two cumulative distribution functions, one ascending (red) and one descending (green). To understand these plots, look at the upper-right plot, for the <code class="docutils literal notranslate"><span class="pre">width_mean</span></code> feature. Looking at the red curve, this feature has a 1% (.01) probability of taking on a value above 0.6. Looking at the green curve, this feature has a 1% probability of taking on a value below 0.37. The vertical lines indicate our fault detection thresholds, with blue, orange, and red indicating notice, warning, and alert respectively. Dashed lines indicate lower bounds, and solid lines indicate upper bounds.</p>
+<p>We then dispensed many wells using different cassettes and dispense volumes while monitoring with the DMS. We also quantified the true dispensed volume in each well with an absorbance plate reader. We used this data set in two ways: first, to characterize the normative DMS <em>feature</em> distributions among all good dispenses and establish fault thresholds based on <a class="reference internal" href="#fs-fault-severity-levels-table"><span class="std std-numref">Table 1.1</span></a>; and second, to quantify the <em>true fault</em> detection confidence that was achieved by applying those thresholds.</p>
+<p><strong>Feature Distributions.</strong> We compiled the <em>feature</em> distributions for all non-fault wells as shown in <a class="reference internal" href="#fs-feature-cdf-1ul-fig"><span class="std std-numref">Fig. 1.2</span></a>. Each of these plots shows two cumulative distribution functions, one ascending (red) and one descending (green). To understand these plots, look at the upper-right plot, for the <code class="docutils literal"><span class="pre">width_mean</span></code> feature. Looking at the red curve, this feature has a 1% (.01) probability of taking on a value above 0.6. Looking at the green curve, this feature has a 1% probability of taking on a value below 0.37. The vertical lines indicate our fault detection thresholds, with blue, orange, and red indicating notice, warning, and alert respectively. Dashed lines indicate lower bounds, and solid lines indicate upper bounds.</p>
 <div class="figure align-center" id="fs-feature-cdf-1ul-fig">
 <a class="reference internal image-reference" href="_images/feature_cdf_pre-BioTek_MCR_tmp.png"><img alt="New 1 uL Feature CDFs" src="_images/feature_cdf_pre-BioTek_MCR_tmp.png" style="width: 646.1999999999999px; height: 415.8px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 2.2 </span><span class="caption-text">Newer DMS Feature CDFs, 1 uL Cassette.</span></p>
+<p class="caption"><span class="caption-number">Fig. 1.2 </span><span class="caption-text">Newer DMS Feature CDFs, 1 uL Cassette.</span></p>
 </div>
 <p>These feature distributions will vary somewhat with each experiment. But in general, for a large population of ‘good’ dispenses, we’re shooting for a false positive ratio (FPR) of about .01, .001, and .0001 for ‘notice’, ‘warning’, and ‘alert’ respectively. Thus, the red distribution curve should typically cross the solid blue threshold at a probability of about .01, the solid orange at about .001, and the solid red at about .0001. Similarly, the green distribution curve should cross the dashed thresholds at about the same values.</p>
 <p>Note that we have not defined all three thresholds for all the fault tests, and we have not always adhered strictly to the .01, .001, and .0001 target levels. These choices are based on our best judgement of what is most likely to be useful in practice.</p>
-<p><strong>Detection Confidence.</strong> We compared the DMS detection results to the true faults identified by the absorbance plate reader. <a class="reference internal" href="#fs-feature-distributions-fig"><span class="std std-numref">Fig. 2.3</span></a> shows the feature distributions for both the no-fault and fault dispense populations, while the black curve indicates the probabability that a dispense with a given feature value is a fault. The regions of these distributions most likely to be useful for fault detection are those that both have a high fault probability and contain a significant fraction of the fault population. Examples would be the first plot (for the <code class="docutils literal notranslate"><span class="pre">amp_corr</span></code> feature) at values above 0.4 or the upper-right plot (feature <code class="docutils literal notranslate"><span class="pre">amp_mean_dur_n</span></code>) at values below -0.3.</p>
+<p><strong>Detection Confidence.</strong> We compared the DMS detection results to the true faults identified by the absorbance plate reader. <a class="reference internal" href="#fs-feature-distributions-fig"><span class="std std-numref">Fig. 1.3</span></a> shows the feature distributions for both the no-fault and fault dispense populations, while the black curve indicates the probabability that a dispense with a given feature value is a fault. The regions of these distributions most likely to be useful for fault detection are those that both have a high fault probability and contain a significant fraction of the fault population. Examples would be the first plot (for the <code class="docutils literal"><span class="pre">amp_corr</span></code> feature) at values above 0.4 or the upper-right plot (feature <code class="docutils literal"><span class="pre">amp_mean_dur_n</span></code>) at values below -0.3.</p>
 <div class="figure align-center" id="fs-feature-distributions-fig">
 <a class="reference internal image-reference" href="_images/feature_dist_original_training.png"><img alt="Feature Distriutions" src="_images/feature_dist_original_training.png" style="width: 667.1999999999999px; height: 574.1999999999999px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 2.3 </span><span class="caption-text">DMS Feature Distributions, 1 uL Cassette.</span></p>
+<p class="caption"><span class="caption-number">Fig. 1.3 </span><span class="caption-text">DMS Feature Distributions, 1 uL Cassette.</span></p>
 </div>
-<p>Given the feature distributions observed in this test of 170,000 wells, the DMS achieved the fault detection results tabulated in <a class="reference internal" href="#fs-fault-detection-fig"><span class="std std-numref">Fig. 2.4</span></a>. We would expect similar results in most real-world scenarios.</p>
+<p>Given the feature distributions observed in this test of 170,000 wells, the DMS achieved the fault detection results tabulated in <a class="reference internal" href="#fs-fault-detection-fig"><span class="std std-numref">Fig. 1.4</span></a>. We would expect similar results in most real-world scenarios.</p>
 <div class="figure align-center" id="fs-fault-detection-fig">
 <a class="reference internal image-reference" href="_images/precision_recall_original.png"><img alt="Fault Detection Results" src="_images/precision_recall_original.png" style="width: 616.5px; height: 184.0px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 2.4 </span><span class="caption-text">DMS Fault Detection Results, 1 uL Cassette.</span></p>
+<p class="caption"><span class="caption-number">Fig. 1.4 </span><span class="caption-text">DMS Fault Detection Results, 1 uL Cassette.</span></p>
 </div>
 </div>
 </div>
@@ -176,14 +188,14 @@ This allows the DMS to catch individual well dispenses or channels that look dif
             </a></p>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">2. Functional Specification</a><ul>
-<li><a class="reference internal" href="#introduction">2.1. Introduction</a></li>
-<li><a class="reference internal" href="#interface">2.2. Interface</a></li>
-<li><a class="reference internal" href="#fault-detection">2.3. Fault Detection</a></li>
-<li><a class="reference internal" href="#fault-thresholds">2.4. Fault Thresholds</a></li>
-<li><a class="reference internal" href="#reference-mode">2.5. Reference Mode</a></li>
-<li><a class="reference internal" href="#subtleties">2.6. Subtleties</a></li>
-<li><a class="reference internal" href="#testing-results">2.7. Testing Results</a></li>
+<li><a class="reference internal" href="#">1. Functional Specification</a><ul>
+<li><a class="reference internal" href="#introduction">1.1. Introduction</a></li>
+<li><a class="reference internal" href="#interface">1.2. Interface</a></li>
+<li><a class="reference internal" href="#fault-detection">1.3. Fault Detection</a></li>
+<li><a class="reference internal" href="#fault-thresholds">1.4. Fault Thresholds</a></li>
+<li><a class="reference internal" href="#reference-mode">1.5. Reference Mode</a></li>
+<li><a class="reference internal" href="#subtleties">1.6. Subtleties</a></li>
+<li><a class="reference internal" href="#testing-results">1.7. Testing Results</a></li>
 </ul>
 </li>
 </ul>
@@ -191,8 +203,8 @@ This allows the DMS to catch individual well dispenses or channels that look dif
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="about_the_docs.html" title="previous chapter">1. About the Documentation</a></li>
-      <li>Next: <a href="hardware.html" title="next chapter">3. Hardware</a></li>
+      <li>Previous: <a href="index.html" title="previous chapter">DMS Software Specification</a></li>
+      <li>Next: <a href="firmware_spec.html" title="next chapter">2. Firmware Specification</a></li>
   </ul></li>
 </ul>
 </div>
@@ -205,14 +217,12 @@ This allows the DMS to catch individual well dispenses or channels that look dif
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -223,8 +233,8 @@ This allows the DMS to catch individual well dispenses or channels that look dif
       &copy;2016, Creare.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |
       <a href="_sources/functional_spec.rst.txt"
